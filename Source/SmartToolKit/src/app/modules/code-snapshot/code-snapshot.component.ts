@@ -8,5 +8,4 @@ import { Component } from '@angular/core';
   styleUrl: './code-snapshot.component.scss'
 })
 export class CodeSnapshotComponent {
-
 }

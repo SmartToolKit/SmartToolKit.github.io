@@ -1,6 +1,21 @@
-<header>
-    <div>
-        <h1 [routerLink]="['/']">Open-Source Smart ToolKit</h1>
-        <p>Hello World 😂</p>
+<header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+
+                    <a href="index.html" class="logo"  [routerLink]="['/']">
+                        <img src="./assets/images/favicon.png" alt="" height="66">
+                    </a>
+
+                    <ul class="nav">
+                        <li *ngFor="let item of menu"><a class="{{item.active ? 'active':''}}"  href="{{item.url}}">{{item.title}}</a></li>
+                    </ul>   
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
     </div>
-</header>
+  </header>
