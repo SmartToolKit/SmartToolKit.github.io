@@ -803,14 +803,6 @@ Categories & Collections Style
 --------------------------------------------- 
 */
 
-.categories-collections {
-  background-image: url(../images/dark-bg.jpg);
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  padding: 120px 0px 150px 0px;
-  position: relative;
-}
 
 .categories-collections:after {
   background-image: url(/assets/images/category-collection-dec.png);
@@ -982,15 +974,6 @@ Create NFT Style
 --------------------------------------------- 
 */
 
-.create-nft {
-  background-image: url(../images/main-bg.jpg);
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  padding: 120px 0px;
-  position: relative;
-}
-
 .create-nft .section-heading .line-dec {
   margin-left: 0%;
   background-color: #fff;
@@ -1078,14 +1061,7 @@ Currently Market Style
 --------------------------------------------- 
 */
 
-.currently-market {
-  background-image: url(../images/dark-bg.jpg);
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  padding: 120px 0px;
-  position: relative;
-}
+
 
 .currently-market-item {
   width: 45%;
@@ -1252,7 +1228,6 @@ Page Heading Style
 }
 
 .page-heading {
-  background-image: url(../images/heading-bg.jpg);
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -1406,14 +1381,6 @@ Explore Style
   opacity: 1;
 }
 
-.discover-items {
-  background-image: url(../images/dark-bg.jpg);
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  padding: 400px 0px 120px 0px;
-  position: relative;
-}
 
 .discover-items .section-heading {
   text-align: left;
@@ -1561,14 +1528,6 @@ Explore Style
   text-align: center;
 }
 
-.top-seller {
-  background-image: url(../images/main-bg.jpg);
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  padding: 120px 0px 90px 0px;
-  position: relative;
-}
 
 .top-seller .section-heading .line-dec {
   background-color: #fff;
@@ -1610,27 +1569,6 @@ Explore Style
 Details Page Style
 --------------------------------------------- 
 */
-
-.item-details-page {
-  background-image: url(../images/dark-bg.jpg);
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  padding: 120px 0px 120px 0px;
-  position: relative;
-}
-
-.item-details-page:after {
-  background-image: url(/assets/images/category-collection-dec.png);
-  width: 300px;
-  height: 282px;
-  position: absolute;
-  bottom: 0;
-  right: 30px;
-  content: '';
-  z-index: 1;
-}
-
 .item-details-page .left-image {
   margin-right: 30px;
 }
@@ -1845,14 +1783,6 @@ Author Page Style
 --------------------------------------------- 
 */
 
-.author-page {
-  background-image: url(../images/dark-bg.jpg);
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  padding: 120px 0px 120px 0px;
-  position: relative;
-}
 
 .author-page .author {
   display: flex;

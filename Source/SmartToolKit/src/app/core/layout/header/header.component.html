@@ -4,13 +4,21 @@
             <div class="col-12">
                 <nav class="main-nav">
 
-                    <a href="index.html" class="logo"  [routerLink]="['/']">
+                    <a href="index.html" class="logo" [routerLink]="'/'">
                         <img src="./assets/images/favicon.png" alt="" height="66">
                     </a>
 
                     <ul class="nav">
-                        <li *ngFor="let item of menu"><a class="{{item.active ? 'active':''}}"  href="{{item.url}}">{{item.title}}</a></li>
-                    </ul>   
+                        <li *ngFor="let item of menu">
+
+                            <a *ngIf="!item.external" [ngClass]="{'active': item.active}" [routerLink]="item.url">
+                                {{item.title}}</a>
+
+                            <a *ngIf="item.external" [ngClass]="{'active': item.active}" [href]="item.url"
+                                target="_blank">
+                                {{item.title}}</a>
+                        </li>
+                    </ul>
                     <a class='menu-trigger'>
                         <span>Menu</span>
                     </a>
@@ -18,4 +26,4 @@
             </div>
         </div>
     </div>
-  </header>
+</header>
