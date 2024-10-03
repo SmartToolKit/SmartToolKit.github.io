@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { GuidGeneratorComponent } from './modules/guid-generator/guid-generator.component';
+import { JwtViewerComponent } from './modules/jwt-viewer/jwt-viewer.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { GuidGeneratorComponent } from './modules/guid-generator/guid-generator.
     FooterComponent,
     DashboardComponent,
     JsonViewerComponent,
-    GuidGeneratorComponent
+    GuidGeneratorComponent,
+    JwtViewerComponent
   ],
   imports: [
     HttpClientModule,

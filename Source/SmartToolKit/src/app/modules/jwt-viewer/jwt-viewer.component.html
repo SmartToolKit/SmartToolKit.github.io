@@ -1,0 +1,36 @@
+<div class="item-details-page px-2">
+    <div class="container contact px-2">
+        <div class="row px-4">
+            <div class="row" style="margin: 0px !important;">
+                <div class="col-sm-6">
+                    <div>
+                        <table class="w-100">
+                            <tr>
+                                <td>
+                                    <h4>JWT</h4>
+                                </td>
+                                <td>
+                                    <button (click)="save()" class="btn btn-sm btn-warning mb-3 mx-1 px-4 float-end">Save</button>
+                                    <button (click)="clear()" class="btn btn-sm btn-info mb-3 mx-1 px-4 float-end">Clear</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <textarea class="col-sm-12 form-control bg-dark text-white" rows="23" (input)="show()"
+                        [(ngModel)]="jwt"></textarea>
+                </div>
+                <div class="col-sm-6">
+                    <h4>Header</h4>
+                    <ngx-json-viewer class="bg-dark form-control" [json]="header"></ngx-json-viewer>
+
+                    <br>
+
+                    <h4>Payload</h4>
+                    <ngx-json-viewer class="bg-dark form-control" [json]="payload"></ngx-json-viewer>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

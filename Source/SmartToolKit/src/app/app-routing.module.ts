@@ -4,6 +4,7 @@ import { LayoutComponent } from './core/layout/layout.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { JsonViewerComponent } from './modules/json-viewer/json-viewer.component';
 import { GuidGeneratorComponent } from './modules/guid-generator/guid-generator.component';
+import { JwtViewerComponent } from './modules/jwt-viewer/jwt-viewer.component';
 
 const routes: Routes = [  {
   path: '',
@@ -17,10 +18,10 @@ const routes: Routes = [  {
       path: 'dashboard',
       component: DashboardComponent
     },
-    // {
-    //   path: 'code-snapshot',
-    //   component: CodeSnapshotComponent
-    // },
+    {
+      path: 'jwt-viewer',
+      component: JwtViewerComponent
+    },
     {
       path: 'json-viewer',
       component: JsonViewerComponent
