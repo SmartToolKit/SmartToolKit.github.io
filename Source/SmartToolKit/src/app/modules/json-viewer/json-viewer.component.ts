@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-json-viewer',
@@ -53,5 +53,41 @@ export class JsonViewerComponent {
       alert('Invalid JSON input!');
     }
   }
-  download() { }
+  download() {
+
+    var filename = `JsonViewer-${new Date().getTime()}.json`
+
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8, ' + encodeURIComponent(this.jsonContent));
+    element.setAttribute('download', filename);
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element)
+  }
+  openFile(event: Event): void {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files[0]) {
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        this.jsonContent = e.target?.result as string;
+        this.jsonViewer(); // Reparse the content to show the JSON
+      };
+
+      reader.onerror = () => {
+        alert('Error reading file!');
+      };
+
+      reader.readAsText(file);
+    }
+  }
+  
+  readAsUrl() {
+    // const dialogRef = this.dialog.open(ModalComponent, {
+    //   width: '400px',
+    // });
+
+
+  }
 }
