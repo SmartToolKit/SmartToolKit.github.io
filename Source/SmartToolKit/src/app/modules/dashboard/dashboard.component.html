@@ -1,22 +1,23 @@
 <div class="main-banner">
-  <div class="container">
-    <div class="categories">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="section-heading">
-            <div class="line-dec"></div>
-            <h2>Pick a <em>tool</em> from the list below.</h2>
+    <div class="container">
+      <div class="categories">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="section-heading">
+              <div class="line-dec"></div>
+              <h2>Pick a <em>tool</em> from the list below.</h2>
+            </div>
           </div>
-        </div>
-        <div class="row justify-content-evenly m-0">
-          <div class="col-lg-2 col-sm-6" *ngFor="let item of tools">
-            <div class="item">
-              <div class="icon">
-                <img src="{{item.icon}}" alt="">
-              </div>
-              <h4>{{item.title}}</h4>
-              <div class="icon-button">
-                <a [routerLink]="[item.url]"><i class="fa fa-angle-right"></i></a>
+          <div class="row justify-content-evenly m-0">
+            <div class="col-lg-2 col-sm-6" *ngFor="let item of tools">
+              <div class="item">
+                <div class="icon">
+                  <img src="{{item.icon}}" alt="">
+                </div>
+                <h4>{{item.title}}</h4>
+                <div class="icon-button">
+                  <a [routerLink]="[item.url]"><i class="fa fa-angle-right"></i></a>
+                </div>
               </div>
             </div>
           </div>
@@ -24,4 +25,3 @@
       </div>
     </div>
   </div>
-</div>

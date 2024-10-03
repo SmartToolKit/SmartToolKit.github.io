@@ -1,14 +1,11 @@
-import { AfterViewInit, Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-json-viewer',
-  standalone: true,
-  imports: [FormsModule],
   templateUrl: './json-viewer.component.html',
-  styleUrls: ['./json-viewer.component.scss']
+  styleUrl: './json-viewer.component.scss'
 })
-export class JsonViewerComponent implements AfterViewInit {
+export class JsonViewerComponent {
 
   page = "Format";
   ngAfterViewInit(): void {
@@ -43,9 +40,11 @@ export class JsonViewerComponent implements AfterViewInit {
     }
   }
 
+  jsonObject: any = {};
   jsonViewer() {
     try {
       this.page = "Viewer";
+      //this.jsonObject = JSON.parse(this.jsonContent);
 
       alert('todo!');
 

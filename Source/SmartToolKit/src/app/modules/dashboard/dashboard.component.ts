@@ -1,12 +1,7 @@
-import { NgFor } from '@angular/common';
-import { AfterViewInit, Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { url } from 'inspector';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard',
-  standalone: true,
-  imports: [NgFor, RouterLink],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -37,7 +32,5 @@ export class DashboardComponent {
       url: "jwt-viewer"
     }
   ];
-  navigateTo(url: string) {
-    alert(url)
-  }
+
 }
