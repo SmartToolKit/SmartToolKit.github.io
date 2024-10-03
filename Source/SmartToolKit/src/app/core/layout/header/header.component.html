@@ -8,7 +8,7 @@
                         <img src="./assets/images/favicon.png" alt="" height="66">
                     </a>
 
-                    <ul class="nav">
+                    <ul class="nav {{menuclass}}">
                         <li *ngFor="let item of menu">
 
                             <a *ngIf="!item.external" [ngClass]="{'active': item.active}" [routerLink]="item.url">
@@ -19,7 +19,7 @@
                                 {{item.title}}</a>
                         </li>
                     </ul>
-                    <a class='menu-trigger'>
+                    <a class='menu-trigger' (click)="toggleMenu()">
                         <span>Menu</span>
                     </a>
                 </nav>

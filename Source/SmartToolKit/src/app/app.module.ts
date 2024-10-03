@@ -9,6 +9,7 @@ import { FooterComponent } from './core/layout/footer/footer.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { JsonViewerComponent } from './modules/json-viewer/json-viewer.component';
 import { FormsModule } from '@angular/forms';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,9 @@ import { FormsModule } from '@angular/forms';
     DashboardComponent,
     JsonViewerComponent
   ],
-  imports: [FormsModule,
+  imports: [
+    NgxJsonViewerModule,
+    FormsModule,
     BrowserModule,
     AppRoutingModule
   ],

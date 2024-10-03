@@ -44,10 +44,8 @@ export class JsonViewerComponent {
   jsonViewer() {
     try {
       this.page = "Viewer";
-      //this.jsonObject = JSON.parse(this.jsonContent);
-
-      alert('todo!');
-
+      this.jsonObject = JSON.parse(this.jsonContent);
+      
     } catch (error) {
       alert('Invalid JSON input!');
     }

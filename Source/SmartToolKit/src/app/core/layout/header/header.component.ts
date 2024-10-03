@@ -26,5 +26,9 @@ export class HeaderComponent {
       external: true // External link
     }
   ];
+  menuclass = ''
 
+  toggleMenu() {
+    this.menuclass == '' ? this.menuclass = 'd-block' : this.menuclass = ''
+  }
 }
