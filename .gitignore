@@ -5,7 +5,10 @@
 /tmp
 /out-tsc
 /bazel-out
-
+/docs/server
+/docs/browser
+/docs/3rdpartylicenses.txt
+/docs/prerendered-routes.json
 # Node
 /node_modules
 npm-debug.log
