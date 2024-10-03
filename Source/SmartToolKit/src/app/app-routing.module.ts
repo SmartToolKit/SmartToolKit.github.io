@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './core/layout/layout.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { JsonViewerComponent } from './modules/json-viewer/json-viewer.component';
+import { GuidGeneratorComponent } from './modules/guid-generator/guid-generator.component';
 
 const routes: Routes = [  {
   path: '',
@@ -23,6 +24,10 @@ const routes: Routes = [  {
     {
       path: 'json-viewer',
       component: JsonViewerComponent
+    },
+    {
+      path: 'guid-generator',
+      component: GuidGeneratorComponent
     }
   ]
 }

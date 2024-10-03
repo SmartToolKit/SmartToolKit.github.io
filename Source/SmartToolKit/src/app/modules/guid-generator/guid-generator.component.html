@@ -1,0 +1,102 @@
+<div class="item-details-page px-2">
+    <div class="container contact px-2">
+        <div class="row px-4">
+            <div class="col-lg-6">
+                <div class="col-md-12 d-inline-flex">
+                    <table class="w-100">
+                        <tr>
+                            <td>
+                                <h4 class="m-0"> How many GUIDs do you want : </h4>
+                            </td>
+                            <td class="px-2">
+                                <input type="number" class="form-control form-text bg-dark text-light form-control-sm"
+                                    min="1" [(ngModel)]="count" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-12">
+                    <h4 class="m-0">Format :</h4>
+                    <div class="row">
+                        <div class="col-4">
+                            <input type="checkbox" class="form-check-input" [(ngModel)]="uppercase" />
+                            Uppercase
+                        </div>
+                        <div class="col-4">
+                            <input type="checkbox" class="form-check-input" [(ngModel)]="braces" />
+                            Braces
+                        </div>
+                        <div class="col-4">
+                            <input type="checkbox" class="form-check-input" [(ngModel)]="hyphens" />
+                            Hyphens
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="col-md-12">
+                    <button class="btn btn-info" (click)="generate()">
+                        Generate some GUIDs!
+                    </button>
+                </div>
+                <hr>
+
+                <div class="col-md-12">
+                    <table class="w-100">
+                        <tr>
+                            <td>
+                                <h4 class="m-0">Results : </h4>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-info float-end" (click)="copy()">
+                                    Copy to Clipboard
+                                </button>
+                                <button class="btn btn-sm btn-outline-warning float-end mx-2" (click)="download()">
+                                    Download
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <br>
+                <div class="col-md-12">
+                    <textarea rows="10" class="form-control" [(ngModel)]="result"></textarea>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="col-md-12 pb-2 pt-2">
+                    <div class="pt-1 pb-3">
+                        <b class="h5">What is a GUID ? </b>
+                        <p class="h6">
+                            GUID (aka UUID) is an acronym for 'Globally Unique Identifier'
+                            (or 'Universally Unique Identifier'). It is a 128-bit integer
+                            number used to identify resources. The term GUID is generally
+                            used by developers working with Microsoft technologies, while
+                            UUID is used everywhere else.
+                        </p>
+                    </div>
+                    <div class="pt-1 pb-3">
+                        <b class="h5">How unique is a GUID? </b>
+                        <p class="h6">
+                            128-bits is big enough and the generation algorithm is unique
+                            enough that if 1,000,000,000 GUIDs per second were generated for
+                            1 year the probability of a duplicate would be only 50%. Or if
+                            every human on Earth generated 600,000,000 GUIDs there would
+                            only be a 50% probability of a duplicate.
+                        </p>
+                    </div>
+                    <div class="pt-1">
+                        <b class="h5">How are GUIDs used? </b>
+                        <p class="h6">
+                            GUIDs are used in enterprise software development in C#, Java,
+                            and C++ as database keys, component identifiers, or just about
+                            anywhere else a truly unique identifier is required. GUIDs are
+                            also used to identify all interfaces and objects in COM
+                            programming.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

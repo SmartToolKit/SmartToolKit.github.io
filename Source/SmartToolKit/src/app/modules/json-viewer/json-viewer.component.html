@@ -1,38 +1,29 @@
-<div class="item-details-page">
-    <div class="container">
-        <div class="row">
+<div class="item-details-page px-2">
+    <div class="container contact px-2">
+        <div class="row px-4">
+            <input type="file" (change)="openFile($event)" id="inputFile" (change)="openFile($event)" class="d-none" />
+
             <div class="col-lg-12">
-                <form id="contact" action="" method="post">
-                    <div class="row">
-                        <input type="file" (change)="openFile($event)" id="inputFile" (change)="openFile($event)"
-                            class="d-none" />
+                <button (click)="jsonViewer()" class="btn btn-primary btn-sm mb-3 mx-1">Viewer</button>
+                <button (click)="jsonFormatter('Format')" class="btn btn-primary btn-sm mb-3 mx-1">Format</button>
+                <button (click)="jsonFormatter('Remove white space')" class="btn btn-primary btn-sm mb-3 mx-1">Remove
+                    white space</button>
+                <button onclick="document.getElementById('inputFile').click()"
+                    class="btn btn-success btn-sm mb-3 mx-1">Open File</button>
 
-                        <div class="col-lg-12">
-                            <button (click)="jsonViewer()" class="btn btn-primary btn-sm mb-3 mx-1">Viewer</button>
-                            <button (click)="jsonFormatter('Format')"
-                                class="btn btn-primary btn-sm mb-3 mx-1">Format</button>
-                            <button (click)="jsonFormatter('Remove white space')"
-                                class="btn btn-primary btn-sm mb-3 mx-1">Remove white space</button>
-                            <button onclick="document.getElementById('inputFile').click()"
-                                class="btn btn-success btn-sm mb-3 mx-1">Open File</button>
+                <button (click)="readAsUrl()" class="btn btn-success btn-sm mb-3 mx-1">Read as Url</button>
+                <button (click)="copy()" class="btn btn-info btn-sm mb-3 mx-1">Copy</button>
+                <button (click)="paste()" class="btn btn-info btn-sm mb-3 mx-1">Paste</button>
+                <button (click)="save()" class="btn btn-warning btn-sm mb-3 mx-1">Save</button>
+                <button (click)="download()" class="btn btn-warning btn-sm mb-3 mx-1">Download</button>
 
-                            <button (click)="readAsUrl()" class="btn btn-success btn-sm mb-3 mx-1">Read as Url</button>
-                            <button (click)="copy()" class="btn btn-info btn-sm mb-3 mx-1">Copy</button>
-                            <button (click)="paste()" class="btn btn-info btn-sm mb-3 mx-1">Paste</button>
-                            <button (click)="save()" class="btn btn-warning btn-sm mb-3 mx-1">Save</button>
-                            <button (click)="download()" class="btn btn-warning btn-sm mb-3 mx-1">Download</button>
-
-                        </div>
-                        <div class="col-lg-12" *ngIf="page != 'Viewer'">
-                            <textarea rows="{{getrow()}}" [(ngModel)]="jsonContent"
-                                [ngModelOptions]="{standalone: true}" class="bg-dark form-control text-white w-100"
-                                placeholder="Paste Json"></textarea>
-                        </div>
-                        <div class="col-lg-12" *ngIf="page == 'Viewer'">
-                            <ngx-json-viewer class="bg-dark form-control" [json]="jsonObject"></ngx-json-viewer>
-                        </div>
-                    </div>
-                </form>
+            </div>
+            <div class="col-lg-12" *ngIf="page != 'Viewer'">
+                <textarea rows="{{getrow()}}" [(ngModel)]="jsonContent" [ngModelOptions]="{standalone: true}"
+                    class="bg-dark form-control text-white w-100" placeholder="Paste Json"></textarea>
+            </div>
+            <div class="col-lg-12" *ngIf="page == 'Viewer'">
+                <ngx-json-viewer class="bg-dark form-control" [json]="jsonObject"></ngx-json-viewer>
             </div>
         </div>
     </div>

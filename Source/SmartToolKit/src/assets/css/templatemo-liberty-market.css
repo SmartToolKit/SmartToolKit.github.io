@@ -1575,7 +1575,8 @@ Details Page Style
     background-size: cover;
     padding-top: 160px;
     background-color: #2a2a2a;
- 
+    padding-bottom: 60px; 
+    min-height: 100vh; /* Ensures full viewport height */
 }
 .item-details-page .left-image {
   margin-right: 30px;
@@ -1889,6 +1890,11 @@ Create Page Style
 --------------------------------------------- 
 */
 
+.contact {
+  background-color: #37393c;
+  border-radius: 20px;
+  padding: 30px 30px;
+}
 #contact {
   background-color: #37393c;
   border-radius: 20px;

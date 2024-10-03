@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1727978944544,
+  "timestamp": 1727985660777,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -13,10 +13,10 @@
       "urls": [
         "/favicon.ico",
         "/index.html",
-        "/main-L5XQVEDQ.js",
+        "/main-QYNUIT2J.js",
         "/manifest.webmanifest",
         "/polyfills-FFHMD2TL.js",
-        "/styles-LWUZGIUG.css"
+        "/styles-LICE2BMK.css"
       ],
       "patterns": []
     },
@@ -80,7 +80,7 @@
     "/assets/css/flex-slider.css": "d45ff63b518367b24b5a25b89ec204823feae730",
     "/assets/css/fontawesome.css": "d49d46fd7526683ee3e2864b490c1cec5bba1dbd",
     "/assets/css/owl.css": "2cee24283de1080307c51085c7889a06255139b1",
-    "/assets/css/templatemo-liberty-market.css": "55c289c23e92e80d86fd7aae584b9fa2abbe4eae",
+    "/assets/css/templatemo-liberty-market.css": "2d1cd25b56700af562be45245a86b9ee83ca4e6e",
     "/assets/icons/icon-128x128.png": "abec0c6941cc668428c086132ad54ebd650d664b",
     "/assets/icons/icon-144x144.png": "3fad42e84558c3e97a1c9e7056fe6972cada4789",
     "/assets/icons/icon-152x152.png": "dad6cc3bde1ee5c6e20c439a1be0341b7892c275",
@@ -105,8 +105,8 @@
     "/assets/webfonts/fa-v4compatibility.ttf": "fbf72ecb9d7828c2e8504451c13e05d7a018eb29",
     "/assets/webfonts/fa-v4compatibility.woff2": "4dcd1d7b2bda7da7c181015011490e46e23c3969",
     "/favicon.ico": "7742f84ba6c152623cc28f9543a5d325fd8e9099",
-    "/index.html": "e433cee9c4177d24abe7c2adef9ae518cc46135a",
-    "/main-L5XQVEDQ.js": "43ce461c739834747216a14b05274af0b6dd434f",
+    "/index.html": "6a4b0ed74bfdcbbb2f6525c60c5a256f3003ae6f",
+    "/main-QYNUIT2J.js": "3035fedcc2218b878f71527d897e54b7ad7fd4a5",
     "/manifest.webmanifest": "c073cdb0462590184db8afdd8025094935e1f463",
     "/media/banner-bg-COAS5LGN.jpg": "6cea5d67bf3d139ed0da221615e8a72b5c819a07",
     "/media/dark-bg-MRZUSLIW.jpg": "1eb4c767faee4c5fdd6fe80077abae03ed21e78d",
@@ -119,7 +119,7 @@
     "/media/fa-v4compatibility-5VCDHUUN.ttf": "fbf72ecb9d7828c2e8504451c13e05d7a018eb29",
     "/media/fa-v4compatibility-UXEDG7IT.woff2": "4dcd1d7b2bda7da7c181015011490e46e23c3969",
     "/polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
-    "/styles-LWUZGIUG.css": "40c50f8ffcbbc885813e6a5f6993c8b5092e3309"
+    "/styles-LICE2BMK.css": "9014ed1233cc87d688668e0123b6f95a891e7056"
   },
   "navigationUrls": [
     {
