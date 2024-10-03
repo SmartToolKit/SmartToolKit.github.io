@@ -18,7 +18,10 @@ export class JsonViewerComponent {
       this.jsonViewer();
     }
   }
-
+  getrow() {
+    var lines = this.jsonContent.split('\n').length;
+    return lines > 10 ? lines : 10;
+  }
   save() {
     localStorage.setItem("json-viewer-page", this.page);
     localStorage.setItem("json-viewer-jsonContent", this.jsonContent);
@@ -45,7 +48,7 @@ export class JsonViewerComponent {
     try {
       this.page = "Viewer";
       this.jsonObject = JSON.parse(this.jsonContent);
-      
+
     } catch (error) {
       alert('Invalid JSON input!');
     }

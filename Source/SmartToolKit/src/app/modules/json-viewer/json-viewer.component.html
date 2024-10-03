@@ -19,7 +19,7 @@
 
                         </div>
                         <div class="col-lg-12" *ngIf="page != 'Viewer'">
-                            <textarea rows="10" [(ngModel)]="jsonContent" [ngModelOptions]="{standalone: true}"
+                            <textarea rows="{{getrow()}}" [(ngModel)]="jsonContent" [ngModelOptions]="{standalone: true}"
                                 class="bg-dark form-control text-white w-100" placeholder="Paste Json"></textarea>
                         </div>
                         <div class="col-lg-12"  *ngIf="page == 'Viewer'">
