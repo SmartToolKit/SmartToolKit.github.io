@@ -1,0 +1,143 @@
+{
+  "configVersion": 1,
+  "timestamp": 1727974733376,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/favicon.ico",
+        "/index.html",
+        "/main-GSMJLMOM.js",
+        "/manifest.webmanifest",
+        "/polyfills-FFHMD2TL.js",
+        "/styles-LWUZGIUG.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/assets/bootstrap/css/bootstrap.min.css",
+        "/assets/bootstrap/js/bootstrap.min.js",
+        "/assets/css/animate.css",
+        "/assets/css/flex-slider.css",
+        "/assets/css/fontawesome.css",
+        "/assets/css/owl.css",
+        "/assets/css/templatemo-liberty-market.css",
+        "/assets/icons/icon-128x128.png",
+        "/assets/icons/icon-144x144.png",
+        "/assets/icons/icon-152x152.png",
+        "/assets/icons/icon-192x192.png",
+        "/assets/icons/icon-384x384.png",
+        "/assets/icons/icon-512x512.png",
+        "/assets/icons/icon-72x72.png",
+        "/assets/icons/icon-96x96.png",
+        "/assets/images/banner-bg.jpg",
+        "/assets/images/code-snapshot.svg",
+        "/assets/images/dark-bg.jpg",
+        "/assets/images/favicon.png",
+        "/assets/images/guid-generator.svg",
+        "/assets/images/json-viewer.svg",
+        "/assets/images/jwt-viewer.svg",
+        "/assets/webfonts/fa-brands-400.ttf",
+        "/assets/webfonts/fa-brands-400.woff2",
+        "/assets/webfonts/fa-regular-400.ttf",
+        "/assets/webfonts/fa-regular-400.woff2",
+        "/assets/webfonts/fa-solid-900.ttf",
+        "/assets/webfonts/fa-solid-900.woff2",
+        "/assets/webfonts/fa-v4compatibility.ttf",
+        "/assets/webfonts/fa-v4compatibility.woff2",
+        "/media/banner-bg-COAS5LGN.jpg",
+        "/media/dark-bg-MRZUSLIW.jpg",
+        "/media/fa-brands-400-EKH6IKTO.woff2",
+        "/media/fa-brands-400-YXWT7IPT.ttf",
+        "/media/fa-regular-400-4ZALA7L6.woff2",
+        "/media/fa-regular-400-A6SUM4GZ.ttf",
+        "/media/fa-solid-900-DDCOZZH4.ttf",
+        "/media/fa-solid-900-WKPKVZ4K.woff2",
+        "/media/fa-v4compatibility-5VCDHUUN.ttf",
+        "/media/fa-v4compatibility-UXEDG7IT.woff2"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/assets/bootstrap/css/bootstrap.min.css": "146164e9fbc4a54a25cb60ffe2af131a6fe92be5",
+    "/assets/bootstrap/js/bootstrap.min.js": "22381a6942bb76cf70b4886168fde5409865c7eb",
+    "/assets/css/animate.css": "da0d19a8e4fbe5de92d8385074b91d32c223921e",
+    "/assets/css/flex-slider.css": "d45ff63b518367b24b5a25b89ec204823feae730",
+    "/assets/css/fontawesome.css": "d49d46fd7526683ee3e2864b490c1cec5bba1dbd",
+    "/assets/css/owl.css": "2cee24283de1080307c51085c7889a06255139b1",
+    "/assets/css/templatemo-liberty-market.css": "55c289c23e92e80d86fd7aae584b9fa2abbe4eae",
+    "/assets/icons/icon-128x128.png": "abec0c6941cc668428c086132ad54ebd650d664b",
+    "/assets/icons/icon-144x144.png": "3fad42e84558c3e97a1c9e7056fe6972cada4789",
+    "/assets/icons/icon-152x152.png": "dad6cc3bde1ee5c6e20c439a1be0341b7892c275",
+    "/assets/icons/icon-192x192.png": "a9fe0284605b2a4574fd6dfebda9f484519f9441",
+    "/assets/icons/icon-384x384.png": "5316369f3a478f47061fac31e5d34e46676a92f6",
+    "/assets/icons/icon-512x512.png": "d9753e0e43d646b64cd4bc92e83e4a5d62546443",
+    "/assets/icons/icon-72x72.png": "1310f982b796e2060a85fa99bf5df6c78e2cc1db",
+    "/assets/icons/icon-96x96.png": "e28fe72016bb35f5415ff781727c224b7b647ab4",
+    "/assets/images/banner-bg.jpg": "6cea5d67bf3d139ed0da221615e8a72b5c819a07",
+    "/assets/images/code-snapshot.svg": "661b5b1f39a5c888ad29aa8ab01cdec1f39da200",
+    "/assets/images/dark-bg.jpg": "1eb4c767faee4c5fdd6fe80077abae03ed21e78d",
+    "/assets/images/favicon.png": "51993693e443abca1cf2ca9ed7081a62555fcb8b",
+    "/assets/images/guid-generator.svg": "591334d344a21e870cf2963e10f88a7ebd54097d",
+    "/assets/images/json-viewer.svg": "206d7f7400be3245d33bf83fe61e514d351764aa",
+    "/assets/images/jwt-viewer.svg": "6b1520afe8df8bde71cc108d2a853f50a04a236a",
+    "/assets/webfonts/fa-brands-400.ttf": "7fc8906350833c191df8a31d8c55c4e960bb04ba",
+    "/assets/webfonts/fa-brands-400.woff2": "7fdc6b3926b1dd023f9f2ad7d53bc22694694281",
+    "/assets/webfonts/fa-regular-400.ttf": "8042dc30cb29081ad07cbfbf855ff711cc23fb65",
+    "/assets/webfonts/fa-regular-400.woff2": "ffd3b574cb7db4e2cd0cc2ea9214f0bb8989207f",
+    "/assets/webfonts/fa-solid-900.ttf": "ff92141685e6c9fceb06feda0760086a0c390978",
+    "/assets/webfonts/fa-solid-900.woff2": "2e4280929d4d76fc0e31601c98f167f14630c209",
+    "/assets/webfonts/fa-v4compatibility.ttf": "fbf72ecb9d7828c2e8504451c13e05d7a018eb29",
+    "/assets/webfonts/fa-v4compatibility.woff2": "4dcd1d7b2bda7da7c181015011490e46e23c3969",
+    "/favicon.ico": "7742f84ba6c152623cc28f9543a5d325fd8e9099",
+    "/index.html": "900be4fe5817f5bf9069bcba6b6c9e898657c423",
+    "/main-GSMJLMOM.js": "a449c737011e20eb66a6e2d91517529273c50f44",
+    "/manifest.webmanifest": "c073cdb0462590184db8afdd8025094935e1f463",
+    "/media/banner-bg-COAS5LGN.jpg": "6cea5d67bf3d139ed0da221615e8a72b5c819a07",
+    "/media/dark-bg-MRZUSLIW.jpg": "1eb4c767faee4c5fdd6fe80077abae03ed21e78d",
+    "/media/fa-brands-400-EKH6IKTO.woff2": "7fdc6b3926b1dd023f9f2ad7d53bc22694694281",
+    "/media/fa-brands-400-YXWT7IPT.ttf": "7fc8906350833c191df8a31d8c55c4e960bb04ba",
+    "/media/fa-regular-400-4ZALA7L6.woff2": "ffd3b574cb7db4e2cd0cc2ea9214f0bb8989207f",
+    "/media/fa-regular-400-A6SUM4GZ.ttf": "8042dc30cb29081ad07cbfbf855ff711cc23fb65",
+    "/media/fa-solid-900-DDCOZZH4.ttf": "ff92141685e6c9fceb06feda0760086a0c390978",
+    "/media/fa-solid-900-WKPKVZ4K.woff2": "2e4280929d4d76fc0e31601c98f167f14630c209",
+    "/media/fa-v4compatibility-5VCDHUUN.ttf": "fbf72ecb9d7828c2e8504451c13e05d7a018eb29",
+    "/media/fa-v4compatibility-UXEDG7IT.woff2": "4dcd1d7b2bda7da7c181015011490e46e23c3969",
+    "/polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
+    "/styles-LWUZGIUG.css": "40c50f8ffcbbc885813e6a5f6993c8b5092e3309"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
