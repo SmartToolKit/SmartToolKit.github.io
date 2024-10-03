@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import swal from 'sweetalert2';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-json-viewer',
@@ -6,17 +8,13 @@ import { Component, Input } from '@angular/core';
   styleUrl: './json-viewer.component.scss'
 })
 export class JsonViewerComponent {
+  constructor(private http: HttpClient) { }
 
   page = "Format";
   ngAfterViewInit(): void {
     this.page = localStorage.getItem("json-viewer-page") ?? "Format";
     this.jsonContent = localStorage.getItem("json-viewer-jsonContent") ?? "{}";
-
-    if (this.page == "Format" || this.page == "Remove white space") {
-      this.jsonFormatter(this.page)
-    } else {
-      this.jsonViewer();
-    }
+    this.realoadView();
   }
   getrow() {
     var lines = this.jsonContent.split('\n').length;
@@ -82,12 +80,64 @@ export class JsonViewerComponent {
       reader.readAsText(file);
     }
   }
-  
+
   readAsUrl() {
-    // const dialogRef = this.dialog.open(ModalComponent, {
-    //   width: '400px',
-    // });
+    swal.fire({
+      title: 'Enter URL',
+      input: 'url',
+      inputLabel: 'Your website URL',
+      inputPlaceholder: 'https://example.com',
+      showCancelButton: true,
+      inputValidator: (value) => {
+        if (!value) {
+          return 'You need to enter a URL!';
+        } else if (!this.isValidUrl(value)) {
+          return 'Please enter a valid URL!';
+        }
+        return null;
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.http.get(result.value).subscribe((response) => {
+          this.jsonContent = JSON.stringify(response)
+          this.realoadView();
+        });
 
+      }
+    });
+  }
+  paste() {
+    navigator.clipboard.readText().then((text) => {
+      this.jsonContent = text;
+      this.realoadView();
+    }).catch(err => {
+      console.error('Failed to read clipboard contents: ', err);
+    });
+  }
 
+  copy() {
+    const textarea = document.createElement('textarea');
+    textarea.value = this.jsonContent;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+  }
+  // Helper function to validate URL
+  isValidUrl(url: string): boolean {
+    const pattern = new RegExp('^(https?:\\/\\/)?' + // Protocol
+      '((([a-zA-Z\\d]([a-zA-Z\\d-]*[a-zA-Z\\d])*)\\.)+[a-zA-Z]{2,}|' + // Domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
+      '(\\:\\d+)?(\\/[-a-zA-Z\\d%_.~+]*)*' + // Port and path
+      '(\\?[;&a-zA-Z\\d%_.~+=-]*)?' + // Query string
+      '(\\#[-a-zA-Z\\d_]*)?$', 'i'); // Fragment locator
+    return !!pattern.test(url);
+  }
+  realoadView() {
+    if (this.page == "Format" || this.page == "Remove white space") {
+      this.jsonFormatter(this.page)
+    } else {
+      this.jsonViewer();
+    }
   }
 }
