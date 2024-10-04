@@ -18,8 +18,8 @@
                     <div class="col-md-3 text-center p-2 border position-relative" style="min-height: 200px;">
                         <img src="{{item.image}}" class="org-img">
 
-                        <h5 class="bg-dark p-1 position-absolute rounded-3 top-0">1024 * 768</h5>
-                        <h6 class="bg-dark p-1 position-absolute rounded-3 bottom-0">1000 kb</h6>
+                        <h5 class="bg-dark p-1 position-absolute rounded-3 top-0">{{item.orgWidth}} * {{item.orgHeight}}</h5>
+                        <h6 class="bg-dark p-1 position-absolute rounded-3 bottom-0">{{item.size}}</h6>
 
                     </div>
                     <div class="col-md-9 p-2 position-relative">
@@ -28,21 +28,23 @@
                                 New Name :
                             </div>
                             <div class="col-md-8 d-flex mb-3">
-                                <input class="form-control bg-dark text-light">
+                                <input class="form-control bg-dark text-light " [(ngModel)]="item.newName">
                             </div>
                         </div>
                         <hr>
 
                         <div class="col-md-12 row h4 mb-3">
 
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-4 mb-3 ">
                                 New size :
                             </div>
-                            <div class="col-md-4 d-flex ws-nowrap m-0 mb-3">
-                                Width : <input class="form-control bg-dark text-light">
+                            <div class="col-md-4 d-flex ws-nowrap m-0 mb-3 hstack">
+                                Width : <input class="form-control bg-dark text-light" type="number"
+                                    [(ngModel)]="item.width"  (input)="updateSize(item,'w')"  min="1">
                             </div>
-                            <div class="col-md-4 d-flex ws-nowrap m-0 mb-3">
-                                Height : <input class="form-control bg-dark text-light">
+                            <div class="col-md-4 d-flex ws-nowrap m-0 mb-3 hstack">
+                                Height : <input class="form-control bg-dark text-light w-auto" type="number"
+                                    [(ngModel)]="item.height" (input)="updateSize(item,'h')" min="1">
                             </div>
 
                         </div>
