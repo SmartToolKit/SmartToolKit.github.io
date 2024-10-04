@@ -6,6 +6,7 @@ import { JsonViewerComponent } from './modules/json-viewer/json-viewer.component
 import { GuidGeneratorComponent } from './modules/guid-generator/guid-generator.component';
 import { JwtViewerComponent } from './modules/jwt-viewer/jwt-viewer.component';
 import { ConvertToBase64Component } from './modules/convert-to-base64/convert-to-base64.component';
+import { ImageResizerComponent } from './modules/image-resizer/image-resizer.component';
 
 const routes: Routes = [{
   path: '',
@@ -34,6 +35,10 @@ const routes: Routes = [{
     {
       path: 'convert-to-base64',
       component: ConvertToBase64Component
+    },
+    {
+      path: 'image-resizer',
+      component: ImageResizerComponent
     }
   ]
 }

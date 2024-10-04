@@ -7,12 +7,12 @@ import { Component } from '@angular/core';
 })
 export class DashboardComponent {
   tools = [
-    {
-      title: "Code Snapshot",
-      description: "Turn your code snippets into visually stunning images, perfect for sharing or documentation.",
-      icon:"./assets/images/code-snapshot.svg",
-      url: "code-snapshot"
-    },
+    // {
+    //   title: "Code Snapshot",
+    //   description: "Turn your code snippets into visually stunning images, perfect for sharing or documentation.",
+    //   icon:"./assets/images/code-snapshot.svg",
+    //   url: "code-snapshot"
+    // },
     {
       title: "JSON Viewer",
       description: "Easily view and format JSON data, making it more readable and easier to work with.",
@@ -36,6 +36,12 @@ export class DashboardComponent {
       description: "",
       icon:"./assets/images/convert-to-base64.svg",
       url: "convert-to-base64"
+    },
+    {
+      title: "Image Resizer",
+      description: "",
+      icon:"./assets/images/image-resizer.svg",
+      url: "image-resizer"
     }
   ];
 

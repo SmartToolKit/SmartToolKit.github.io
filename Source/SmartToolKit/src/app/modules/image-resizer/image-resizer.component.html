@@ -1,0 +1,61 @@
+<div class="item-details-page px-2">
+    <div class="container contact px-2">
+        <div class="row px-4">
+            <input type="file" (change)="openFile($event)" id="inputFile" class="d-none" multiple />
+
+            <div class="col-lg-12">
+
+                <button onclick="document.getElementById('inputFile').click()"
+                    class="btn btn-outline-primary mb-3 mx-1">
+                    Add Project
+                </button>
+
+            </div>
+            <hr>
+            <div class="col-lg-12 text-light" *ngIf="result.length > 0">
+                <div *ngFor="let item of result" class="row mb-4 pb-2 border-bottom border-primary">
+                    <h5 class="p-1">imageName.jpg</h5>
+                    <div class="col-md-3 text-center p-2 border position-relative" style="min-height: 200px;">
+                        <img src="{{item.image}}" class="org-img">
+
+                        <h5 class="bg-dark p-1 position-absolute rounded-3 top-0">1024 * 768</h5>
+                        <h6 class="bg-dark p-1 position-absolute rounded-3 bottom-0">1000 kb</h6>
+
+                    </div>
+                    <div class="col-md-9 p-2 position-relative">
+                        <div class="col-md-12 row h4 mb-3">
+                            <div class="col-md-4 mb-3">
+                                New Name :
+                            </div>
+                            <div class="col-md-8 d-flex mb-3">
+                                <input class="form-control bg-dark text-light">
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="col-md-12 row h4 mb-3">
+
+                            <div class="col-md-4 mb-3">
+                                New size :
+                            </div>
+                            <div class="col-md-4 d-flex ws-nowrap m-0 mb-3">
+                                Width : <input class="form-control bg-dark text-light">
+                            </div>
+                            <div class="col-md-4 d-flex ws-nowrap m-0 mb-3">
+                                Height : <input class="form-control bg-dark text-light">
+                            </div>
+
+                        </div>
+                        <hr>
+                        <div class="col-md-12 ">
+                            <button class="btn btn-primary float-end mx-2">Download</button>
+                            <button class="btn btn-primary float-end mx-2"
+                                (click)="duplicate(item.id)">Duplicate</button>
+                            <button class="btn btn-danger float-end mx-2" (click)="delete(item.id)">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
