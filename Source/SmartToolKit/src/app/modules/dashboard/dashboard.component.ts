@@ -30,6 +30,12 @@ export class DashboardComponent {
       description: "Decode and verify JWT tokens with this easy-to-use tool.",
       icon:"./assets/images/jwt-viewer.svg",
       url: "jwt-viewer"
+    },
+    {
+      title: "Convert To Base64",
+      description: "",
+      icon:"./assets/images/convert-to-base64.svg",
+      url: "convert-to-base64"
     }
   ];
 

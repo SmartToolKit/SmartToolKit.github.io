@@ -5,8 +5,9 @@ import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { JsonViewerComponent } from './modules/json-viewer/json-viewer.component';
 import { GuidGeneratorComponent } from './modules/guid-generator/guid-generator.component';
 import { JwtViewerComponent } from './modules/jwt-viewer/jwt-viewer.component';
+import { ConvertToBase64Component } from './modules/convert-to-base64/convert-to-base64.component';
 
-const routes: Routes = [  {
+const routes: Routes = [{
   path: '',
   component: LayoutComponent,
   children: [
@@ -29,6 +30,10 @@ const routes: Routes = [  {
     {
       path: 'guid-generator',
       component: GuidGeneratorComponent
+    },
+    {
+      path: 'convert-to-base64',
+      component: ConvertToBase64Component
     }
   ]
 }

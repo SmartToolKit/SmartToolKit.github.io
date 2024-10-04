@@ -11,7 +11,8 @@
                     <ul class="nav {{menuclass}}">
                         <li *ngFor="let item of menu">
 
-                            <a *ngIf="!item.external" [ngClass]="{'active': item.active}" [routerLink]="item.url">
+                            <a *ngIf="!item.external" [ngClass]="{'active': item.active}" [routerLink]="item.url"
+                                (click)="menuclass=''">
                                 {{item.title}}</a>
 
                             <a *ngIf="item.external" [ngClass]="{'active': item.active}" [href]="item.url"

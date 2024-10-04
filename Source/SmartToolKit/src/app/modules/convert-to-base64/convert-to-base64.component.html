@@ -1,0 +1,49 @@
+<div class="item-details-page px-2">
+    <div class="container contact px-2">
+        <div class="row px-4">
+            <input type="file" (change)="openFile($event)" id="inputFile" class="d-none" multiple />
+
+            <div class="col-lg-12">
+
+                <button onclick="document.getElementById('inputFile').click()"
+                    class="btn btn-outline-primary mb-3 mx-1 w-100">
+                    <h1>{{btnCaption}}</h1>
+                </button>
+
+            </div>
+            <div class="col-lg-12" *ngIf="result.length > 0">
+                <table class="table table-striped ">
+                    <tr>
+                        <th class="text-center text-light h4 ">{{result.length}} files Converted to Base64
+                        </th>
+                    </tr>
+                    <tr *ngFor="let item of result">
+                        <td>
+                            <table class="w-100">
+                                <tr>
+                                    <td colspan="2" class="pt-1 text-white">{{item.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="w150px">
+                                        <img src="{{item.image}}" class="w150px">
+                                    </td>
+                                    <td>
+                                        <textarea [(ngModel)]="item.data" class="form-control text-light bg-dark"
+                                            rows="8"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="pb-3">
+                                        <button class="btn btn-outline-info rounded-pill w-100 mt-2"
+                                            (click)="copy(item)">Copy</button>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

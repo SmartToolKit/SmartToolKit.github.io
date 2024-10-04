@@ -14,6 +14,7 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { GuidGeneratorComponent } from './modules/guid-generator/guid-generator.component';
 import { JwtViewerComponent } from './modules/jwt-viewer/jwt-viewer.component';
+import { ConvertToBase64Component } from './modules/convert-to-base64/convert-to-base64.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { JwtViewerComponent } from './modules/jwt-viewer/jwt-viewer.component';
     DashboardComponent,
     JsonViewerComponent,
     GuidGeneratorComponent,
-    JwtViewerComponent
+    JwtViewerComponent,
+    ConvertToBase64Component
   ],
   imports: [
     HttpClientModule,
