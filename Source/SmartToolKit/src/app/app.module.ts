@@ -15,6 +15,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { GuidGeneratorComponent } from './modules/guid-generator/guid-generator.component';
 import { JwtViewerComponent } from './modules/jwt-viewer/jwt-viewer.component';
 import { ConvertToBase64Component } from './modules/convert-to-base64/convert-to-base64.component';
+import { ImageResizerComponent } from './modules/image-resizer/image-resizer.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ConvertToBase64Component } from './modules/convert-to-base64/convert-to
     JsonViewerComponent,
     GuidGeneratorComponent,
     JwtViewerComponent,
-    ConvertToBase64Component
+    ConvertToBase64Component,
+    ImageResizerComponent
   ],
   imports: [
     HttpClientModule,
