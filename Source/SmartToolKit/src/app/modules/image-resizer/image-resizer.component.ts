@@ -34,7 +34,8 @@ export class ImageResizerComponent {
             orgHeight: img.naturalHeight, // Get image height
             newName: '',
             type: file.name.split(".").pop(),
-            aspectRatio: img.naturalWidth / img.naturalHeight // Calculate aspect ratio
+            aspectRatio: img.naturalWidth / img.naturalHeight, // Calculate aspect ratio
+            download: false
           };
 
           model.newName = model.name.substring(0, file.name.lastIndexOf('.')) + `-${model.width}X${model.height}`;
@@ -56,14 +57,15 @@ export class ImageResizerComponent {
         file: model.file,
         name: model.name,
         image: model.image,
-        size: (model.size /1000) +" kb",
+        size: model.size,
         orgWidth: model.orgWidth,
         orgHeight: model.orgHeight,
         width: model.width,
         height: model.height,
         newName: model.newName,
         type: model.type,
-        aspectRatio: model.aspectRatio
+        aspectRatio: model.aspectRatio,
+        download: model.download
       });
     }
   }
@@ -76,8 +78,37 @@ export class ImageResizerComponent {
       // Update width based on new height while maintaining aspect ratio
       item.width = Math.round(item.height * item.aspectRatio);
     }
+    item.download = false
 
     // Update the new name with the modified dimensions
     item.newName = item.name.substring(0, item.name.lastIndexOf('.')) + `-${item.width}X${item.height}`;
+  }
+  download(item: any): void {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+
+    if (context) {
+      // Set the canvas size to the new width and height
+      canvas.width = item.width;
+      canvas.height = item.height;
+
+      // Create a new image element
+      const img = new Image();
+      img.src = item.image;
+
+      img.onload = () => {
+        // Draw the resized image onto the canvas
+        context.drawImage(img, 0, 0, item.width, item.height);
+
+        // Create a new anchor element for download
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png'); // You can also use 'image/jpeg' if needed
+        link.download = `${item.newName}.${item.type}`; // Use the updated newName for download
+
+        // Programmatically trigger the download
+        link.click();
+        item.download = true
+      };
+    }
   }
 }

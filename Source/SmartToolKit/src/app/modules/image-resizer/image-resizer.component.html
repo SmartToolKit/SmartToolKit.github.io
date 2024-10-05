@@ -13,12 +13,13 @@
             </div>
             <hr>
             <div class="col-lg-12 text-light" *ngIf="result.length > 0">
-                <div *ngFor="let item of result" class="row mb-4 pb-2 border-bottom border-primary">
+                <div *ngFor="let item of result" class="row mb-4 pb-2 border-bottom border-primary border-5">
                     <h5 class="p-1">imageName.jpg</h5>
                     <div class="col-md-3 text-center p-2 border position-relative" style="min-height: 200px;">
                         <img src="{{item.image}}" class="org-img">
 
-                        <h5 class="bg-dark p-1 position-absolute rounded-3 top-0">{{item.orgWidth}} * {{item.orgHeight}}</h5>
+                        <h5 class="bg-dark p-1 position-absolute rounded-3 top-0">{{item.orgWidth}} * {{item.orgHeight}}
+                        </h5>
                         <h6 class="bg-dark p-1 position-absolute rounded-3 bottom-0">{{item.size}}</h6>
 
                     </div>
@@ -40,17 +41,19 @@
                             </div>
                             <div class="col-md-4 d-flex ws-nowrap m-0 mb-3 hstack">
                                 Width : <input class="form-control bg-dark text-light" type="number"
-                                    [(ngModel)]="item.width"  (input)="updateSize(item,'w')"  min="1">
+                                    [(ngModel)]="item.width" (input)="updateSize(item,'w')" min="1">
                             </div>
                             <div class="col-md-4 d-flex ws-nowrap m-0 mb-3 hstack">
-                                Height : <input class="form-control bg-dark text-light w-auto" type="number"
+                                Height : <input class="form-control bg-dark text-light" type="number"
                                     [(ngModel)]="item.height" (input)="updateSize(item,'h')" min="1">
                             </div>
 
                         </div>
                         <hr>
                         <div class="col-md-12 ">
-                            <button class="btn btn-primary float-end mx-2">Download</button>
+                            <button
+                                class="btn btn-primary float-end mx-2 {{item.download ?'btn-outline-primary disabled':''}}"
+                                (click)="download(item)">Download</button>
                             <button class="btn btn-primary float-end mx-2"
                                 (click)="duplicate(item.id)">Duplicate</button>
                             <button class="btn btn-danger float-end mx-2" (click)="delete(item.id)">Delete</button>
