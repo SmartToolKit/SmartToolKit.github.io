@@ -37,12 +37,15 @@ export class ImageResizerComponent {
             aspectRatio: img.naturalWidth / img.naturalHeight, // Calculate aspect ratio
             download: false
           };
-
-          model.newName = model.name.substring(0, file.name.lastIndexOf('.')) + `-${model.width}X${model.height}`;
+          this.updateName(model);
           this.result.push(model);
         };
       }
     }
+  }
+
+  updateName(model: any): void {
+    model.newName = model.name.substring(0, model.name.lastIndexOf('.')) + `-${model.width}x${model.height}`;
   }
 
   delete(id: number): void {
@@ -52,21 +55,9 @@ export class ImageResizerComponent {
   duplicate(id: number): void {
     const model = this.result.find(p => p.id == id);
     if (model) {
-      this.result.push({
-        id: 'id' + (new Date()).getTime() + "d",
-        file: model.file,
-        name: model.name,
-        image: model.image,
-        size: model.size,
-        orgWidth: model.orgWidth,
-        orgHeight: model.orgHeight,
-        width: model.width,
-        height: model.height,
-        newName: model.newName,
-        type: model.type,
-        aspectRatio: model.aspectRatio,
-        download: model.download
-      });
+      var clone = structuredClone(model)
+      clone.id = 'id' + (new Date()).getTime() + "d"
+      this.result.push(clone);
     }
   }
 
@@ -81,7 +72,7 @@ export class ImageResizerComponent {
     item.download = false
 
     // Update the new name with the modified dimensions
-    item.newName = item.name.substring(0, item.name.lastIndexOf('.')) + `-${item.width}X${item.height}`;
+    this.updateName(item)
   }
   download(item: any): void {
     const canvas = document.createElement('canvas');
