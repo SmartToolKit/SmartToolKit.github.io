@@ -12,7 +12,6 @@ export class JwtViewerComponent {
   header: any = {}
 
   constructor() {
-    debugger
     var jwt = localStorage.getItem("jwt-viewer-jwt")
       ?? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlNtYXJ0IFRvb2xLaXQiLCJpYXQiOjE1MTYyMzkwMjJ9.EAozr0kOfrEbAUuP5tRGzVe--yyHd8v5ComXsYq5U7A"
 
