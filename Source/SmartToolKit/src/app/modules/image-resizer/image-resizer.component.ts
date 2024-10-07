@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-image-resizer',
@@ -6,6 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./image-resizer.component.scss']
 })
 export class ImageResizerComponent {
+  constructor(private titleService: Title) {
+    this.titleService.setTitle("Smart ToolKit - Image Resizer")
+  }
 
   result: any[] = [];
 

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-convert-to-base64',
@@ -6,7 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './convert-to-base64.component.scss'
 })
 export class ConvertToBase64Component {
-
+  constructor(private titleService: Title) {
+    this.titleService.setTitle("Smart ToolKit - Convert To Base64")
+  }
   btnCaption = 'Select Files'
   result: any[] = []
   openFile(event: Event): void {

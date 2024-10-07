@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-jwt-viewer',
@@ -6,12 +7,15 @@ import { Component } from '@angular/core';
   styleUrl: './jwt-viewer.component.scss'
 })
 export class JwtViewerComponent {
+
   jwt: string = ''
 
   payload: any = {}
   header: any = {}
 
-  constructor() {
+  constructor(private titleService: Title) {
+    this.titleService.setTitle("Smart ToolKit - Jwt Viewer")
+
     var jwt = localStorage.getItem("jwt-viewer-jwt")
       ?? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlNtYXJ0IFRvb2xLaXQiLCJpYXQiOjE1MTYyMzkwMjJ9.EAozr0kOfrEbAUuP5tRGzVe--yyHd8v5ComXsYq5U7A"
 

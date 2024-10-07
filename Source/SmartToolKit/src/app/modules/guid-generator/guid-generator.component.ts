@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-guid-generator',
@@ -13,7 +14,8 @@ export class GuidGeneratorComponent {
   uppercase: boolean = false
 
 
-  constructor() {
+  constructor(private titleService: Title) {
+    this.titleService.setTitle("Smart ToolKit - Guid Generator")
     this.count = Number(localStorage.getItem("guid-generator-count") ?? "5")
 
     var hyphens = localStorage.getItem("guid-generator-hyphens")

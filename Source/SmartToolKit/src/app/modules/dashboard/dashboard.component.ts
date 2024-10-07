@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,9 +8,10 @@ import { Router } from '@angular/router';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
-  constructor(public router: Router) {
-
+  constructor(public router: Router, private titleService: Title) {
+    this.titleService.setTitle("Smart ToolKit")
   }
+
   tools = [
     // {
     //   title: "Code Snapshot",

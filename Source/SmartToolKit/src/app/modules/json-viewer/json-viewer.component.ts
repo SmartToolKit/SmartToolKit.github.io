@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import swal from 'sweetalert2';
 import { HttpClient } from '@angular/common/http';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-json-viewer',
@@ -8,7 +9,9 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './json-viewer.component.scss'
 })
 export class JsonViewerComponent {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private titleService: Title) {
+    this.titleService.setTitle("Smart ToolKit - Json Viewer")
+  }
 
   page = "Format";
   ngAfterViewInit(): void {
