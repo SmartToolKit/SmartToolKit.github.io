@@ -20,8 +20,8 @@ export class HeaderComponent {
       external: true // External link
     },
     {
-      title: "Author",
-      url: "https://github.com/samanazadi1996",
+      title: "Source",
+      url: "https://github.com/SmartToolKit/SmartToolKit.github.io",
       active: false,
       external: true // External link
     }
