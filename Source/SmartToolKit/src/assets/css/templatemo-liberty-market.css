@@ -1405,6 +1405,14 @@ Explore Style
   color: #fff;
 }
 
+.discover-items {
+  background-image: url(../images/dark-bg.jpg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  padding: 60px 0px 120px 0px;
+  position: relative;
+}
 .discover-items #search-form select {
   cursor: pointer;
 }

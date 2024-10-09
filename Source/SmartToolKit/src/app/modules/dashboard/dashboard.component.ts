@@ -48,6 +48,12 @@ export class DashboardComponent {
       description: "",
       icon: "./assets/images/image-resizer.svg",
       url: "image-resizer"
+    },
+    {
+      title: "Regex Tester",
+      description: "",
+      icon: "./assets/images/regex-tester.svg",
+      url: "regex-tester"
     }
   ];
   goto(item: any) {
