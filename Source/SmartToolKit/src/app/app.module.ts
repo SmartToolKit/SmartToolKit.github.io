@@ -17,6 +17,7 @@ import { JwtViewerComponent } from './modules/jwt-viewer/jwt-viewer.component';
 import { ConvertToBase64Component } from './modules/convert-to-base64/convert-to-base64.component';
 import { ImageResizerComponent } from './modules/image-resizer/image-resizer.component';
 import { RegexTesterComponent } from './modules/regex-tester/regex-tester.component';
+import { RsaKeyGeneratorComponent } from './modules/rsa-key-generator/rsa-key-generator.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { RegexTesterComponent } from './modules/regex-tester/regex-tester.compon
     JwtViewerComponent,
     ConvertToBase64Component,
     ImageResizerComponent,
-    RegexTesterComponent
+    RegexTesterComponent,
+    RsaKeyGeneratorComponent
   ],
   imports: [
     HttpClientModule,

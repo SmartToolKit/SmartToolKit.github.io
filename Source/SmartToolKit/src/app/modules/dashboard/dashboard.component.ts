@@ -54,6 +54,12 @@ export class DashboardComponent {
       description: "",
       icon: "./assets/images/regex-tester.svg",
       url: "regex-tester"
+    },
+    {
+      title: "Rsa Key Generator",
+      description: "",
+      icon: "./assets/images/rsa-key-generator.svg",
+      url: "rsa-key-generator"
     }
   ];
   goto(item: any) {

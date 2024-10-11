@@ -1,0 +1,31 @@
+<div class="item-details-page px-2">
+    <div class="container contact px-2">
+        <div class="row px-4">
+            <div class="col-md-12 d-inline">
+                <select [(ngModel)]="selectedBitSize" class="btn btn-primary h38px m-1">
+                    <option *ngFor="let size of bitSizes" [value]="size">
+                        {{ size }} bits
+                    </option>
+                </select>
+
+                <button class="btn btn-primary m-1" (click)="generateRSAKeys()">
+                    Generate RSA Keys
+                </button>
+                <button class="btn btn-info float-end mx-1" (click)="download()">Download</button>
+            </div>
+            <hr class="border border-light my-2">
+            <div class="col-lg-6">
+                <h4>Private Key
+                    <button class="btn btn-primary float-end mx-1"  (click)="copy(privateKey)">Copy</button>
+                </h4>
+                <textarea rows="20" class="form-control bg-dark text-light" [(ngModel)]="privateKey"></textarea>
+            </div>
+            <div class="col-lg-6">
+                <h4>Public Key
+                    <button class="btn btn-primary float-end mx-1" (click)="copy(publicKey)">Copy</button>
+                </h4>
+                <textarea rows="20" id="publicKeyInput" class="form-control bg-dark text-light" [(ngModel)]="publicKey"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
