@@ -10,12 +10,12 @@
         </div>
 
         <div class="row justify-content-evenly m-0">
-          <div class="col-lg-2 col-sm-6 cursor-pointer"  *ngFor="let item of tools" (click)="goto(item)">
-            <div class="item">
+          <div class="col-lg-2 col-sm-6 cursor-pointer mb-lg-4"  *ngFor="let item of tools" (click)="goto(item)">
+            <div class="item pb-3">
               <div class="icon">
                 <img src="{{item.icon}}" alt="">
               </div>
-              <h4>{{item.title}}</h4>
+              <h4 class="align-content-lg-center" style="height: 48px;">{{item.title}}</h4>
             </div>
           </div>
         </div>
