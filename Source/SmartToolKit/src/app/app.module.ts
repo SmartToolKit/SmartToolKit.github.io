@@ -18,6 +18,8 @@ import { ConvertToBase64Component } from './modules/convert-to-base64/convert-to
 import { ImageResizerComponent } from './modules/image-resizer/image-resizer.component';
 import { RegexTesterComponent } from './modules/regex-tester/regex-tester.component';
 import { RsaKeyGeneratorComponent } from './modules/rsa-key-generator/rsa-key-generator.component';
+import { CodeSnapshotComponent } from './modules/code-snapshot/code-snapshot.component';
+import { JavaScriptMinifierComponent } from './modules/java-script-minifier/java-script-minifier.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { RsaKeyGeneratorComponent } from './modules/rsa-key-generator/rsa-key-ge
     ConvertToBase64Component,
     ImageResizerComponent,
     RegexTesterComponent,
-    RsaKeyGeneratorComponent
+    RsaKeyGeneratorComponent,
+    CodeSnapshotComponent,
+    JavaScriptMinifierComponent
   ],
   imports: [
     HttpClientModule,

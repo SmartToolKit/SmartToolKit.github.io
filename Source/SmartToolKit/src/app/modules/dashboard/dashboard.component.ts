@@ -60,6 +60,12 @@ export class DashboardComponent {
       description: "",
       icon: "./assets/images/rsa-key-generator.svg",
       url: "rsa-key-generator"
+    },
+    {
+      title: "JavaScript Minifier",
+      description: "",
+      icon: "./assets/images/java-script-minifier.svg",
+      url: "java-script-minifier"
     }
   ];
   goto(item: any) {

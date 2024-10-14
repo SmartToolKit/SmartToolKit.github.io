@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-regex-tester',
@@ -8,7 +9,8 @@ import { Component } from '@angular/core';
 export class RegexTesterComponent {
   regex = '';
   tests: any[] = [];
-  constructor() {
+  constructor(private titleService: Title) {
+    this.titleService.setTitle("Smart ToolKit - Regex Tester")
     try {
 
       const regex = localStorage.getItem("regex-tester-regex");

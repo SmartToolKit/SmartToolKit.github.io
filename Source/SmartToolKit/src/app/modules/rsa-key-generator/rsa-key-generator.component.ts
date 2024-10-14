@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import * as forge from 'node-forge';
 import Swal from 'sweetalert2';
 
@@ -13,6 +14,9 @@ export class RsaKeyGeneratorComponent {
   bitSizes: number[] = [256, 512, 1024, 2048, 4096];  // Available bit sizes
   selectedBitSize: number = 1024;  // Default value
   tempSelectedBitSize: number = 1024;  // Default value
+  constructor(private titleService: Title) {
+    this.titleService.setTitle("Smart ToolKit - RsaKey Generator");
+  }
 
   generateRSAKeys(): void {
     const keypair = forge.pki.rsa.generateKeyPair({ bits: this.selectedBitSize, e: 0x10001 });
