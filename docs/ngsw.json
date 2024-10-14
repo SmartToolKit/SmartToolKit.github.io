@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1728682639493,
+  "timestamp": 1728935051565,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -13,10 +13,10 @@
       "urls": [
         "/favicon.ico",
         "/index.html",
-        "/main-ZRGARZYK.js",
+        "/main-RM5HWP6R.js",
         "/manifest.webmanifest",
         "/polyfills-FFHMD2TL.js",
-        "/styles-O6YCYOKZ.css"
+        "/styles-QMDQTFZL.css"
       ],
       "patterns": []
     },
@@ -49,6 +49,7 @@
         "/assets/images/dark-bg.jpg",
         "/assets/images/guid-generator.svg",
         "/assets/images/image-resizer.svg",
+        "/assets/images/java-script-minifier.svg",
         "/assets/images/json-viewer.svg",
         "/assets/images/jwt-viewer.svg",
         "/assets/images/regex-tester.svg",
@@ -637,6 +638,7 @@
     "/assets/images/dark-bg.jpg": "1eb4c767faee4c5fdd6fe80077abae03ed21e78d",
     "/assets/images/guid-generator.svg": "591334d344a21e870cf2963e10f88a7ebd54097d",
     "/assets/images/image-resizer.svg": "3169154cc085307ea021bd12ac40a3664ae14631",
+    "/assets/images/java-script-minifier.svg": "43adfae9715c7b7109f11bb0d8cce952664f4f62",
     "/assets/images/json-viewer.svg": "206d7f7400be3245d33bf83fe61e514d351764aa",
     "/assets/images/jwt-viewer.svg": "6b1520afe8df8bde71cc108d2a853f50a04a236a",
     "/assets/images/regex-tester.svg": "becf31da503bab6e3a0019a318c6e15aaed8a75a",
@@ -1189,8 +1191,8 @@
     "/assets/webfonts/fa-v4compatibility.ttf": "fbf72ecb9d7828c2e8504451c13e05d7a018eb29",
     "/assets/webfonts/fa-v4compatibility.woff2": "4dcd1d7b2bda7da7c181015011490e46e23c3969",
     "/favicon.ico": "efefc51e062b338728ed3daf6f28dedd48e7e717",
-    "/index.html": "91b85c39e83a5a4240c61b105048fdc605a663b8",
-    "/main-ZRGARZYK.js": "5c1e6fb1f554bf63f6e4a977179d2a6a7bd48d1c",
+    "/index.html": "74fe5d8919037cb0a8edfe4dab2c1be5304a04dd",
+    "/main-RM5HWP6R.js": "eb9865359bcbb444516e4da7488c3a0a5b4fc4dc",
     "/manifest.webmanifest": "c073cdb0462590184db8afdd8025094935e1f463",
     "/media/banner-bg-COAS5LGN.jpg": "6cea5d67bf3d139ed0da221615e8a72b5c819a07",
     "/media/dark-bg-MRZUSLIW.jpg": "1eb4c767faee4c5fdd6fe80077abae03ed21e78d",
@@ -1203,7 +1205,7 @@
     "/media/fa-v4compatibility-5VCDHUUN.ttf": "fbf72ecb9d7828c2e8504451c13e05d7a018eb29",
     "/media/fa-v4compatibility-UXEDG7IT.woff2": "4dcd1d7b2bda7da7c181015011490e46e23c3969",
     "/polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
-    "/styles-O6YCYOKZ.css": "38fcfc196b9e27ba6cf25231c94a008727114c57"
+    "/styles-QMDQTFZL.css": "e79f4ee245101a094fd8b024ae7b8f4fde22d376"
   },
   "navigationUrls": [
     {
