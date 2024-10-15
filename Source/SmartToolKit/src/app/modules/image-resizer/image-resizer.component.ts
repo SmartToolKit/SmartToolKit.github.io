@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { FileHelperService } from '../../core/services/file-helper.service';
 
 @Component({
   selector: 'app-image-resizer',
@@ -7,18 +8,22 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./image-resizer.component.scss']
 })
 export class ImageResizerComponent {
-  constructor(private titleService: Title) {
+  constructor(
+    private titleService: Title,
+    private fileHelper: FileHelperService
+
+  ) {
     this.titleService.setTitle("Smart ToolKit - Image Resizer")
   }
 
   result: any[] = [];
 
-  openFile(event: Event): void {
-    const fileInput = event.target as HTMLInputElement;
+  async openFiles() {
+    var files = await this.fileHelper.openMultipleFile("image/*");
 
-    if (fileInput.files && fileInput.files.length > 0) {
-      for (let index = 0; index < fileInput.files.length; index++) {
-        const file = fileInput.files[index];
+    if (files && files.length > 0) {
+      for (let index = 0; index < files.length; index++) {
+        const file = files[index];
         const t = window.URL || window.webkitURL;
         const objectUrl = t.createObjectURL(file);
 

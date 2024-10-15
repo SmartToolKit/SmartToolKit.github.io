@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { ActionHelperService } from '../../core/services/action-helper.service';
+import { FileHelperService } from '../../core/services/file-helper.service';
 
 @Component({
   selector: 'app-convert-to-base64',
@@ -7,24 +9,29 @@ import { Title } from '@angular/platform-browser';
   styleUrl: './convert-to-base64.component.scss'
 })
 export class ConvertToBase64Component {
-  constructor(private titleService: Title) {
+  constructor(
+    private titleService: Title,
+    public actionHelper: ActionHelperService,
+    public fileHelper: FileHelperService
+
+  ) {
     this.titleService.setTitle("Smart ToolKit - Convert To Base64")
   }
   btnCaption = 'Select Files'
   result: any[] = []
-  openFile(event: Event): void {
+  async openFiles() {
+    var files = await this.fileHelper.openMultipleFile("");
 
     this.result = []
     this.btnCaption = 'Select Files'
 
-    const fileInput = event.target as HTMLInputElement;
 
-    if (fileInput.files && fileInput.files.length > 0) {
-      this.btnCaption += ` (${fileInput.files.length})`
+    if (files && files.length > 0) {
+      this.btnCaption += ` (${files.length})`
 
-      for (let index = 0; index < fileInput.files.length; index++) {
+      for (let index = 0; index < files.length; index++) {
 
-        this.addToResult(fileInput.files[index])
+        this.addToResult(files[index])
       }
 
     }
@@ -56,12 +63,7 @@ export class ConvertToBase64Component {
   }
 
   copy(item: any) {
-    const textarea = document.createElement('textarea');
-    textarea.value = item.data;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
+    this.actionHelper.copy(item.data);
   }
 
 }

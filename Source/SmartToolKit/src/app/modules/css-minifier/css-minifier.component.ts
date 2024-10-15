@@ -7,13 +7,13 @@ import { FileHelperService } from '../../core/services/file-helper.service';
 import { ActionHelperService } from '../../core/services/action-helper.service';
 
 @Component({
-  selector: 'app-java-script-minifier',
-  templateUrl: './java-script-minifier.component.html',
-  styleUrls: ['./java-script-minifier.component.scss']
+  selector: 'app-css-minifier',
+  templateUrl: './css-minifier.component.html',
+  styleUrls: ['./css-minifier.component.scss']
 })
-export class JavaScriptMinifierComponent {
-  formattedCode: string = '';  // Formatted code
-  minifiedCode: string = '';   // Minified code
+export class CssMinifierComponent {
+  formattedCode: string = '';  // Formatted CSS code
+  minifiedCode: string = '';   // Minified CSS code
 
   constructor(
     private http: HttpClient,
@@ -22,16 +22,15 @@ export class JavaScriptMinifierComponent {
     public fileHelper: FileHelperService,
     public actionHelper: ActionHelperService
   ) {
-    this.titleService.setTitle("Smart ToolKit - JavaScript Minifier");
+    this.titleService.setTitle("Smart ToolKit - CSS Minifier");
   }
 
   ngAfterViewInit(): void {
-    this.formattedCode = localStorage.getItem("java-script-minifier-page") ?? '';
+    this.formattedCode = localStorage.getItem("css-minifier-page") ?? '';
     this.minifyCode();
   }
-
   openFile(): void {
-    this.fileHelper.openFile('.js').then(content => {
+    this.fileHelper.openFile('.css').then(content => {
       this.formattedCode = content
       this.minifyCode()
     }).catch(error => {
@@ -43,8 +42,8 @@ export class JavaScriptMinifierComponent {
     swal.fire({
       title: 'Enter URL',
       input: 'url',
-      inputLabel: 'Your Js file URL',
-      inputPlaceholder: 'https://example.com/example.js',
+      inputLabel: 'Your CSS file URL',
+      inputPlaceholder: 'https://example.com/example.css',
       showCancelButton: true,
       inputValidator: (value) => {
         if (!value) {
@@ -56,12 +55,12 @@ export class JavaScriptMinifierComponent {
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        this.http.get(result.value, { responseType: 'text' }).subscribe((response) => {
+        this.http.get(result.value).subscribe((response) => {
           this.formattedCode = response as string;
           this.minifyCode();
           swal.fire({
             title: 'Success',
-            text: 'The JavaScript code has been fetched and minified successfully.',
+            text: 'The CSS code has been fetched and minified successfully.',
             icon: 'success'
           });
         }, error => {
@@ -80,12 +79,10 @@ export class JavaScriptMinifierComponent {
     this.minifyCode();
   }
 
-
   download() {
     if (!this.minifiedCode) return
 
-    const filename = `JavaScriptMinifier-${new Date().getTime()}.js`;
-
+    const filename = `CSSMinifier-${new Date().getTime()}.css`;
     if (this.fileHelper.download(this.minifiedCode, filename)) {
       swal.fire({
         title: 'Download Ready',
@@ -100,31 +97,19 @@ export class JavaScriptMinifierComponent {
   }
 
   save() {
-    localStorage.setItem("java-script-minifier-page", this.formattedCode);
-    swal.fire('Success', 'JavaScript code saved successfully!', 'success');
+    localStorage.setItem("css-minifier-page", this.formattedCode);
+    swal.fire('Success', 'CSS code saved successfully!', 'success');
   }
 
   minifyCode() {
     if (this.formattedCode.trim()) {
-      // Remove comments
-      const removeComments = this.formattedCode
-        .replace(/\/\/.*|\/\*[\s\S]*?\*\//g, '')
-        .replace(/\n/g, ' ') // Replace new lines with space
-        .replace(/\s{2,}/g, ' ') // Remove extra spaces
-        .trim(); // Trim leading and trailing whitespace
 
-      // Minify by removing extra spaces
-      this.minifiedCode = removeComments
-        .replace(/\s*([{}();,])/g, '$1') // Remove extra spaces around special characters
-        .replace(/([{}();,])\s*/g, '$1') // Remove extra spaces after special characters
-        .replace(/(\s*=>\s*)/g, '=>') // Optimize arrow function
-        .replace(/\s*=\s*/g, '=') // Optimize assignment
-        .replace(/\s*\+\s*/g, '+') // Optimize addition
-        .replace(/\s*-\s*/g, '-') // Optimize subtraction
-        .replace(/\s*\*\s*/g, '*') // Optimize multiplication
-        .replace(/\s*\/\s*/g, '/') // Optimize division
-        .replace(/\s*%\s*/g, '%'); // Optimize modulus
+      let minified = this.formattedCode.replace(/\/\*[\s\S]*?\*\//g, '');
+      minified = minified.replace(/\s+/g, ' ').trim();
+      minified = minified.replace(/\s*{\s*/g, '{').replace(/\s*}\s*/g, '}').replace(/\s*;\s*/g, ';').replace(/\s*:\s*/g, ':');
+      minified = minified.replace(/\s*,\s*/g, ',').replace(/\s*>\s*/g, '>').replace(/\s*~\s*/g, '~').replace(/\s*\+\s*/g, '+');
+
+      this.minifiedCode = minified;
     }
   }
-
 }

@@ -2,20 +2,17 @@
     <div class="container contact px-2">
         <div class="row px-4">
             <div class="col-lg-6">
-                <div class="col-md-12 d-inline-flex">
-                    <table class="w-100">
-                        <tr>
-                            <td>
-                                <h4 class="m-0"> How many GUIDs do you want : </h4>
-                            </td>
-                            <td class="px-2">
-                                <input type="number" class="form-control form-text bg-dark text-light form-control-sm"
-                                    min="1" [(ngModel)]="count" />
-                            </td>
-                        </tr>
-                    </table>
+                <div class="col-md-12  mb-3 row">
+                    <div class="col-md-8">
+                        <h4 class="m-0 py-1"> How many GUIDs do you want : </h4>
+
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" class="form-control form-text bg-dark text-light form-control-sm" min="1"
+                            [(ngModel)]="count" />
+                    </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12 mb-2">
                     <h4 class="m-0">Format :</h4>
                     <div class="row">
                         <div class="col-4">

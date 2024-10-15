@@ -1,15 +1,11 @@
 <div class="item-details-page px-2">
     <div class="container contact px-2">
         <div class="row px-4">
-            <input type="file" (change)="openFile($event)" id="inputFile" class="d-none" multiple />
-
             <div class="col-lg-12">
 
-                <button onclick="document.getElementById('inputFile').click()"
-                    class="btn btn-outline-primary mb-3 mx-1 w-100">
+                <button (click)="openFiles()" class="btn btn-outline-primary mb-3 mx-1 w-100">
                     <h1>{{btnCaption}}</h1>
                 </button>
-
             </div>
             <div class="col-lg-12" *ngIf="result.length > 0">
                 <table class="table table-striped ">

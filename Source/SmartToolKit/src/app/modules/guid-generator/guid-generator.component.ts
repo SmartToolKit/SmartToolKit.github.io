@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { FileHelperService } from '../../core/services/file-helper.service';
+import swal from 'sweetalert2';
+import { ActionHelperService } from '../../core/services/action-helper.service';
 
 @Component({
   selector: 'app-guid-generator',
@@ -14,7 +17,11 @@ export class GuidGeneratorComponent {
   uppercase: boolean = false
 
 
-  constructor(private titleService: Title) {
+  constructor(
+    private titleService: Title,
+    public fileHelper: FileHelperService,
+    public actionHelper: ActionHelperService
+  ) {
     this.titleService.setTitle("Smart ToolKit - Guid Generator")
     this.count = Number(localStorage.getItem("guid-generator-count") ?? "5")
 
@@ -62,23 +69,21 @@ export class GuidGeneratorComponent {
   }
 
   copy() {
-    const textarea = document.createElement('textarea');
-    textarea.value = this.result;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
+    this.actionHelper.copy(this.result);
   }
   download() {
+    if (!this.result) return
 
     var filename = `GuidGenerator-${new Date().getTime()}.txt`
 
-    var element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8, ' + encodeURIComponent(this.result));
-    element.setAttribute('download', filename);
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element)
+    if (this.fileHelper.download(this.result, filename)) {
+      swal.fire({
+        title: 'Download Ready',
+        text: `Your Guid content downloaded as ${filename}.`,
+        icon: 'success'
+      });
+
+    }
   }
 
 }

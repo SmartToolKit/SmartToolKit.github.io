@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import swal from 'sweetalert2';
 import { HttpClient } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
+import { ValidationHelperService } from '../../core/services/validation-helper.service';
+import { FileHelperService } from '../../core/services/file-helper.service';
+import { ActionHelperService } from '../../core/services/action-helper.service';
 
 @Component({
   selector: 'app-json-viewer',
@@ -9,7 +12,13 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./json-viewer.component.scss']
 })
 export class JsonViewerComponent {
-  constructor(private http: HttpClient, private titleService: Title) {
+  constructor(
+    private http: HttpClient,
+    private titleService: Title,
+    public validationHelper: ValidationHelperService,
+    public fileHelper: FileHelperService,
+    public actionHelper: ActionHelperService
+  ) {
     this.titleService.setTitle("Smart ToolKit - Json Viewer");
   }
 
@@ -61,36 +70,23 @@ export class JsonViewerComponent {
   download() {
     if (!this.jsonContent) return
     const filename = `JsonViewer-${new Date().getTime()}.json`;
-    const element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.jsonContent));
-    element.setAttribute('download', filename);
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-    swal.fire({
-      title: 'Download Ready',
-      text: `Your JSON downloaded as ${filename}.`,
-      icon: 'success'
-    });
+
+    if (this.fileHelper.download(this.jsonContent, filename)) {
+      swal.fire({
+        title: 'Download Ready',
+        text: `Your JSON downloaded as ${filename}.`,
+        icon: 'success'
+      });
+    }
   }
 
-  openFile(event: Event): void {
-    const fileInput = event.target as HTMLInputElement;
-    if (fileInput.files && fileInput.files[0]) {
-      const file = fileInput.files[0];
-      const reader = new FileReader();
-
-      reader.onload = (e) => {
-        this.jsonContent = e.target?.result as string;
-        this.jsonViewer(); // Reparse the content to show the JSON
-      };
-
-      reader.onerror = () => {
-        swal.fire('Error', 'Error reading file!', 'error');
-      };
-
-      reader.readAsText(file);
-    }
+  openFile(): void {
+    this.fileHelper.openFile('.json').then(content => {
+      this.jsonContent = content
+      this.jsonViewer();
+    }).catch(error => {
+      console.error('Error:', error);
+    });
   }
 
   readAsUrl() {
@@ -103,7 +99,7 @@ export class JsonViewerComponent {
       inputValidator: (value) => {
         if (!value) {
           return 'You need to enter a URL!';
-        } else if (!this.isValidUrl(value)) {
+        } else if (!this.validationHelper.isValidUrl(value)) {
           return 'Please enter a valid URL!';
         }
         return null;
@@ -123,39 +119,14 @@ export class JsonViewerComponent {
       }
     });
   }
-
-  paste() {
-    navigator.clipboard.readText()
-      .then((text) => {
-        this.jsonContent = text;
-        this.realoadView();
-        swal.fire('Success', 'JSON pasted successfully!', 'success');
-      })
-      .catch(err => {
-        console.error('Failed to read clipboard contents: ', err);
-        swal.fire('Error', 'Failed to read clipboard contents!', 'error');
-      });
+  async paste() {
+    this.jsonContent = await this.actionHelper.paste();
+    this.realoadView();
   }
+
 
   copy() {
-    const textarea = document.createElement('textarea');
-    textarea.value = this.jsonContent;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
-    swal.fire('Success', 'JSON copied to clipboard!', 'success');
-  }
-
-  // Helper function to validate URL
-  isValidUrl(url: string): boolean {
-    const pattern = new RegExp('^(https?:\\/\\/)?' + // Protocol
-      '((([a-zA-Z\\d]([a-zA-Z\\d-]*[a-zA-Z\\d])*)\\.)+[a-zA-Z]{2,}|' + // Domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
-      '(\\:\\d+)?(\\/[-a-zA-Z\\d%_.~+]*)*' + // Port and path
-      '(\\?[;&a-zA-Z\\d%_.~+=-]*)?' + // Query string
-      '(\\#[-a-zA-Z\\d_]*)?$', 'i'); // Fragment locator
-    return !!pattern.test(url);
+    this.actionHelper.copy(this.jsonContent);
   }
 
   realoadView() {

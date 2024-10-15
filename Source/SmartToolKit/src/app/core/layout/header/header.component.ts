@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router'; // افزودن NavigationEnd
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-header',
@@ -6,6 +8,15 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
+  headerTitle = "Smart ToolKit"
+
+  constructor(private titleService: Title, private router: Router) {
+    this.router.events.subscribe(() => {
+      this.headerTitle = this.titleService.getTitle().replace("Smart ToolKit - ", "").trim()
+    });
+
+  }
+
   menu = [
     {
       title: "Home",

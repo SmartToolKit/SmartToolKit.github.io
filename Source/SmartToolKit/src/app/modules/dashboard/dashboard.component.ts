@@ -66,6 +66,12 @@ export class DashboardComponent {
       description: "",
       icon: "./assets/images/java-script-minifier.svg",
       url: "java-script-minifier"
+    },
+    {
+      title: "Css Minifier",
+      description: "",
+      icon: "./assets/images/css-minifier.svg",
+      url: "css-minifier"
     }
   ];
   goto(item: any) {

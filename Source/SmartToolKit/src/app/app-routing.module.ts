@@ -11,6 +11,7 @@ import { RegexTesterComponent } from './modules/regex-tester/regex-tester.compon
 import { RsaKeyGeneratorComponent } from './modules/rsa-key-generator/rsa-key-generator.component';
 import { CodeSnapshotComponent } from './modules/code-snapshot/code-snapshot.component';
 import { JavaScriptMinifierComponent } from './modules/java-script-minifier/java-script-minifier.component';
+import { CssMinifierComponent } from './modules/css-minifier/css-minifier.component';
 
 const routes: Routes = [{
   path: '',
@@ -59,6 +60,10 @@ const routes: Routes = [{
     {
       path: 'java-script-minifier',
       component: JavaScriptMinifierComponent
+    },
+    {
+      path: 'css-minifier',
+      component: CssMinifierComponent
     }
   ]
 }
