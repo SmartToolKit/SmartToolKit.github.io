@@ -21,6 +21,7 @@ import { RsaKeyGeneratorComponent } from './modules/rsa-key-generator/rsa-key-ge
 import { CodeSnapshotComponent } from './modules/code-snapshot/code-snapshot.component';
 import { JavaScriptMinifierComponent } from './modules/java-script-minifier/java-script-minifier.component';
 import { CssMinifierComponent } from './modules/css-minifier/css-minifier.component';
+import { SvgEditorComponent } from './modules/svg-editor/svg-editor.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { CssMinifierComponent } from './modules/css-minifier/css-minifier.compon
     RsaKeyGeneratorComponent,
     CodeSnapshotComponent,
     JavaScriptMinifierComponent,
-    CssMinifierComponent
+    CssMinifierComponent,
+    SvgEditorComponent
   ],
   imports: [
     HttpClientModule,

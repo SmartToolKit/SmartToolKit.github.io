@@ -72,6 +72,12 @@ export class DashboardComponent {
       description: "",
       icon: "./assets/images/css-minifier.svg",
       url: "css-minifier"
+    },
+    {
+      title: "Svg Editor",
+      description: "",
+      icon: "./assets/images/svg-editor.svg",
+      url: "svg-editor"
     }
   ];
   goto(item: any) {
