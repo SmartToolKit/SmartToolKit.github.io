@@ -71,6 +71,12 @@ tools = [
       description: "Edit and optimize your SVG files.",
       icon: "./assets/images/svg-editor.svg",
       url: "svg-editor"
+    },
+    {
+      title: "QR Code Generator",
+      description: "",
+      icon: "./assets/images/qrcode-generator.svg",
+      url: "qrcode-generator"
     }
 ];
 

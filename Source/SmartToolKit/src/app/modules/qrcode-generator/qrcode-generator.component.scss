@@ -1,0 +1,31 @@
+.canvas-container {
+    width: fit-content;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    position: relative;
+    min-width: 250px !important;
+
+}
+.w29px{
+    width: 29px;
+}
+.mr5px{
+    margin-right: 5px;
+}
+.mr10px{
+    margin-right: 10px;
+}
+.mr40px{
+    margin-right: 40px;
+}
+.minwidth60px{
+    min-width: 60px;
+}
+input{
+    --bs-text-opacity: 1;
+    color: rgba(248, 249, 250, 1) !important;
+    --bs-bg-opacity: 1;
+    background-color: rgba(33, 37, 41, 1) !important;
+}

@@ -87,6 +87,50 @@ export class FileHelperService {
       input.click(); // Open file dialog
     });
   }
+  openOneFile(accept: string): Promise<File> {
+    return new Promise((resolve, reject) => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      if (accept)
+        input.accept = accept;
 
+      input.onchange = () => {
+        const files = input.files;
+        if (files && files.length > 0) {
+          resolve(files[0]); // Convert FileList to array of File objects
+        } else {
+          swal.fire({
+            title: 'No File Selected',
+            text: 'Please select one file to continue.',
+            icon: 'warning'
+          });
+          reject('No files selected');
+        }
+      };
+
+      input.click(); // Open file dialog
+    });
+  }
+
+  convertFileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      
+      reader.onload = () => {
+        resolve(reader.result as string);  // Resolve with Base64 string
+      };
+      
+      reader.onerror = () => {
+        swal.fire({
+          title: 'Conversion Error',
+          text: 'There was an error converting the file to Base64. Please try again.',
+          icon: 'error'
+        });
+        reject(reader.error);  // Reject in case of error
+      };
+      
+      reader.readAsDataURL(file);  // Read the file as a data URL (Base64 format)
+    });
+  }
 
 }

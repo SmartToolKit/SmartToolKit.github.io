@@ -22,6 +22,7 @@ import { CodeSnapshotComponent } from './modules/code-snapshot/code-snapshot.com
 import { JavaScriptMinifierComponent } from './modules/java-script-minifier/java-script-minifier.component';
 import { CssMinifierComponent } from './modules/css-minifier/css-minifier.component';
 import { SvgEditorComponent } from './modules/svg-editor/svg-editor.component';
+import { QrcodeGeneratorComponent } from './modules/qrcode-generator/qrcode-generator.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { SvgEditorComponent } from './modules/svg-editor/svg-editor.component';
     CodeSnapshotComponent,
     JavaScriptMinifierComponent,
     CssMinifierComponent,
-    SvgEditorComponent
+    SvgEditorComponent,
+    QrcodeGeneratorComponent
   ],
   imports: [
     HttpClientModule,

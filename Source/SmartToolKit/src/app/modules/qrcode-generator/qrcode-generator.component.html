@@ -1,0 +1,530 @@
+<div class="item-details-page px-2">
+    <div class="container contact px-2">
+        <div class="row px-4">
+            <div class="row" style="margin: 0px !important;">
+                <div class="col-md-12">
+                    <button (click)="importOptions()" class="btn btn-info btn-sm mb-3 mx-1">Import Options</button>
+                    <button (click)="exportOptions()" class="btn btn-info btn-sm mb-3 mx-1">Export Options</button>
+                    <button (click)="downloadQRCodeAsSvg()" class="btn btn-warning btn-sm mb-3 mx-1">Download as SVG</button>
+                    <button (click)="downloadQRCodeAsPng()" class="btn btn-warning btn-sm mb-3 mx-1">Download as PNG</button>
+                </div>
+                <div class="col-md-6" style="overflow-y: auto;" id="bodybox">
+                    <div class="mt-2">
+                        <button class="btn btn-secondary w-100 text-start" (click)="setPage('Main Options')">Main
+                            Options</button>
+
+                        <div *ngIf="page=='Main Options'" class="p-2">
+                            <div class="mb-2">
+                                <label class="text-light">
+                                    Data :
+                                </label>
+                                <textarea class="form-control bg-dark text-white" rows="4" (input)="process()"
+                                    [(ngModel)]="model.data"></textarea>
+                            </div>
+                            <div class="mb-2">
+                                <label class="text-light">
+                                    Image :
+                                </label>
+                                <div class="d-flex">
+                                    <input type="text" [(ngModel)]="model.imageName" (click)="loadFile()"
+                                        placeholder="Click here for select image" class="form-control" readonly>
+                                    <button *ngIf="model.imageName" (click)="deleteFile()"
+                                        class="btn btn-danger">Delete</button>
+                                    <button *ngIf="!model.imageName" (click)="loadFile()"
+                                        class="btn btn-info">Select</button>
+                                </div>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="text-light">
+                                    Width :
+                                </label>
+                                <input type="number" [(ngModel)]="model.width" (input)="process()" class="form-control">
+                            </div>
+                            <div class="mb-2">
+                                <label class="text-light">
+                                    Height :
+                                </label>
+                                <input type="number" [(ngModel)]="model.height" (input)="process()"
+                                    class="form-control">
+                            </div>
+                            <div class="mb-2">
+                                <label class="text-light">
+                                    Margin :
+                                </label>
+                                <input type="number" [(ngModel)]="model.margin" (input)="process()"
+                                    class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <button class="btn btn-secondary w-100 text-start" (click)="setPage('Dots Options')">Dots
+                            Options</button>
+                        <div *ngIf="page=='Dots Options'" class="p-2">
+                            <div class="mb-2">
+                                <label class="text-light">
+                                    Dots Style :
+                                </label>
+                                <select [(ngModel)]="model.dotsOptions.type" (change)="process()"
+                                    class="form-select bg-dark text-light">
+                                    <option value="square">Square</option>
+                                    <option value="dots">Dots</option>
+                                    <option value="rounded">Rounded</option>
+                                    <option value="extra-rounded" selected="">Extra rounded</option>
+                                    <option value="classy">Classy</option>
+                                    <option value="classy-rounded">Classy rounded</option>
+                                </select>
+                            </div>
+                            <div class="mb-2">
+                                <div class="mb-2">
+                                    <label class="text-light">
+                                        Color Type :
+                                    </label>
+                                    <div>
+                                        <span class="mr40px">
+                                            <input type="radio" name="colorOne" id="colorOne"
+                                                class="form-check-input mx-1" value="one"
+                                                [(ngModel)]="model.dotsOptions.colorType" (change)="process()">
+                                            <label for="colorOne" class="form-check-label">Single color</label>
+                                        </span>
+                                        <span>
+                                            <input type="radio" name="colorOne" id="colorGradient"
+                                                class="form-check-input mx-1" value="gradient"
+                                                [(ngModel)]="model.dotsOptions.colorType" (change)="process()">
+                                            <label for="colorGradient" class="form-check-label">Color gradient</label>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mb-2" *ngIf="model.dotsOptions.colorType == 'one'">
+                                    <label class="text-light">
+                                        Dots Color :
+                                    </label>
+                                    <input type="color" [(ngModel)]="model.dotsOptions.color" (input)="process()"
+                                        class="form-control w-25">
+                                </div>
+                                <div class="mb-2" *ngIf="model.dotsOptions.colorType != 'one'">
+                                    <div class="mb-2">
+                                        <label class="text-light white-space-nowrap">
+                                            Dots Gradient :
+                                        </label>
+                                        <div class="d-flex">
+                                            <input type="color"
+                                                [(ngModel)]="model.dotsOptions.gradient.colorStops[0].color"
+                                                (input)="process()" class="form-control w-25 mr10px">
+
+                                            <input type="color"
+                                                [(ngModel)]="model.dotsOptions.gradient.colorStops[1].color"
+                                                (input)="process()" class="form-control w-25 mr10px">
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="text-light">
+                                            Gradient Type :
+                                        </label>
+                                        <div>
+                                            <span class="mr40px">
+                                                <input type="radio" id="colorGradientLinear" name="colorGradientRadial"
+                                                    class="form-check-input mx-1" value="linear"
+                                                    [(ngModel)]="model.dotsOptions.gradient.type" (change)="process()">
+                                                <label for="colorGradientLinear" class="form-check-label">Linear</label>
+                                            </span>
+                                            <span>
+                                                <input type="radio" id="colorGradientRadial" name="colorGradientRadial"
+                                                    class="form-check-input mx-1" value="radial"
+                                                    [(ngModel)]="model.dotsOptions.gradient.type" (change)="process()">
+                                                <label for="colorGradientRadial" class="form-check-label">Radial</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="text-light">
+                                            Rotation :
+                                        </label>
+                                        <input type="number" step="0.1"
+                                            [(ngModel)]="model.dotsOptions.gradient.rotation" (input)="process()"
+                                            class="form-control">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <button class="btn btn-secondary w-100 text-start"
+                            (click)="setPage('Corners Square Options')">Corners Square Options</button>
+
+                        <div *ngIf="page=='Corners Square Options'" class="p-2">
+                            <div class="mb-2">
+                                <label class="text-light">
+                                    Corners Square Style :
+                                </label>
+                                <select [(ngModel)]="model.cornersSquareOptions.type" (change)="process()"
+                                    class="form-select bg-dark text-light">
+                                    <option value="">None</option>
+                                    <option value="square">Square</option>
+                                    <option value="dot">Dot</option>
+                                    <option value="extra-rounded" selected="">Extra rounded</option>
+                                </select>
+                            </div>
+                            <div class="mb-2">
+                                <div class="mb-2">
+                                    <label class="text-light">
+                                        Color Type :
+                                    </label>
+                                    <div>
+                                        <span class="mr40px">
+                                            <input type="radio" id="cornersSquareOptionscolorOne"
+                                                name="cornersSquareOptionscolorOne" class="form-check-input mx-1"
+                                                value="one" [(ngModel)]="model.cornersSquareOptions.colorType"
+                                                (change)="process()">
+                                            <label for="cornersSquareOptionscolorOne" class="form-check-label">Single
+                                                color</label>
+                                        </span>
+                                        <span>
+                                            <input type="radio" id="cornersSquareOptionscolorGradient"
+                                                name="cornersSquareOptionscolorOne" class="form-check-input mx-1"
+                                                value="gradient" [(ngModel)]="model.cornersSquareOptions.colorType"
+                                                (change)="process()">
+                                            <label for="cornersSquareOptionscolorGradient"
+                                                class="form-check-label">Color gradient</label>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mb-2" *ngIf="model.cornersSquareOptions.colorType == 'one'">
+                                    <label class="text-light">
+                                        Dots Color :
+                                    </label>
+                                    <input type="color" [(ngModel)]="model.cornersSquareOptions.color"
+                                        (input)="process()" class="form-control w-25">
+                                </div>
+                                <div class="mb-2" *ngIf="model.cornersSquareOptions.colorType != 'one'">
+                                    <div class="mb-2">
+                                        <label class="text-light white-space-nowrap">
+                                            Dots Gradient :
+                                        </label>
+                                        <div class="d-flex">
+                                            <input type="color"
+                                                [(ngModel)]="model.cornersSquareOptions.gradient.colorStops[0].color"
+                                                (input)="process()" class="form-control w-25 mr10px">
+
+                                            <input type="color"
+                                                [(ngModel)]="model.cornersSquareOptions.gradient.colorStops[1].color"
+                                                (input)="process()" class="form-control w-25 mr10px">
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="text-light">
+                                            Gradient Type :
+                                        </label>
+                                        <div>
+                                            <span class="mr40px">
+                                                <input type="radio" id="cornersSquareOptionscolorGradientLinear"
+                                                    name="cornersSquareOptionscolorGradientLinear"
+                                                    class="form-check-input mx-1" value="linear"
+                                                    [(ngModel)]="model.cornersSquareOptions.gradient.type"
+                                                    (change)="process()">
+                                                <label for="cornersSquareOptionscolorGradientLinear"
+                                                    class="form-check-label">Linear</label>
+                                            </span>
+                                            <span>
+                                                <input type="radio" id="cornersSquareOptionscolorGradientRadial"
+                                                    name="cornersSquareOptionscolorGradientLinear"
+                                                    class="form-check-input mx-1" value="radial"
+                                                    [(ngModel)]="model.cornersSquareOptions.gradient.type"
+                                                    (change)="process()">
+                                                <label for="cornersSquareOptionscolorGradientRadial"
+                                                    class="form-check-label">Radial</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="text-light">
+                                            Rotation :
+                                        </label>
+                                        <input type="number" step="0.1"
+                                            [(ngModel)]="model.cornersSquareOptions.gradient.rotation"
+                                            (input)="process()" class="form-control">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <button class="btn btn-secondary w-100 text-start"
+                            (click)="setPage('Corners Dot Options')">Corners
+                            Dot Options</button>
+                        <div *ngIf="page=='Corners Dot Options'" class="p-2">
+                            <div class="mb-2">
+                                <label class="text-light">
+                                    Corners Dot Style :
+                                </label>
+                                <select [(ngModel)]="model.cornersDotOptions.type" (change)="process()"
+                                    class="form-select bg-dark text-light">
+                                    <option value="">none</option>
+                                    <option value="square">Square</option>
+                                    <option value="dot">Dot</option>
+                                </select>
+                            </div>
+                            <div class="mb-2">
+                                <div class="mb-2">
+                                    <label class="text-light">
+                                        Color Type :
+                                    </label>
+                                    <div>
+                                        <span class="mr40px">
+                                            <input type="radio" id="colorOne" name="colorOne"
+                                                class="form-check-input mx-1" value="one"
+                                                [(ngModel)]="model.cornersDotOptions.colorType" (change)="process()">
+                                            <label for="colorOne" class="form-check-label">Single color</label>
+                                        </span>
+                                        <span>
+                                            <input type="radio" id="colorGradient" name="colorOne"
+                                                class="form-check-input mx-1" value="gradient"
+                                                [(ngModel)]="model.cornersDotOptions.colorType" (change)="process()">
+                                            <label for="colorGradient" class="form-check-label">Color gradient</label>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mb-2" *ngIf="model.cornersDotOptions.colorType == 'one'">
+                                    <label class="text-light">
+                                        Dots Color :
+                                    </label>
+                                    <input type="color" [(ngModel)]="model.cornersDotOptions.color" (input)="process()"
+                                        class="form-control w-25">
+                                </div>
+                                <div class="mb-2" *ngIf="model.cornersDotOptions.colorType != 'one'">
+                                    <div class="mb-2">
+                                        <label class="text-light white-space-nowrap">
+                                            Dots Gradient :
+                                        </label>
+                                        <div class="d-flex">
+                                            <input type="color"
+                                                [(ngModel)]="model.cornersDotOptions.gradient.colorStops[0].color"
+                                                (input)="process()" class="form-control w-25 mr10px">
+
+                                            <input type="color"
+                                                [(ngModel)]="model.cornersDotOptions.gradient.colorStops[1].color"
+                                                (input)="process()" class="form-control w-25 mr10px">
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="text-light">
+                                            Gradient Type :
+                                        </label>
+                                        <div>
+                                            <span class="mr40px">
+                                                <input type="radio" id="colorGradientLinear" name="colorGradientLinear"
+                                                    class="form-check-input mx-1" value="linear"
+                                                    [(ngModel)]="model.cornersDotOptions.gradient.type"
+                                                    (change)="process()">
+                                                <label for="colorGradientLinear" class="form-check-label">Linear</label>
+                                            </span>
+                                            <span>
+                                                <input type="radio" id="colorGradientRadial" name="colorGradientLinear"
+                                                    class="form-check-input mx-1" value="radial"
+                                                    [(ngModel)]="model.cornersDotOptions.gradient.type"
+                                                    (change)="process()">
+                                                <label for="colorGradientRadial" class="form-check-label">Radial</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="text-light">
+                                            Rotation :
+                                        </label>
+                                        <input type="number" step="0.1"
+                                            [(ngModel)]="model.cornersDotOptions.gradient.rotation" (input)="process()"
+                                            class="form-control">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <button class="btn btn-secondary w-100 text-start"
+                            (click)="setPage('Background Options')">Background Options</button>
+                        <div *ngIf="page=='Background Options'" class="p-2">
+                            <div class="mb-2">
+                                <div class="mb-2">
+                                    <label class="text-light">
+                                        Color Type :
+                                    </label>
+                                    <div>
+                                        <span class="mr40px">
+                                            <input type="radio" id="backgroundOptionscolortrans"
+                                                name="backgroundOptionscolortrans" class="form-check-input mx-1"
+                                                value="transparent" [(ngModel)]="model.backgroundOptions.colorType"
+                                                (change)="process()">
+                                            <label for="backgroundOptionscolortrans"
+                                                class="form-check-label">Transparent</label>
+                                        </span>
+                                        <span class="mr40px">
+                                            <input type="radio" id="backgroundOptionscolorOne"
+                                                name="backgroundOptionscolortrans" class="form-check-input mx-1"
+                                                value="one" [(ngModel)]="model.backgroundOptions.colorType"
+                                                (change)="process()">
+                                            <label for="backgroundOptionscolorOne" class="form-check-label">Single
+                                                color</label>
+                                        </span>
+                                        <span>
+                                            <input type="radio" id="backgroundOptionscolorGradient"
+                                                name="backgroundOptionscolortrans" class="form-check-input mx-1"
+                                                value="gradient" [(ngModel)]="model.backgroundOptions.colorType"
+                                                (change)="process()">
+                                            <label for="backgroundOptionscolorGradient" class="form-check-label">Color
+                                                gradient</label>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mb-2" *ngIf="model.backgroundOptions.colorType == 'one'">
+                                    <label class="text-light">
+                                        Dots Color :
+                                    </label>
+                                    <input type="color" [(ngModel)]="model.backgroundOptions.color" (input)="process()"
+                                        class="form-control w-25">
+                                </div>
+                                <div class="mb-2" *ngIf="model.backgroundOptions.colorType == 'gradient'">
+                                    <div class="mb-2">
+                                        <label class="text-light white-space-nowrap">
+                                            Dots Gradient :
+                                        </label>
+                                        <div class="d-flex">
+                                            <input type="color"
+                                                [(ngModel)]="model.backgroundOptions.gradient.colorStops[0].color"
+                                                (input)="process()" class="form-control w-25 mr10px">
+
+                                            <input type="color"
+                                                [(ngModel)]="model.backgroundOptions.gradient.colorStops[1].color"
+                                                (input)="process()" class="form-control w-25 mr10px">
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="text-light">
+                                            Gradient Type :
+                                        </label>
+                                        <div>
+                                            <span class="mr40px">
+                                                <input type="radio" id="backgroundOptionscolorGradientLinear"
+                                                    name="backgroundOptionscolorGradientLinear"
+                                                    class="form-check-input mx-1" value="linear"
+                                                    [(ngModel)]="model.backgroundOptions.gradient.type"
+                                                    (change)="process()">
+                                                <label for="backgroundOptionscolorGradientLinear"
+                                                    class="form-check-label">Linear</label>
+                                            </span>
+                                            <span>
+                                                <input type="radio" id="backgroundOptionscolorGradientRadial"
+                                                    name="backgroundOptionscolorGradientLinear"
+                                                    class="form-check-input mx-1" value="radial"
+                                                    [(ngModel)]="model.backgroundOptions.gradient.type"
+                                                    (change)="process()">
+                                                <label for="backgroundOptionscolorGradientRadial"
+                                                    class="form-check-label">Radial</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="text-light">
+                                            Rotation :
+                                        </label>
+                                        <input type="number" step="0.1"
+                                            [(ngModel)]="model.backgroundOptions.gradient.rotation" (input)="process()"
+                                            class="form-control">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <button class="btn btn-secondary w-100 text-start" (click)="setPage('Image Options')">Image
+                            Options</button>
+
+                        <div *ngIf="page=='Image Options'" class="p-2">
+
+                            <div class="mb-2">
+                                <label class="text-light">
+                                    Hide Background Dots :
+                                </label>
+                                <input type="checkbox" [(ngModel)]="model.imageOptions.hideBackgroundDots"
+                                    (input)="process()"
+                                    class="form-control form-check-inline mx-2 form-check-input alert-dismissible">
+                            </div>
+                            <div class="mb-2">
+                                <label class="text-light">
+                                    Image Size :
+                                </label>
+                                <input type="number" step="0.1" [(ngModel)]="model.imageOptions.imageSize"
+                                    (input)="process()" class="form-control">
+                            </div>
+                            <div class="mb-2">
+                                <label class="text-light">
+                                    Margin :
+                                </label>
+                                <input type="number" step="0.1" [(ngModel)]="model.imageOptions.margin"
+                                    (input)="process()" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <button class="btn btn-secondary w-100 text-start" (click)="setPage('QR Options')">QR
+                            Options</button>
+
+                        <div *ngIf="page=='QR Options'" class="p-2">
+
+                            <div class="mb-2">
+                                <label class="text-light">
+                                    Type Number :
+                                </label>
+                                <input type="number" min="1" [(ngModel)]="model.qrOptions.typeNumber"
+                                    (input)="process()" class="form-control">
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="text-light">
+                                    Mode :
+                                </label>
+                                <select [(ngModel)]="model.qrOptions.mode" (change)="process()"
+                                    class="form-select bg-dark text-light">
+                                    <option value="Numeric">Numeric</option>
+                                    <option value="Alphanumeric">Alphanumeric</option>
+                                    <option value="Byte" selected="">Byte</option>
+                                    <option value="Kanji">Kanji</option>
+                                </select>
+                            </div>
+                            <div class="mb-2">
+                                <label class="text-light">
+                                    Error Correction Level :
+                                </label>
+                                <select [(ngModel)]="model.qrOptions.errorCorrectionLevel" (change)="process()"
+                                    class="form-select bg-dark text-light">
+                                    <option value="L">L</option>
+                                    <option value="M">M</option>
+                                    <option value="Q" selected="">Q</option>
+                                    <option value="H">H</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 table-responsive overflow-hidden position-relative" (wheel)="zoom($event)"
+                    [ngStyle]="{ height: boxHeight }">
+
+                    <div class="canvas-container" #canvas></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

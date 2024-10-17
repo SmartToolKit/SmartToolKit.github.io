@@ -13,6 +13,7 @@ import { CodeSnapshotComponent } from './modules/code-snapshot/code-snapshot.com
 import { JavaScriptMinifierComponent } from './modules/java-script-minifier/java-script-minifier.component';
 import { CssMinifierComponent } from './modules/css-minifier/css-minifier.component';
 import { SvgEditorComponent } from './modules/svg-editor/svg-editor.component';
+import { QrcodeGeneratorComponent } from './modules/qrcode-generator/qrcode-generator.component';
 
 const routes: Routes = [{
   path: '',
@@ -69,6 +70,10 @@ const routes: Routes = [{
     {
       path: 'svg-editor',
       component: SvgEditorComponent
+    },
+    {
+      path: 'qrcode-generator',
+      component: QrcodeGeneratorComponent
     }
   ]
 }

@@ -115,26 +115,24 @@ export class SvgEditorComponent {
 
       // Insert the new SVG content directly
       this.renderer.setProperty(this.svgContainer.nativeElement, 'innerHTML', this.svgCode);
-
       this.boxHeight = `${(document.querySelector('textarea')?.offsetHeight || 300)}px`;
     }
   }
 
   scale = 0.5
   zoomSVG(event: WheelEvent) {
-    event.preventDefault(); // جلوگیری از اسکرول پیش‌فرض
+    event.preventDefault();
 
-    const zoomStep = 0.1; // میزان زوم در هر حرکت
+    const zoomStep = 0.1;
     if (event.deltaY < 0) {
-      this.scale += zoomStep; // زوم کردن
+      this.scale += zoomStep;
     } else {
-      this.scale -= zoomStep; // زوم معکوس
+      this.scale -= zoomStep;
       if (this.scale < 0.1) {
-        this.scale = 0.1; // جلوگیری از زوم منفی
+        this.scale = 0.1;
       }
     }
 
-    // اعمال مقیاس بر روی محتوای SVG
     this.renderer.setStyle(this.svgContainer.nativeElement, 'transform', `translate(-50%, -50%) scale(${this.scale})`);
   }
 }
