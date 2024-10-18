@@ -161,7 +161,7 @@ export class QrcodeGeneratorComponent implements OnInit {
   }
   exportOptions() {
 
-    const filename = `JsonViewer-${new Date().getTime()}.stkqrcode`;
+    const filename = `QrcodeGenerator-${new Date().getTime()}.stkqrcode`;
 
     if (this.fileHelper.download(JSON.stringify(this.model), filename)) {
       swal.fire({
