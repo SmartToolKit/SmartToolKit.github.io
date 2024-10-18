@@ -166,7 +166,7 @@ export class QrcodeGeneratorComponent implements OnInit {
     if (this.fileHelper.download(JSON.stringify(this.model), filename)) {
       swal.fire({
         title: 'Download Ready',
-        text: `Your JSON downloaded as ${filename}.`,
+        text: `Your Qrcode Settings downloaded as ${filename}.`,
         icon: 'success'
       });
     }
