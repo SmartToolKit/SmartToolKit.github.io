@@ -228,14 +228,11 @@ export class QrcodeGeneratorComponent implements OnInit {
     if (this.model.backgroundOptions.colorType != 'one')
       options.backgroundOptions.color = ""
 
-
     this.qrCode.update(options);
 
     this.qrCode.append(this.canvas.nativeElement);
 
     this.boxHeight = `${(document.getElementById('bodybox')?.offsetHeight || 300)}px`;
-
-    console.log(this.boxHeight);
 
   }
 
