@@ -77,6 +77,12 @@ tools = [
       description: "",
       icon: "./assets/images/qrcode-generator.svg",
       url: "qrcode-generator"
+    },
+    {
+      title: "BarCode Generator",
+      description: "",
+      icon: "./assets/images/barcode-generator.svg",
+      url: "barcode-generator"
     }
 ];
 

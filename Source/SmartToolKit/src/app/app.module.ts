@@ -23,6 +23,8 @@ import { JavaScriptMinifierComponent } from './modules/java-script-minifier/java
 import { CssMinifierComponent } from './modules/css-minifier/css-minifier.component';
 import { SvgEditorComponent } from './modules/svg-editor/svg-editor.component';
 import { QrcodeGeneratorComponent } from './modules/qrcode-generator/qrcode-generator.component';
+import { BarcodeGeneratorComponent } from './modules/barcode-generator/barcode-generator.component';
+import { NgxBarcode6Module } from 'ngx-barcode6';
 
 @NgModule({
   declarations: [
@@ -42,10 +44,12 @@ import { QrcodeGeneratorComponent } from './modules/qrcode-generator/qrcode-gene
     JavaScriptMinifierComponent,
     CssMinifierComponent,
     SvgEditorComponent,
-    QrcodeGeneratorComponent
+    QrcodeGeneratorComponent,
+    BarcodeGeneratorComponent
   ],
   imports: [
     HttpClientModule,
+    NgxBarcode6Module,
     NgxJsonViewerModule,
     FormsModule,
     BrowserModule,

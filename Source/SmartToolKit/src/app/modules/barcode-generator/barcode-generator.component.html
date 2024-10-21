@@ -1,0 +1,77 @@
+<div class="item-details-page px-2">
+    <div class="container contact px-2">
+        <div class="row px-4">
+            <div class="row" style="margin: 0px !important;">
+                <div class="col-md-12">
+                    <button (click)="importOptions()" class="btn btn-info btn-sm mb-3 mx-1">Import Options</button>
+                    <button (click)="exportOptions()" class="btn btn-info btn-sm mb-3 mx-1">Export Options</button>
+                    <button (click)="downloadQRCodeAsSvg()" class="btn btn-warning btn-sm mb-3 mx-1">Download as
+                        SVG</button>
+                    <button (click)="downloadQRCodeAsPng()" class="btn btn-warning btn-sm mb-3 mx-1">Download as
+                        PNG</button>
+                </div>
+                <div class="col-sm-6 pb-3 pb-lg-0">
+                    <div class="col-md-12">
+                        <h4 class="mb-0">Value</h4>
+                        <input class="form-control bg-dark text-white" [(ngModel)]="model.value">
+                    </div>
+
+                    <!-- Dropdown for Barcode Format -->
+                    <div class="col-md-12 mt-3">
+                        <h4 class="mb-0">Format</h4>
+                        <select class="form-select bg-dark text-white" [(ngModel)]="model.selectedFormat">
+                            <option *ngFor="let format of formats" [value]="format">{{ format }}</option>
+                        </select>
+                    </div>
+
+                    <!-- Input for Width -->
+                    <div class="col-md-12 mt-3">
+                        <h4 class="mb-0">Width</h4>
+                        <input type="number" class="form-control bg-dark text-white" [(ngModel)]="model.width" min="1">
+                    </div>
+
+                    <!-- Input for Height -->
+                    <div class="col-md-12 mt-3">
+                        <h4 class="mb-0">Height</h4>
+                        <input type="number" class="form-control bg-dark text-white" [(ngModel)]="model.height" min="50">
+                    </div>
+
+                    <!-- Checkbox for Displaying Value -->
+                    <div class="col-md-12 mt-3">
+                        <h4 class="mb-0">Display Value</h4>
+                        <div class="form-check bg-dark text-white">
+                            <input class="form-check-input" id="displayValue" type="checkbox"
+                                [(ngModel)]="model.displayValue">
+                            <label class="form-check-label" for="displayValue">Show Barcode Value</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mt-3">
+                        <h4 class="mb-0">Colors</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <div class="bg-dark d-flex form-control p-0 text-light">
+                                    <input type="color" [(ngModel)]="model.lineColor"><label class="m-auto">Line Color</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <div class="bg-dark d-flex form-control p-0 text-light">
+                                    <input type="color" [(ngModel)]="model.bgColor"><label class="m-auto">BG Color</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 overflow-auto position-relative min-height-300px">
+                    <h4>Barcode</h4>
+                    <div class="text-center div-barcode" #barcodeElement>
+                        <ngx-barcode6 [bc-format]="model.selectedFormat" [bc-value]="model.value" [bc-width]="model.width"
+                            [bc-height]="model.height" [bc-display-value]="model.displayValue" [bc-line-color]="model.lineColor"
+                            [bc-background]="model.bgColor">
+                        </ngx-barcode6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1729458575470,
+  "timestamp": 1729544403141,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -13,7 +13,7 @@
       "urls": [
         "/favicon.ico",
         "/index.html",
-        "/main-ECUJ532K.js",
+        "/main-V63ZSUI3.js",
         "/manifest.webmanifest",
         "/polyfills-FFHMD2TL.js",
         "/styles-MTRWRMKB.css"
@@ -44,6 +44,7 @@
         "/assets/icons/icon-72x72.png",
         "/assets/icons/icon-96x96.png",
         "/assets/images/banner-bg.jpg",
+        "/assets/images/barcode-generator.svg",
         "/assets/images/code-snapshot.svg",
         "/assets/images/convert-to-base64.svg",
         "/assets/images/css-minifier.svg",
@@ -636,6 +637,7 @@
     "/assets/icons/icon-72x72.png": "be3ee6126973d3a98cb6d36d0dcd0bd83134b011",
     "/assets/icons/icon-96x96.png": "c662ce49d1f270efa0ee6ee188df509f8cc41a07",
     "/assets/images/banner-bg.jpg": "6cea5d67bf3d139ed0da221615e8a72b5c819a07",
+    "/assets/images/barcode-generator.svg": "4d1bba2804e08ac665c3312fadb3aca07d1cd009",
     "/assets/images/code-snapshot.svg": "661b5b1f39a5c888ad29aa8ab01cdec1f39da200",
     "/assets/images/convert-to-base64.svg": "da46e04294b1132af72a9c66411ee214d34f4b28",
     "/assets/images/css-minifier.svg": "149ccd6226f5cc71e26f6a8f7e86f9cfaac412a1",
@@ -1197,8 +1199,8 @@
     "/assets/webfonts/fa-v4compatibility.ttf": "fbf72ecb9d7828c2e8504451c13e05d7a018eb29",
     "/assets/webfonts/fa-v4compatibility.woff2": "4dcd1d7b2bda7da7c181015011490e46e23c3969",
     "/favicon.ico": "efefc51e062b338728ed3daf6f28dedd48e7e717",
-    "/index.html": "4ef94b08485638a32699fa609d2d7b5f4652061b",
-    "/main-ECUJ532K.js": "36c9f6046c7b365bea0e5c2541e0660fdc0f2224",
+    "/index.html": "c1654bce9a655e27741ab741a536b76829b22936",
+    "/main-V63ZSUI3.js": "7c600c26313a725acc60e87fa6a19092ec1c3617",
     "/manifest.webmanifest": "c073cdb0462590184db8afdd8025094935e1f463",
     "/media/banner-bg-COAS5LGN.jpg": "6cea5d67bf3d139ed0da221615e8a72b5c819a07",
     "/media/dark-bg-MRZUSLIW.jpg": "1eb4c767faee4c5fdd6fe80077abae03ed21e78d",

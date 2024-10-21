@@ -24,6 +24,25 @@ export class FileHelperService {
       return false;
     }
   }
+  downloadUrl(url: string, filename: string): boolean {
+    try {
+      const downloadLink = document.createElement('a');
+      downloadLink.href = url;
+      downloadLink.download = filename;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+
+      return true;
+    } catch (error) {
+      swal.fire({
+        title: 'Download Error',
+        text: 'Failed to download. Please try again.',
+        icon: 'error'
+      });
+      return false;
+    }
+  }
 
   openFile(accept: string): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -115,11 +134,11 @@ export class FileHelperService {
   convertFileToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      
+
       reader.onload = () => {
         resolve(reader.result as string);  // Resolve with Base64 string
       };
-      
+
       reader.onerror = () => {
         swal.fire({
           title: 'Conversion Error',
@@ -128,7 +147,7 @@ export class FileHelperService {
         });
         reject(reader.error);  // Reject in case of error
       };
-      
+
       reader.readAsDataURL(file);  // Read the file as a data URL (Base64 format)
     });
   }

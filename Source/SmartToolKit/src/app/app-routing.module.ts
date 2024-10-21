@@ -14,6 +14,7 @@ import { JavaScriptMinifierComponent } from './modules/java-script-minifier/java
 import { CssMinifierComponent } from './modules/css-minifier/css-minifier.component';
 import { SvgEditorComponent } from './modules/svg-editor/svg-editor.component';
 import { QrcodeGeneratorComponent } from './modules/qrcode-generator/qrcode-generator.component';
+import { BarcodeGeneratorComponent } from './modules/barcode-generator/barcode-generator.component';
 
 const routes: Routes = [{
   path: '',
@@ -74,10 +75,13 @@ const routes: Routes = [{
     {
       path: 'qrcode-generator',
       component: QrcodeGeneratorComponent
+    },
+    {
+      path: 'barcode-generator',
+      component: BarcodeGeneratorComponent
     }
   ]
-}
-];
+}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
