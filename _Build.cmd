@@ -6,7 +6,7 @@ cd ".\Source\SmartToolKit\"
 
 REM Execute ng build and check for errors
 call npm install
-call ng build --output-path ./../../docs
+call ng build --output-path ./../../docs  --configuration production
 if %errorlevel% neq 0 (
     echo Build failed!
     exit /b %errorlevel%
