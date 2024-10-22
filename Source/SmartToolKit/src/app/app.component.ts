@@ -30,6 +30,5 @@ export class AppComponent {
         console.error('Error checking for update', err);
       });
     }
-
   }
 }
