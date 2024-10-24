@@ -1,3 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- License: PD. Made by Mary Akveo: https://maryakveo.com/ -->
-<svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" id="strikethrough-3" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color"><path id="primary" d="M13.93,22H10.5A5.51,5.51,0,0,1,5,16.5a1,1,0,0,1,2,0A3.5,3.5,0,0,0,10.5,20h3.43a3.07,3.07,0,0,0,1-6L8.47,11.88A5.07,5.07,0,0,1,10.07,2H13.5A5.51,5.51,0,0,1,19,7.5a1,1,0,0,1-2,0A3.5,3.5,0,0,0,13.5,4H10.07a3.07,3.07,0,0,0-1,6l6.43,2.14A5.07,5.07,0,0,1,13.93,22Z" style="fill: rgb(0, 0, 0);"></path><path id="secondary" d="M21,13H3a1,1,0,0,1,0-2H21a1,1,0,0,1,0,2Z" style="fill: rgb(44, 169, 188);"></path></svg>
+<svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" id="strikethrough-3" data-name="Flat Color"
+    xmlns="http://www.w3.org/2000/svg" class="icon flat-color">
+    <path id="primary"
+        d="M13.93,22H10.5A5.51,5.51,0,0,1,5,16.5a1,1,0,0,1,2,0A3.5,3.5,0,0,0,10.5,20h3.43a3.07,3.07,0,0,0,1-6L8.47,11.88A5.07,5.07,0,0,1,10.07,2H13.5A5.51,5.51,0,0,1,19,7.5a1,1,0,0,1-2,0A3.5,3.5,0,0,0,13.5,4H10.07a3.07,3.07,0,0,0-1,6l6.43,2.14A5.07,5.07,0,0,1,13.93,22Z"
+        style="fill:#fff;"></path>
+    <path id="secondary" d="M21,13H3a1,1,0,0,1,0-2H21a1,1,0,0,1,0,2Z" style="fill: rgb(44, 169, 188);"></path>
+</svg>

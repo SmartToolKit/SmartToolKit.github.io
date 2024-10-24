@@ -33,18 +33,20 @@
                     <div class="col-md-2 mb-3 border border-secondary p-2 rounded-3">
                         <h4 class="mb-2">Text Control</h4>
                         <div class="mb-2">
-                            <button class="btn-icon-code-snapshot" (click)="execCommand(item,'')"
+                            <button class="btn btn-dark btn-sm btn-icon" (click)="execCommand(item,'')"
                                 *ngFor="let item of textControl.dirs">
-                                <img src="./assets/images/modules/code-snapshot/{{item}}.svg"></button>
+                                <img src="./assets/images/modules/code-snapshot/{{item}}.svg">
+                            </button>
                         </div>
 
                         <div class="mb-2">
-                            <button class="btn-icon-code-snapshot" (click)="execCommand(item,'')"
+                            <button class="btn btn-dark btn-sm btn-icon" (click)="execCommand(item,'')"
                                 *ngFor="let item of textControl.styles">
-                                <img src="./assets/images/modules/code-snapshot/{{item}}.svg"></button>
+                                <img src="./assets/images/modules/code-snapshot/{{item}}.svg">
+                            </button>
                         </div>
                         <div class="mb-2">
-                            <button class="btn-icon-code-snapshot" (click)="execCommand('formatBlock',item)"
+                            <button class="btn btn-dark btn-sm btn-icon" (click)="execCommand('formatBlock',item)"
                                 *ngFor="let item of textControl.fontSizes">{{item}}</button>
                         </div>
 
@@ -69,13 +71,13 @@
                             </button>
                         </h4>
                         <div *ngIf="!foreColorsEdit" class="d-inline-block">
-                            <button class="btn-icon-code-snapshot" [style.background-color]="item"
+                            <button class="btn-icon" [style.background-color]="item"
                                 *ngFor="let item of context.foreColors"
                                 (click)="execCommand('foreColor',item)"></button>
                         </div>
 
                         <div *ngIf="foreColorsEdit" class="d-inline-block">
-                            <input type="color" class="btn-icon-code-snapshot" [value]="item"
+                            <input type="color" class="btn-icon" [value]="item"
                                 (change)="updateForeColor($event, i)"
                                 *ngFor="let item of context.foreColors; let i = index">
                         </div>
@@ -101,13 +103,13 @@
                             </button>
                         </h4>
                         <div *ngIf="!backColorsEdit" class="d-inline-block">
-                            <button class="btn-icon-code-snapshot" [style.background-color]="item"
+                            <button class="btn-icon" [style.background-color]="item"
                                 *ngFor="let item of context.backColors"
                                 (click)="execCommand('backColor',item)"></button>
                         </div>
 
                         <div *ngIf="backColorsEdit" class="d-inline-block">
-                            <input type="color" class="btn-icon-code-snapshot" [value]="item"
+                            <input type="color" class="btn-icon" [value]="item"
                                 (change)="updatebackColor($event, i)"
                                 *ngFor="let item of context.backColors; let i = index">
                         </div>
@@ -116,9 +118,9 @@
 
                     <div class="col-md-1 mb-3 border border-secondary p-2 rounded-3">
                         <h4 class="mb-2">Actions</h4>
-                        <button class="btn btn-warning w-100 btn-sm mb-1" (click)="captureDiv()">Download</button>
                         <button class="btn btn-warning w-100 btn-sm mb-1" (click)="import()">Import</button>
                         <button class="btn btn-warning w-100 btn-sm mb-1" (click)="export()">Export</button>
+                        <button class="btn btn-warning w-100 btn-sm mb-1" (click)="captureDiv()">Download</button>
                     </div>
 
                 </div>
