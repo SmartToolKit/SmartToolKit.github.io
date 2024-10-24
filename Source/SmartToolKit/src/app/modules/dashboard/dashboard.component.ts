@@ -83,6 +83,12 @@ tools = [
       description: "",
       icon: "./assets/images/barcode-generator.svg",
       url: "barcode-generator"
+    },
+    {
+      title: "Code Snapshot",
+      description: "",
+      icon: "./assets/images/code-snapshot.svg",
+      url: "code-snapshot"
     }
 ];
 

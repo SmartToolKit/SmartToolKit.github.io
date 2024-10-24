@@ -2,8 +2,56 @@
     <div class="container contact px-2">
         <div class="row px-4">
             <div class="row" style="margin: 0px !important;">
-                <div class="col-sm-12  pb-3 pb-lg-0">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="col-md-12 mt-3">
+                            <button (click)="addText()" class="btn btn-sm btn-primary">Add Text</button>
+                            <button (click)="addCode()" class="btn btn-sm btn-primary mx-2">Add Code</button>
+                            <button (click)="remove()" class="btn btn-sm btn-danger">Remove</button>
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <h4 class="mb-0">Template</h4>
+                            <select [(ngModel)]="context.selectedTemplate" class="form-control bg-dark text-light">
+                                <option *ngFor="let item of templates" [value]="item.id">{{item.text}} </option>
+                            </select>
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <h4 class="mb-0">Width</h4>
+                            <input type="range" min="200" max="1000" class="form-control bg-dark text-light"
+                                [(ngModel)]="context.minWidth">
+                        </div>
 
+                        <div class="col-md-12 mt-3">
+                            <h4 class="mb-0">Dir</h4>
+                            <button class="btn-icon-code-snapshot" onclick="document.execCommand('justifyLeft', false, null);">
+                                <img src="./assets/images/modules/code-snapshot/justifyLeft.svg" alt=""></button>
+                            <button class="btn-icon-code-snapshot"><img src="./assets/images/modules/code-snapshot/justifyCenter.svg" alt=""></button>
+                            <button class="btn-icon-code-snapshot"  onclick="document.execCommand('justifyRight', false, null);"><img src="./assets/images/modules/code-snapshot/justifyRight.svg" alt=""></button>
+                        </div>
+                    </div>
+                    <div class="col-md-8 table-responsive">
+                        <span [class]="context.selectedTemplate">
+                            <div *ngFor="let item of context.model">
+                                <table *ngIf="item.type=='code'" class="w-100">
+                                    <tbody>
+                                        <tr>
+                                            <td class="td-header"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <pre class="pre-code" contenteditable="true"
+                                                    [style.min-width.px]="context.minWidth"
+                                                    (input)="onContentChange($event, item)">{{item.html}}</pre>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div *ngIf="item.type=='text'" contenteditable="true" [innerHTML]="item.html"
+                                    (input)="onContentChange($event, item)"></div>
+                                <br>
+                            </div>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

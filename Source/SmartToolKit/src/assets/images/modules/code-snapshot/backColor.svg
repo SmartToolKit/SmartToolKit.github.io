@@ -1,0 +1,8 @@
+<svg width="800" height="800" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path style="fill:red;stroke:#000;stroke-width:2" d="M50 50H10a40 40 0 0 1 40-40z" />
+    <path style="fill:#0f0;stroke:#000;stroke-width:2" d="M50 50V10a40 40 0 0 1 40 40z" />
+    <path style="fill:#00f;stroke:#000;stroke-width:2" d="M50 50h40a40 40 0 0 1-40 40z" />
+    <path style="fill:#ff0;stroke:#000;stroke-width:2" d="M50 50v40a40 40 0 0 1-40-40z" />
+    <path style="fill:#fff;stroke:#666;stroke-width:2"
+        d="m75 60-7.5 7.5-10-30 30 10L80 55l12.5 10-7.5 7.5z" />
+</svg>
