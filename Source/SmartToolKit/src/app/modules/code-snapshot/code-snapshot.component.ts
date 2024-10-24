@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-code-snapshot',
@@ -32,10 +33,20 @@ export class CodeSnapshotComponent {
     this.context.model.push({ type: 'text', html: 'Hello World!' });
 
   }
-  log() {
-
-    console.log(this.context);
+  captureDiv() {
+    const div = document.getElementById('captureDiv');  // Your div's id
+    if (div) {
+      html2canvas(div).then(canvas => {
+        // Save the snapshot or display it
+        const imgData = canvas.toDataURL('image/png');
+        const downloadLink = document.createElement('a');
+        downloadLink.href = imgData;
+        downloadLink.download = 'snapshot.png';
+        downloadLink.click();
+      });
+    }
   }
+
   addCode() {
     this.context.model.push({ type: 'code', html: this.simpleCode });
   }

@@ -3,7 +3,7 @@
         <div class="row px-4">
             <div class="row" style="margin: 0px !important;">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-sm-4 pb-3 pb-lg-0">
                         <div class="col-md-12 mt-3">
                             <button (click)="addText()" class="btn btn-sm btn-primary">Add Text</button>
                             <button (click)="addCode()" class="btn btn-sm btn-primary mx-2">Add Code</button>
@@ -23,14 +23,23 @@
 
                         <div class="col-md-12 mt-3">
                             <h4 class="mb-0">Dir</h4>
-                            <button class="btn-icon-code-snapshot" onclick="document.execCommand('justifyLeft', false, null);">
-                                <img src="./assets/images/modules/code-snapshot/justifyLeft.svg" alt=""></button>
-                            <button class="btn-icon-code-snapshot"><img src="./assets/images/modules/code-snapshot/justifyCenter.svg" alt=""></button>
-                            <button class="btn-icon-code-snapshot"  onclick="document.execCommand('justifyRight', false, null);"><img src="./assets/images/modules/code-snapshot/justifyRight.svg" alt=""></button>
+                            <button class="btn-icon-code-snapshot"
+                                onclick="document.execCommand('justifyLeft', false, null);">
+                                <img src="./assets/images/modules/code-snapshot/justifyLeft.svg"></button>
+                            <button class="btn-icon-code-snapshot"><img
+                                    src="./assets/images/modules/code-snapshot/justifyCenter.svg"></button>
+                            <button class="btn-icon-code-snapshot"
+                                onclick="document.execCommand('justifyRight', false, null);"><img
+                                    src="./assets/images/modules/code-snapshot/justifyRight.svg"></button>
                         </div>
+
+                        <div class="col-md-12 mt-3">
+                            <button class="btn btn-warning w-100 btn-sm" (click)="captureDiv()">Download</button>
+                        </div>
+
                     </div>
-                    <div class="col-md-8 table-responsive">
-                        <span [class]="context.selectedTemplate">
+                    <div class="col-md-8 table-responsive" style="display: flex;justify-content: center;">
+                        <span [class]="context.selectedTemplate" id="captureDiv">
                             <div *ngFor="let item of context.model">
                                 <table *ngIf="item.type=='code'" class="w-100">
                                     <tbody>
