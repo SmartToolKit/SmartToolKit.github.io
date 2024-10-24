@@ -9,28 +9,96 @@
                             <button (click)="addCode()" class="btn btn-sm btn-primary mx-2">Add Code</button>
                             <button (click)="remove()" class="btn btn-sm btn-danger">Remove</button>
                         </div>
+
                         <div class="col-md-12 mt-3">
                             <h4 class="mb-0">Template</h4>
                             <select [(ngModel)]="context.selectedTemplate" class="form-control bg-dark text-light">
                                 <option *ngFor="let item of templates" [value]="item.id">{{item.text}} </option>
                             </select>
                         </div>
+
                         <div class="col-md-12 mt-3">
-                            <h4 class="mb-0">Width</h4>
+                            <h4 class="mb-0">Width ({{context.minWidth}})</h4>
                             <input type="range" min="200" max="1000" class="form-control bg-dark text-light"
                                 [(ngModel)]="context.minWidth">
                         </div>
 
                         <div class="col-md-12 mt-3">
+                            <h4 class="mb-0">Padding ({{context.padding}})</h4>
+                            <input type="range" min="10" max="200" class="form-control bg-dark text-light"
+                                [(ngModel)]="context.padding">
+                        </div>
+
+                        <div class="col-md-12 mt-3">
                             <h4 class="mb-0">Dir</h4>
-                            <button class="btn-icon-code-snapshot"
-                                onclick="document.execCommand('justifyLeft', false, null);">
-                                <img src="./assets/images/modules/code-snapshot/justifyLeft.svg"></button>
-                            <button class="btn-icon-code-snapshot"><img
-                                    src="./assets/images/modules/code-snapshot/justifyCenter.svg"></button>
-                            <button class="btn-icon-code-snapshot"
-                                onclick="document.execCommand('justifyRight', false, null);"><img
-                                    src="./assets/images/modules/code-snapshot/justifyRight.svg"></button>
+                            <button class="btn-icon-code-snapshot" (click)="execCommand(item)"
+                                *ngFor="let item of dirs">
+                                <img src="./assets/images/modules/code-snapshot/{{item}}.svg"></button>
+                        </div>
+
+                        <div class="col-md-12 mt-3">
+                            <h4 class="mb-0">Fore Color
+                                <button class="float-end btn-sm bg-transparent rounded mx-1"
+                                    (click)="foreColorsEdit=!foreColorsEdit">
+                                    <span *ngIf="!foreColorsEdit" class="fa fa-edit text-primary"></span>
+                                    <span *ngIf="foreColorsEdit" class="fa fa-check text-success"></span>
+                                </button>
+
+                                <button *ngIf="foreColorsEdit" class="float-end btn-sm bg-transparent rounded mx-1"
+                                    (click)="context.foreColors.push('#ffffff')">
+                                    <span class="fa fa-add text-success"></span>
+                                </button>
+
+                                <button *ngIf="foreColorsEdit" class="float-end btn-sm bg-transparent rounded mx-1"
+                                    (click)="context.foreColors.pop()">
+                                    <span class="fa fa-close text-danger"></span>
+                                </button>
+                            </h4>
+                            <div *ngIf="!foreColorsEdit" class="d-inline-block mt-2">
+                                <button class="btn-icon-code-snapshot" [style.background-color]="item"
+                                    *ngFor="let item of context.foreColors"
+                                    (click)="execCommandColor('foreColor',item)"></button>
+                            </div>
+
+                            <div *ngIf="foreColorsEdit" class="d-inline-block mt-2">
+                                <input type="color" class="btn-icon-code-snapshot" [value]="item"
+                                    (change)="updateForeColor($event, i)"
+                                    *ngFor="let item of context.foreColors; let i = index">
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-12 mt-3">
+                            <h4 class="mb-0">Back Color
+                                <button class="float-end btn-sm bg-transparent rounded mx-1"
+                                    (click)="backColorsEdit=!backColorsEdit">
+                                    <span *ngIf="!backColorsEdit" class="fa fa-edit text-primary"></span>
+                                    <span *ngIf="backColorsEdit" class="fa fa-check text-success"></span>
+                                </button>
+
+                                <button *ngIf="backColorsEdit" class="float-end btn-sm bg-transparent rounded mx-1"
+                                    (click)="context.backColors.push('#ffffff')">
+                                    <span class="fa fa-add text-success"></span>
+                                </button>
+
+                                <button *ngIf="backColorsEdit" class="float-end btn-sm bg-transparent rounded mx-1"
+                                    (click)="context.backColors.pop()">
+                                    <span class="fa fa-close text-danger"></span>
+                                </button>
+                            </h4>
+                            <div *ngIf="!backColorsEdit" class="d-inline-block mt-2">
+                                <button class="btn-icon-code-snapshot" [style.background-color]="item"
+                                    *ngFor="let item of context.backColors"
+                                    (click)="execCommandColor('backColor',item)"></button>
+                            </div>
+
+                            <div *ngIf="backColorsEdit" class="d-inline-block mt-2">
+                                <input type="color" class="btn-icon-code-snapshot" [value]="item"
+                                    (change)="updatebackColor($event, i)"
+                                    *ngFor="let item of context.backColors; let i = index">
+                            </div>
+
                         </div>
 
                         <div class="col-md-12 mt-3">
@@ -38,26 +106,31 @@
                         </div>
 
                     </div>
-                    <div class="col-md-8 table-responsive" style="display: flex;justify-content: center;">
-                        <span [class]="context.selectedTemplate" id="captureDiv">
+                    <div class="col-md-8 table-responsive position-relative">
+                        <span [class]="context.selectedTemplate" id="captureDiv" [style.padding.px]="context.padding">
                             <div *ngFor="let item of context.model">
                                 <table *ngIf="item.type=='code'" class="w-100">
                                     <tbody>
                                         <tr>
-                                            <td class="td-header"></td>
+                                            <td class="td-header-left"></td>
+                                            <td class="td-header-center" contenteditable="true"
+                                                (input)="onContentChange($event, item.header)"
+                                                [innerHTML]="item.header">Program.cs</td>
+                                            <td class="td-header-right"></td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                <pre class="pre-code" contenteditable="true"
+                                            <td colspan="3">
+                                                <div class="code-box" contenteditable="true"
                                                     [style.min-width.px]="context.minWidth"
-                                                    (input)="onContentChange($event, item)">{{item.html}}</pre>
+                                                    (input)="onContentChange($event, item.html)"
+                                                    [innerHTML]="item.html">
+                                                </div>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                                 <div *ngIf="item.type=='text'" contenteditable="true" [innerHTML]="item.html"
-                                    (input)="onContentChange($event, item)"></div>
-                                <br>
+                                    (input)="onContentChange($event, item.html)"></div>
                             </div>
                         </span>
                     </div>
