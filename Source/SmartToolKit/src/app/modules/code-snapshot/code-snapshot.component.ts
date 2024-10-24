@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import html2canvas from 'html2canvas';
+import swal from 'sweetalert2';
+import { FileHelperService } from '../../core/services/file-helper.service';
 
 @Component({
   selector: 'app-code-snapshot',
@@ -7,9 +10,22 @@ import html2canvas from 'html2canvas';
   styleUrls: ['./code-snapshot.component.scss'] // Fix: changed 'styleUrl' to 'styleUrls'
 })
 export class CodeSnapshotComponent {
-  dirs = [
-    "justifyLeft", "justifyCenter", "justifyRight"
-  ]
+  constructor(private titleService: Title, public fileHelper: FileHelperService) {
+    this.titleService.setTitle("Smart ToolKit - Code Snapshot")
+
+    this.context.selectedTemplate = this.templates[1].id;
+
+    this.context.model.push({ type: 'text', html: 'We will write a simple program C# that displays Hello, World! on the screen.' });
+    this.context.model.push({ type: 'code', header: "Program.cs", html: this.simpleCode });
+    this.context.model.push({ type: 'text', html: 'Output' });
+    this.context.model.push({ type: 'text', html: 'Hello World!' });
+
+  }
+  textControl = {
+    dirs: ["justifyLeft", "justifyCenter", "justifyRight"],
+    styles: ["bold", "italic", "underline", "strikethrough"],
+    fontSizes: ["p", "h1", "h2", "h3", "h4", "h5", "h6"]
+  }
   templates = [
     {
       text: "Night",
@@ -31,24 +47,16 @@ export class CodeSnapshotComponent {
     backColors: ["#ffffff", "#000000", "#ff0000", "#00ff00", "#0000ff", "#ffff00", "#ff00ff", "#00ffff"]
   };
 
-  constructor() {
-    this.context.selectedTemplate = this.templates[1].id;
-
-    this.context.model.push({ type: 'text', html: 'We will write a simple program C# that displays Hello, World! on the screen.' });
-    this.context.model.push({ type: 'code', header: "Program.cs", html: this.simpleCode });
-    this.context.model.push({ type: 'text', html: 'Output' });
-    this.context.model.push({ type: 'text', html: 'Hello World!' });
-
-  }
   captureDiv() {
     const div = document.getElementById('captureDiv');  // Your div's id
     if (div) {
+      const filename = `CodeSnapshot-${new Date().getTime()}.png`;
+
       html2canvas(div).then(canvas => {
-        // Save the snapshot or display it
         const imgData = canvas.toDataURL('image/png');
         const downloadLink = document.createElement('a');
         downloadLink.href = imgData;
-        downloadLink.download = 'snapshot.png';
+        downloadLink.download = filename;
         downloadLink.click();
       });
     }
@@ -67,14 +75,9 @@ export class CodeSnapshotComponent {
     this.context.model.push({ type: 'text', html: 'My text' });
   }
 
-  execCommand(cmd: string) {
-    document.execCommand(cmd);
+  execCommand(cmdId: string, value: string) {
+    document.execCommand(cmdId, false, value);
   }
-
-  execCommandColor(colorType: string, color: string) {
-    document.execCommand(colorType, false, color);
-  }
-
 
   updateForeColor(event: Event, index: number): void {
     const inputElement = event.target as HTMLInputElement;
@@ -85,7 +88,24 @@ export class CodeSnapshotComponent {
     const inputElement = event.target as HTMLInputElement;
     this.context.backColors[index] = inputElement.value;  // به‌روزرسانی رنگ انتخابی در آرایه
   }
+  export() {
+    const filename = `CodeSnapshot-${new Date().getTime()}.stkcss`;
 
+    if (this.fileHelper.download(JSON.stringify(this.context), filename)) {
+      swal.fire({
+        title: 'Download Ready',
+        text: `Your Code-Snapshot Settings downloaded as ${filename}.`,
+        icon: 'success'
+      });
+    }
+  }
+  import() {
+    this.fileHelper.openFile('.stkcss').then(content => {
+      this.context = JSON.parse(content)
+    }).catch(error => {
+      console.error('Error:', error);
+    });
+  }
   simpleCode = `<div>public class Program</div><div>{</div><div>&nbsp; &nbsp; public static void Main(string[] args)</div><div>&nbsp; &nbsp; {</div><div>&nbsp; &nbsp; &nbsp; &nbsp; System.Console.WriteLine("Hello, World!");</div><div>&nbsp; &nbsp; }</div><div>}</div>`;
 }
 

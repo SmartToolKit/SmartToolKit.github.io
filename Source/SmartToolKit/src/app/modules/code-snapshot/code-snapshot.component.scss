@@ -67,10 +67,10 @@
     min-height: 50px;
 }
 
+
+
 #captureDiv {
-    position: absolute;
-    transform: translateX(-50%);
-    left: 50%;
+    margin: auto;
 }
 
 #captureDiv>* {
@@ -84,4 +84,11 @@
 
 #captureDiv>*:last-child {
     margin-bottom: 0;
+}
+
+.mr6px{
+    margin-right: 6px;
+}
+.ml6px{
+    margin-left: 6px;
 }
