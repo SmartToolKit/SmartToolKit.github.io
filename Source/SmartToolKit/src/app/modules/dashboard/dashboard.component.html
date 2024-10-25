@@ -13,9 +13,9 @@
           <div class="col-lg-2 col-sm-6 cursor-pointer mb-lg-4" *ngFor="let item of tools" (click)="goto(item)">
             <div class="item pb-3 position-relative">
               <i class="fa fa-bookmark p-2 position-absolute icon-bookmark" (click)="onBookmarkClick($event,item)"
-                [class]=" item.bookmark?'text-primary':'text-dark'"></i>
+                [class]="bookmarks.includes(item.url)?'text-primary':'text-dark'"></i>
               <div class="icon">
-                <img src="{{item.icon}}" alt="">
+                <img src="./assets/images/{{item.url}}.svg">
               </div>
               <h4 class="align-content-lg-center" style="height: 48px;">{{item.title}}</h4>
             </div>
