@@ -70,15 +70,18 @@
                                 <span class="fa fa-close text-danger"></span>
                             </button>
                         </h4>
-                        <div *ngIf="!foreColorsEdit" class="d-inline-block">
+                        <div *ngIf="!foreColorsEdit">
+                            <button class="btn-icon bg-dark" (click)="execCommand('foreColor','#ffffff00')">
+                                <i class="fa fa-refresh text-white"></i>
+                            </button>
+
                             <button class="btn-icon" [style.background-color]="item"
                                 *ngFor="let item of context.foreColors"
                                 (click)="execCommand('foreColor',item)"></button>
                         </div>
 
-                        <div *ngIf="foreColorsEdit" class="d-inline-block">
-                            <input type="color" class="btn-icon" [value]="item"
-                                (change)="updateForeColor($event, i)"
+                        <div *ngIf="foreColorsEdit">
+                            <input type="color" class="btn-icon" [value]="item" (change)="updateForeColor($event, i)"
                                 *ngFor="let item of context.foreColors; let i = index">
                         </div>
 
@@ -102,15 +105,18 @@
                                 <span class="fa fa-close text-danger"></span>
                             </button>
                         </h4>
-                        <div *ngIf="!backColorsEdit" class="d-inline-block">
+                        <div *ngIf="!backColorsEdit">
+                            <button class="btn-icon bg-dark" (click)="execCommand('backColor','#ffffff00')">
+                                <i class="fa fa-refresh text-white"></i>
+                            </button>
+
                             <button class="btn-icon" [style.background-color]="item"
                                 *ngFor="let item of context.backColors"
                                 (click)="execCommand('backColor',item)"></button>
                         </div>
 
-                        <div *ngIf="backColorsEdit" class="d-inline-block">
-                            <input type="color" class="btn-icon" [value]="item"
-                                (change)="updatebackColor($event, i)"
+                        <div *ngIf="backColorsEdit">
+                            <input type="color" class="btn-icon" [value]="item" (change)="updatebackColor($event, i)"
                                 *ngFor="let item of context.backColors; let i = index">
                         </div>
 
