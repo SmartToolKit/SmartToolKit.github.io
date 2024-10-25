@@ -35,6 +35,12 @@ export class HeaderComponent {
       url: "https://github.com/SmartToolKit/SmartToolKit.github.io",
       active: false,
       external: true // External link
+    },
+    {
+      title: "Issues",
+      url: "https://github.com/SmartToolKit/SmartToolKit.github.io/issues",
+      active: false,
+      external: true // External link
     }
   ];
   menuclass = ''
