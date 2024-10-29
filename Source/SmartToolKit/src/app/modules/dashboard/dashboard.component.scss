@@ -1,48 +1,60 @@
 .cursor-pointer {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .icon-bookmark {
-    top: 6px;
-    left: 6px;
+  top: 6px;
+  left: 6px;
 }
 
+.icon-description {
+  top: 6px;
+  right: 6px;
+}
 
 /* Default font size */
 .font-sm-h4 {
-    font-size: 1rem; /* H4 size */
+  font-size: 1rem;
+  /* H4 size */
+}
+
+.font-md-h3 {
+  font-size: 1.75rem;
+  /* H3 size */
+}
+
+.font-lg-h2 {
+  font-size: 2rem;
+  /* H2 size */
+}
+
+/* Media queries for responsiveness */
+@media (min-width: 768px) {
+  .font-sm-h4 {
+    font-size: 1.4rem;
+    /* Adjust size on medium screens */
   }
-  
+
   .font-md-h3 {
-    font-size: 1.75rem; /* H3 size */
+    font-size: 2rem;
   }
-  
+
   .font-lg-h2 {
-    font-size: 2rem; /* H2 size */
+    font-size: 2.5rem;
   }
-  
-  /* Media queries for responsiveness */
-  @media (min-width: 768px) {
-    .font-sm-h4 {
-      font-size: 1.4rem; /* Adjust size on medium screens */
-    }
-    .font-md-h3 {
-      font-size: 2rem;
-    }
-    .font-lg-h2 {
-      font-size: 2.5rem;
-    }
+}
+
+@media (min-width: 1200px) {
+  .font-sm-h4 {
+    font-size: 1.7rem;
+    /* Further adjustment on large screens */
   }
-  
-  @media (min-width: 1200px) {
-    .font-sm-h4 {
-      font-size: 1.7rem; /* Further adjustment on large screens */
-    }
-    .font-md-h3 {
-      font-size: 2.5rem;
-    }
-    .font-lg-h2 {
-      font-size: 3rem;
-    }
+
+  .font-md-h3 {
+    font-size: 2.5rem;
   }
-  
+
+  .font-lg-h2 {
+    font-size: 3rem;
+  }
+}

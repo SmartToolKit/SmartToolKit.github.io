@@ -9,14 +9,20 @@
           </div>
         </div>
         <div class="col-sm-10 col-lg-5 col-md-6 px-5 mb-4 m-auto">
-          <input type="text" class="bg-dark form-control ng-dirty ng-touched ng-valid p-3 rounded-pill shadow text-light" [(ngModel)]="search" (input)="onSearchChange()"
-            placeholder="Search tools..." />
+          <input type="text"
+            class="bg-dark form-control ng-dirty ng-touched ng-valid p-3 rounded-pill shadow text-light"
+            [(ngModel)]="search" (input)="onSearchChange()" placeholder="Search tools..." />
         </div>
         <div class="row justify-content-evenly m-0">
           <div class="col-lg-2 col-sm-6 cursor-pointer mb-lg-4" *ngFor="let item of filteredTools" (click)="goto(item)">
             <div class="item pb-3 position-relative">
+
               <i class="fa fa-bookmark p-2 position-absolute icon-bookmark" (click)="onBookmarkClick($event,item)"
                 [class]="bookmarks.includes(item.url)?'text-primary':'text-dark'"></i>
+
+              <i *ngIf="item.description" class="fa p-2 fa-info-circle position-absolute icon-description text-white-50"
+                (click)="showDescription($event,item)"></i>
+
               <div class="icon">
                 <img src="./assets/images/{{item.url}}.svg">
               </div>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dashboard',
@@ -36,7 +37,16 @@ export class DashboardComponent {
   onSearchChange(): void {
     this.filterTools();
   }
-
+  showDescription(event: MouseEvent, tool: any): void {
+    event.preventDefault();
+    event.stopPropagation();
+    swal.fire({
+      title: tool.title,
+      text: tool.description,
+      icon: 'info',
+      confirmButtonText: 'Close',
+    });
+  }
   filterTools(): void {
     this.filteredTools = this.tools.filter(tool =>
       tool.title.toLowerCase().includes(this.search.toLowerCase()) ||
