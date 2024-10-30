@@ -15,10 +15,10 @@ export class CodeSnapshotComponent {
 
     this.context.selectedTemplate = this.templates[1].id;
 
-    this.context.model.push({ type: 'text', contenteditable: true, html: 'We will write a simple program C# that displays Hello, World! on the screen.' });
-    this.context.model.push({ type: 'code', contenteditable: true, header: "Program.cs", html: this.simpleCode });
-    this.context.model.push({ type: 'text', contenteditable: true, html: 'Output' });
-    this.context.model.push({ type: 'text', contenteditable: true, html: 'Hello World!' });
+    this.context.model.push({ type: 'text', html: 'We will write a simple program C# that displays Hello, World! on the screen.' });
+    this.context.model.push({ type: 'code', header: "Program.cs", html: this.simpleCode });
+    this.context.model.push({ type: 'text', html: 'Output' });
+    this.context.model.push({ type: 'text', html: 'Hello World!' });
 
   }
   textControl = {
@@ -47,37 +47,25 @@ export class CodeSnapshotComponent {
     backColors: ["#ffffff", "#000000", "#ff0000", "#00ff00", "#0000ff", "#ffff00", "#ff00ff", "#00ffff"]
   };
 
-  updateContentEditable(value: boolean): void {
-    this.context.model.forEach(element => {
-      element.contenteditable = value
-    });
-  }
-
   captureDiv() {
-    this.updateContentEditable(false);
-    try {
-      
-      const div = document.getElementById('captureDiv');  // Your div's id
-      if (div) {
-        const filename = `CodeSnapshot-${new Date().getTime()}.png`;
 
-        html2canvas(div).then(canvas => {
-          const imgData = canvas.toDataURL('image/png');
-          const downloadLink = document.createElement('a');
-          downloadLink.href = imgData;
-          downloadLink.download = filename;
-          downloadLink.click();
+    const div = document.getElementById('captureDiv');  // Your div's id
+    if (div) {
+      const filename = `CodeSnapshot-${new Date().getTime()}.png`;
 
-          this.updateContentEditable(false);
-        });
-      }
-    } catch {
-      this.updateContentEditable(false);
+      html2canvas(div).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const downloadLink = document.createElement('a');
+        downloadLink.href = imgData;
+        downloadLink.download = filename;
+        downloadLink.click();
+
+      });
     }
   }
 
   addCode() {
-    this.context.model.push({ type: 'code', contenteditable: true, header: "Program.cs", html: this.simpleCode });
+    this.context.model.push({ type: 'code', header: "Program.cs", html: this.simpleCode });
   }
   onContentChange(event: any, html: any): void {
     html = event.target.innerHTML;
@@ -86,7 +74,7 @@ export class CodeSnapshotComponent {
     this.context.model.pop()
   }
   addText() {
-    this.context.model.push({ type: 'text', contenteditable: true, html: 'My text' });
+    this.context.model.push({ type: 'text', html: 'My text' });
   }
 
   execCommand(cmdId: string, value: string) {
@@ -128,5 +116,4 @@ interface ContentModel {
   type: 'text' | 'code'; // Either 'text' or 'code'
   html: string; // Represents the HTML content as a string
   header?: string; // Represents the HTML content as a string
-  contenteditable: boolean
 }

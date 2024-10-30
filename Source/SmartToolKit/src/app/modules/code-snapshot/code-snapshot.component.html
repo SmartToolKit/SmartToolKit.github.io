@@ -139,14 +139,14 @@
                                 <tbody>
                                     <tr>
                                         <td class="td-header-left"></td>
-                                        <td class="td-header-center" [attr.contenteditable]="item.contenteditable"
+                                        <td class="td-header-center" contenteditable="true"
                                             (input)="onContentChange($event, item.header)" [innerHTML]="item.header">
                                             Program.cs</td>
                                         <td class="td-header-right"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="3">
-                                            <div class="code-box" [attr.contenteditable]="item.contenteditable"
+                                            <div class="code-box" contenteditable="true"
                                                 [style.min-width.px]="context.minWidth"
                                                 (input)="onContentChange($event, item.html)" [innerHTML]="item.html">
                                             </div>
@@ -154,8 +154,8 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div *ngIf="item.type=='text'" [attr.contenteditable]="item.contenteditable"
-                                [innerHTML]="item.html" (input)="onContentChange($event, item.html)"></div>
+                            <div *ngIf="item.type=='text'" contenteditable="true" [innerHTML]="item.html"
+                                (input)="onContentChange($event, item.html)"></div>
                         </div>
                     </span>
 
