@@ -13,7 +13,7 @@
 
     i {
         position: absolute;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
         top: 50%;
         left: 50%;
     }
@@ -24,7 +24,6 @@
     background-size: contain;
     height: 30px;
     width: 60px;
-    border-radius: 10px;
 }
 
 .td-header-right {
@@ -32,41 +31,11 @@
     background-size: contain;
     height: 30px;
     width: 60px;
-    border-radius: 10px;
 }
 
 .td-header-center {
     height: 30px;
     text-align: center;
-}
-
-.template-night {
-    background-image: linear-gradient(150deg, #3b3b3b, rgb(33 33 33));
-
-    table {
-        background-color: #1f2035;
-        color: white;
-        border-radius: 10px;
-
-        .td-header-left {
-            background-image: url('/assets/images/modules/code-snapshot/templates/night.png');
-        }
-    }
-}
-
-.template-fantasy {
-    background-image: linear-gradient(150deg, #cd309a, rgb(0, 102, 255));
-
-    table {
-        background-color: #f1cbe6;
-        color: #c44170;
-        border-radius: 10px;
-        box-shadow: 3px 3px 10px 2px silver;
-
-        .td-header-left {
-            background-image: url('/assets/images/modules/code-snapshot/templates/fantasy.png');
-        }
-    }
 }
 
 .code-box {
@@ -97,4 +66,81 @@
 
 .ml6px {
     margin-left: 6px;
+}
+
+
+
+
+
+.template-night {
+    background-image: linear-gradient(150deg, #3b3b3b, rgb(33 33 33));
+
+    table {
+        background-color: #1f2035;
+        color: white;
+        border-radius: 10px;
+
+        .td-header-left {
+            background-image: url('/assets/images/modules/code-snapshot/templates/night.png');
+            border-radius: 10px;
+        }
+    }
+}
+
+.template-fantasy {
+    background-image: linear-gradient(150deg, #cd309a, rgb(0, 102, 255));
+
+    table {
+        background-color: #f1cbe6;
+        color: #c44170;
+        border-radius: 10px;
+        box-shadow: 3px 3px 10px 2px silver;
+
+        .td-header-left {
+            background-image: url('/assets/images/modules/code-snapshot/templates/fantasy.png');
+            border-radius: 10px;
+        }
+    }
+}
+
+.template-clasic {
+    background-color: #9e9eff;
+    color: black;
+
+    table {
+
+        background-image: radial-gradient(#ffffff, #b1b1b1);
+        border: 1px solid #505050;
+
+        tbody> :first-child {
+            background-color: #505050;
+            color: white;
+        }
+
+        .td-header-right {
+            background-image: url('/assets/images/modules/code-snapshot/templates/clasic.png');
+            width: 62px;
+        }
+    }
+}
+
+
+.template-xp {
+    background-color: white;
+    color: black;
+
+    table {
+        border: 2px solid #0260e3;
+        background-color: white;
+
+        tbody> :first-child {
+            background-color: #0260e3;
+            color: white;
+        }
+
+        .td-header-right {
+            background-image: url('/assets/images/modules/code-snapshot/templates/xp.png');
+            width: 62px;
+        }
+    }
 }
