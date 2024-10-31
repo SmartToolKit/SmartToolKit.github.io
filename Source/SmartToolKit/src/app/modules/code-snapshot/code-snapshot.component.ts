@@ -32,16 +32,16 @@ export class CodeSnapshotComponent {
       id: "template-night",
     },
     {
+      text: "Fantasy",
+      id: "template-fantasy",
+    },
+    {
       text: "XP",
       id: "template-xp",
     },
     {
       text: "Clasic",
       id: "template-clasic",
-    },
-    {
-      text: "Fantasy",
-      id: "template-fantasy",
     }
   ];
   foreColorsEdit = false
