@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1730493164630,
+  "timestamp": 1730575226584,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -16,7 +16,7 @@
         "/main-UX2QJHVJ.js",
         "/manifest.webmanifest",
         "/polyfills-FFHMD2TL.js",
-        "/styles-CQU746RO.css"
+        "/styles-IT5M5GDO.css"
       ],
       "patterns": []
     },
@@ -43,7 +43,6 @@
         "/assets/icons/icon-512x512.png",
         "/assets/icons/icon-72x72.png",
         "/assets/icons/icon-96x96.png",
-        "/assets/images/banner-bg.jpg",
         "/assets/images/barcode-generator.svg",
         "/assets/images/code-snapshot.svg",
         "/assets/images/convert-to-base64.svg",
@@ -619,7 +618,6 @@
         "/assets/webfonts/fa-solid-900.woff2",
         "/assets/webfonts/fa-v4compatibility.ttf",
         "/assets/webfonts/fa-v4compatibility.woff2",
-        "/media/banner-bg-COAS5LGN.jpg",
         "/media/dark-bg-MRZUSLIW.jpg",
         "/media/fa-brands-400-EKH6IKTO.woff2",
         "/media/fa-brands-400-YXWT7IPT.ttf",
@@ -641,7 +639,7 @@
     "/assets/css/flex-slider.css": "d45ff63b518367b24b5a25b89ec204823feae730",
     "/assets/css/fontawesome.css": "d49d46fd7526683ee3e2864b490c1cec5bba1dbd",
     "/assets/css/owl.css": "2cee24283de1080307c51085c7889a06255139b1",
-    "/assets/css/templatemo-liberty-market.css": "d030a3fbe76180064b8cb0fa617176403673d046",
+    "/assets/css/templatemo-liberty-market.css": "1a0a98e377e0500df75a66642212f1feae3324a2",
     "/assets/icons/icon-128x128.png": "ea8c4c37dd3731a9328cfccaa7a208bd890d252f",
     "/assets/icons/icon-144x144.png": "c4f5bbeb23567ca72e13e7bd4e125f8344f975f9",
     "/assets/icons/icon-152x152.png": "1349a4eeb3f5096de643ff01641579c4fc1dc6a6",
@@ -650,7 +648,6 @@
     "/assets/icons/icon-512x512.png": "8eaf7a6dc50e49b4f108f85fb55d6dba32af3179",
     "/assets/icons/icon-72x72.png": "be3ee6126973d3a98cb6d36d0dcd0bd83134b011",
     "/assets/icons/icon-96x96.png": "c662ce49d1f270efa0ee6ee188df509f8cc41a07",
-    "/assets/images/banner-bg.jpg": "6cea5d67bf3d139ed0da221615e8a72b5c819a07",
     "/assets/images/barcode-generator.svg": "4d1bba2804e08ac665c3312fadb3aca07d1cd009",
     "/assets/images/code-snapshot.svg": "661b5b1f39a5c888ad29aa8ab01cdec1f39da200",
     "/assets/images/convert-to-base64.svg": "da46e04294b1132af72a9c66411ee214d34f4b28",
@@ -1227,10 +1224,9 @@
     "/assets/webfonts/fa-v4compatibility.ttf": "fbf72ecb9d7828c2e8504451c13e05d7a018eb29",
     "/assets/webfonts/fa-v4compatibility.woff2": "4dcd1d7b2bda7da7c181015011490e46e23c3969",
     "/favicon.ico": "efefc51e062b338728ed3daf6f28dedd48e7e717",
-    "/index.html": "fa3a4edd18747d1b5091c619d5ef65c16af4d9a2",
+    "/index.html": "7ac51004075039cc626b0e5f7317eb6835908133",
     "/main-UX2QJHVJ.js": "f03b1b173081d9631fee0140bd60adb6ced2eace",
     "/manifest.webmanifest": "c073cdb0462590184db8afdd8025094935e1f463",
-    "/media/banner-bg-COAS5LGN.jpg": "6cea5d67bf3d139ed0da221615e8a72b5c819a07",
     "/media/dark-bg-MRZUSLIW.jpg": "1eb4c767faee4c5fdd6fe80077abae03ed21e78d",
     "/media/fa-brands-400-EKH6IKTO.woff2": "7fdc6b3926b1dd023f9f2ad7d53bc22694694281",
     "/media/fa-brands-400-YXWT7IPT.ttf": "7fc8906350833c191df8a31d8c55c4e960bb04ba",
@@ -1241,7 +1237,7 @@
     "/media/fa-v4compatibility-5VCDHUUN.ttf": "fbf72ecb9d7828c2e8504451c13e05d7a018eb29",
     "/media/fa-v4compatibility-UXEDG7IT.woff2": "4dcd1d7b2bda7da7c181015011490e46e23c3969",
     "/polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
-    "/styles-CQU746RO.css": "fbd241b814249fbf519892e972633bc0afe40b2f"
+    "/styles-IT5M5GDO.css": "0149f94b26d7705f28894101d520c30f2eb011c7"
   },
   "navigationUrls": [
     {

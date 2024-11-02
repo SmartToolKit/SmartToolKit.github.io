@@ -26,15 +26,70 @@ font & reset css
 --------------------------------------------- 
 */
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:100,200,300,400,500,600,700,800,900");
+
 /* 
 ---------------------------------------------
 reset
 --------------------------------------------- 
 */
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, div
-pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q,
-s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li,
-figure, header, nav, section, article, aside, footer, figcaption {
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+div pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+font,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+figure,
+header,
+nav,
+section,
+article,
+aside,
+footer,
+figcaption {
   margin: 0;
   padding: 0;
   border: 0;
@@ -62,13 +117,20 @@ html[xmlns] .clearfix {
   height: 1%;
 }
 
-ul, li {
+ul,
+li {
   padding: 0;
   margin: 0;
   list-style: none;
 }
 
-header, nav, section, article, aside, footer, hgroup {
+header,
+nav,
+section,
+article,
+aside,
+footer,
+hgroup {
   display: block;
 }
 
@@ -76,7 +138,8 @@ header, nav, section, article, aside, footer, hgroup {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
   background-color: #1e1e1e;
@@ -90,7 +153,12 @@ a {
   text-decoration: none !important;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin-top: 0px;
   margin-bottom: 0px;
   color: #fff;
@@ -240,7 +308,7 @@ Pre-loader Style
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0,0,0,0.98);
+  background-color: rgba(0, 0, 0, 0.98);
   display: -webkit-box;
   display: flex;
   -webkit-box-align: center;
@@ -262,29 +330,29 @@ Pre-loader Style
 
 @-webkit-keyframes dot {
   50% {
-      -webkit-transform: translateX(96px);
-      transform: translateX(96px);
+    -webkit-transform: translateX(96px);
+    transform: translateX(96px);
   }
 }
 
 @keyframes dot {
   50% {
-      -webkit-transform: translateX(96px);
-      transform: translateX(96px);
+    -webkit-transform: translateX(96px);
+    transform: translateX(96px);
   }
 }
 
 @-webkit-keyframes dots {
   50% {
-      -webkit-transform: translateX(-31px);
-      transform: translateX(-31px);
+    -webkit-transform: translateX(-31px);
+    transform: translateX(-31px);
   }
 }
 
 @keyframes dots {
   50% {
-      -webkit-transform: translateX(-31px);
-      transform: translateX(-31px);
+    -webkit-transform: translateX(-31px);
+    transform: translateX(-31px);
   }
 }
 
@@ -338,12 +406,12 @@ Header Style
 
 .background-header {
   background-color: #fff !important;
-  height: 70px!important;
-  position: fixed!important;
-  top: 0!important;
+  height: 70px !important;
+  position: fixed !important;
+  top: 0 !important;
   left: 0;
   right: 0;
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.15)!important;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15) !important;
   -webkit-transition: all .5s ease 0s;
   -moz-transition: all .5s ease 0s;
   -o-transition: all .5s ease 0s;
@@ -578,6 +646,7 @@ Header Style
     padding-left: 10px;
     padding-right: 10px;
   }
+
   .header-area .main-nav:before {
     display: none;
   }
@@ -587,38 +656,47 @@ Header Style
   .header-area {
     top: 0;
   }
+
   .header-area .main-nav {
     background-color: transparent;
     border-radius: 0px;
   }
+
   .header-area .main-nav .nav {
     height: auto;
     flex-basis: 100%;
   }
+
   .header-area .main-nav .logo {
     position: absolute;
     left: 30px;
     top: 15px;
   }
+
   .background-header .main-nav .logo {
     top: 0px;
   }
+
   .background-header .main-nav .border-button {
     top: 0px !important;
   }
+
   .header-area .main-nav .border-button {
     position: absolute;
     top: 15px;
     right: 70px;
   }
+
   .header-area.header-sticky .nav li a:hover,
   .header-area.header-sticky .nav li a.active {
-    color: #7453fc!important;
+    color: #7453fc !important;
     opacity: 1;
   }
+
   .header-area.header-sticky .nav li.search-icon a {
     width: 100%;
   }
+
   .header-area {
     background-color: #f7f7f7;
     padding: 0px 15px;
@@ -626,18 +704,23 @@ Header Style
     box-shadow: none;
     text-align: center;
   }
+
   .header-area .container {
     padding: 0px;
   }
+
   .header-area .logo {
     margin-left: 0px;
   }
+
   .header-area .menu-trigger {
     display: block !important;
   }
+
   .header-area .main-nav {
     overflow: hidden;
   }
+
   .header-area .main-nav .nav {
     float: none;
     width: 100%;
@@ -648,16 +731,20 @@ Header Style
     transition: all 0s ease 0s;
     margin-left: 0px;
   }
+
   .header-area.header-sticky .nav {
     margin-top: 85px !important;
     text-align: center;
   }
+
   .background-header.header-sticky .nav {
     margin-top: 70px !important;
   }
+
   .header-area .main-nav .nav li:first-child {
     border-top: 1px solid #eee;
   }
+
   .header-area .main-nav .nav li {
     width: 100%;
     background: #fff;
@@ -665,6 +752,7 @@ Header Style
     padding-left: 0px !important;
     padding-right: 0px !important;
   }
+
   .header-area .main-nav .nav li a {
     height: 50px !important;
     line-height: 50px !important;
@@ -673,10 +761,12 @@ Header Style
     background: #fff !important;
     color: #1e1e1e !important;
   }
+
   .header-area .main-nav .nav li a:hover {
     background: #fff !important;
-    color: #7453fc!important;
+    color: #7453fc !important;
   }
+
   .header-area .main-nav .nav li.has-sub ul.sub-menu {
     position: relative;
     visibility: inherit;
@@ -689,23 +779,29 @@ Header Style
     height: 0px;
     transition: all 0s;
   }
+
   .header-area .main-nav .nav li.submenu ul li a {
     font-size: 12px;
     font-weight: 400;
   }
+
   .header-area .main-nav .nav li.submenu ul li a:hover:before {
     width: 0px;
   }
+
   .header-area .main-nav .nav li.has-sub ul.sub-menu {
     height: auto;
   }
+
   .header-area .main-nav .nav li.has-sub:after {
     color: #3B566E;
     right: 30px;
     font-size: 14px;
     top: 15px;
   }
-  .header-area .main-nav .nav li.submenu:hover ul, .header-area .main-nav .nav li.submenu:focus ul {
+
+  .header-area .main-nav .nav li.submenu:hover ul,
+  .header-area .main-nav .nav li.submenu:focus ul {
     height: 0px;
   }
 }
@@ -718,7 +814,7 @@ Banner Style
 
 .main-banner {
   min-height: 100vh;
-  background-image: url(../images/banner-bg.jpg);
+  background-image: url(../images/dark-bg.jpg);
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -776,7 +872,7 @@ Banner Style
 }
 
 .main-banner .owl-nav .owl-prev span,
-.main-banner .owl-nav .owl-next span  {
+.main-banner .owl-nav .owl-next span {
   width: 46px;
   height: 46px;
   line-height: 46px;
@@ -887,7 +983,7 @@ Categories & Collections Style
 
 .collections .item .down-content h4 {
   font-size: 20px;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   margin-bottom: 20px;
   padding-bottom: 20px;
 }
@@ -947,7 +1043,7 @@ Categories & Collections Style
 }
 
 .collections .owl-nav .owl-prev span,
-.collections .owl-nav .owl-next span  {
+.collections .owl-nav .owl-next span {
   width: 46px;
   height: 46px;
   line-height: 46px;
@@ -1193,8 +1289,8 @@ Footer Style
 */
 
 footer {
-  background: rgb(125,90,254);
-  background: linear-gradient(132deg, rgba(125,90,254,1) 25%, rgba(160,84,244,1) 100%);
+  background: rgb(125, 90, 254);
+  background: linear-gradient(132deg, rgba(125, 90, 254, 1) 25%, rgba(160, 84, 244, 1) 100%);
   text-align: center;
   padding: 25px 0px;
 }
@@ -1360,7 +1456,7 @@ Explore Style
 }
 
 .featured-explore .owl-nav .owl-prev span,
-.featured-explore .owl-nav .owl-next span  {
+.featured-explore .owl-nav .owl-next span {
   width: 46px;
   height: 46px;
   line-height: 46px;
@@ -1413,6 +1509,7 @@ Explore Style
   padding: 60px 0px 120px 0px;
   position: relative;
 }
+
 .discover-items #search-form select {
   cursor: pointer;
 }
@@ -1501,7 +1598,7 @@ Explore Style
 .discover-items .item .line-dec {
   width: 100%;
   height: 1px;
-  background-color: rgba(255,255,255,0.2);
+  background-color: rgba(255, 255, 255, 0.2);
   margin: 30px 0px;
 }
 
@@ -1576,16 +1673,18 @@ Details Page Style
 --------------------------------------------- 
 */
 
-.item-details-page{
-    background-image: url(../images/dark-bg.jpg);
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    padding-top: 160px;
-    background-color: #2a2a2a;
-    padding-bottom: 60px; 
-    min-height: 100vh; /* Ensures full viewport height */
+.item-details-page {
+  background-image: url(../images/dark-bg.jpg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  padding-top: 160px;
+  background-color: #2a2a2a;
+  padding-bottom: 60px;
+  min-height: 100vh;
+  /* Ensures full viewport height */
 }
+
 .item-details-page .left-image {
   margin-right: 30px;
 }
@@ -1638,7 +1737,7 @@ Details Page Style
 
 .item-details-page span.bid,
 .item-details-page span.owner,
-.item-details-page span.ends  {
+.item-details-page span.ends {
   line-height: 35px;
   position: relative;
   z-index: 2;
@@ -1858,7 +1957,7 @@ Author Page Style
 .author-page .item .line-dec {
   width: 100%;
   height: 1px;
-  background-color: rgba(255,255,255,0.2);
+  background-color: rgba(255, 255, 255, 0.2);
   margin: 30px 0px;
 }
 
@@ -1903,6 +2002,7 @@ Create Page Style
   border-radius: 20px;
   padding: 30px 30px;
 }
+
 #contact {
   background-color: #37393c;
   border-radius: 20px;
@@ -1960,67 +2060,81 @@ body {
   .main-banner .owl-banner {
     margin-top: 80px;
   }
+
   .categories .item {
     margin-bottom: 35px;
   }
+
   .create-nft .section-heading,
   .currently-market .section-heading {
     text-align: center;
   }
+
   .currently-market-item {
     width: 100%;
   }
+
   .create-nft .section-heading .line-dec,
   .currently-market .section-heading .line-dec {
     margin: 0 auto;
   }
+
   .create-nft .main-button,
   .currently-market .filters {
     text-align: center;
   }
+
   .currently-market .filters {
     margin-bottom: 30px;
     margin-top: -30px;
   }
+
   .create-nft p {
     margin-right: 0px;
   }
+
   .create-nft .first-item:after,
   .create-nft .second-item:after,
   .create-nft .first-item .number,
   .create-nft .second-item .number {
     display: none;
   }
+
   .create-nft .item {
     text-align: center;
     margin-top: 45px;
   }
+
   .discover-items #search-form {
     margin-bottom: 40px;
     margin-top: -30px;
   }
+
   .discover-items #search-form fieldset {
     margin-bottom: 30px;
   }
+
   .top-seller .item h6 {
     font-size: 16px;
   }
+
   .item-details-page .left-image {
     margin-right: 0px;
     margin-bottom: 30px;
   }
+
   .current-bid select {
     float: none;
   }
+
   .author-page .author {
     justify-content: center;
   }
+
   .author-page .right-info {
     margin-left: 0px;
     margin-top: 30px;
   }
 }
 
-@media (max-width: 1200px) {
-  
-}
+@media (max-width: 1200px) {}
