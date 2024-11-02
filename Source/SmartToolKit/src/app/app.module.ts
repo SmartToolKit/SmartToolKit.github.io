@@ -1,6 +1,7 @@
 import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { ColorChromeModule } from 'ngx-color/chrome';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,6 +26,7 @@ import { SvgEditorComponent } from './modules/svg-editor/svg-editor.component';
 import { QrcodeGeneratorComponent } from './modules/qrcode-generator/qrcode-generator.component';
 import { BarcodeGeneratorComponent } from './modules/barcode-generator/barcode-generator.component';
 import { NgxBarcode6Module } from 'ngx-barcode6';
+import { ColorPickerComponent } from './modules/color-picker/color-picker.component';
 
 @NgModule({
   declarations: [
@@ -45,11 +47,12 @@ import { NgxBarcode6Module } from 'ngx-barcode6';
     CssMinifierComponent,
     SvgEditorComponent,
     QrcodeGeneratorComponent,
-    BarcodeGeneratorComponent
+    BarcodeGeneratorComponent,
+    ColorPickerComponent
   ],
   imports: [
     HttpClientModule,
-    NgxBarcode6Module,
+    NgxBarcode6Module,ColorChromeModule,
     NgxJsonViewerModule,
     FormsModule,
     BrowserModule,

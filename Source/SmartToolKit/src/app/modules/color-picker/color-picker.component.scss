@@ -1,0 +1,25 @@
+::ng-deep color-chrome {
+    width: 100% !important;
+    display: block;
+}
+
+::ng-deep .chrome-picker {
+    width: 100% !important;
+}
+
+
+::ng-deep color-chrome-fields {
+    display: none !important;
+}
+
+::ng-deep .chrome-hue {
+    height: 100% !important;
+}
+
+::ng-deep .color-hue-slider {
+    height: 30px !important;
+}
+
+::ng-deep .chrome-alpha {
+    display: none !important;
+}

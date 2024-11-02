@@ -1,0 +1,35 @@
+<div class="item-details-page px-2">
+    <div class="container contact px-2">
+        <div class="row px-4">
+            <div class="row" style="margin: 0px !important;">
+                <div class="col-sm-8 pb-3 pb-lg-0">
+                    <color-chrome [(color)]="selectedColor" class="color-chrome"></color-chrome>
+                </div>
+                <div class="col-sm-4">
+                    <div class="col-md-12 mt-3">
+                        <h4 class="mb-0">HEX</h4>
+                        <input [(ngModel)]="selectedColor" class="form-control bg-dark text-white">
+                    </div>
+                    <div class="col-md-12 mt-3">
+                        <h4 class="mb-0">RGB</h4>
+                        <input [value]="rgbColor" class="form-control bg-dark text-white" readonly>
+                    </div>
+                    <div class="col-md-12 mt-3">
+                        <h4 class="mb-0">CMYK</h4>
+                        <input [value]="cmykColor" class="form-control bg-dark text-white" readonly>
+                    </div>
+
+                    <div class="col-md-12 mt-3">
+                        <h4 class="mb-0">HSV</h4>
+                        <input [value]="hsvColor" class="form-control bg-dark text-white" readonly>
+                    </div>
+                    <div class="col-md-12 mt-3">
+                        <h4 class="mb-0">HSL</h4>
+                        <input [value]="hslColor" class="form-control bg-dark text-white" readonly>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

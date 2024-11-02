@@ -22,7 +22,8 @@ export class DashboardComponent {
     { title: "Svg Editor", description: "Edit and optimize your SVG files.", url: "svg-editor" },
     { title: "QR Code Generator", description: "Generate QR codes quickly and easily for URLs, text, or other data.", url: "qrcode-generator" },
     { title: "BarCode Generator", description: "Create barcodes for various formats, ideal for product labeling and inventory management.", url: "barcode-generator" },
-    { title: "Code Snapshot", description: "Capture and save code snippets with syntax highlighting for sharing or documentation.", url: "code-snapshot" }
+    { title: "Code Snapshot", description: "Capture and save code snippets with syntax highlighting for sharing or documentation.", url: "code-snapshot" },
+    { title: "Color Picker", description: "Select and customize colors easily with this intuitive color picker tool.", url: "color-picker" }
   ];
   search = '';
   filteredTools = this.tools;
