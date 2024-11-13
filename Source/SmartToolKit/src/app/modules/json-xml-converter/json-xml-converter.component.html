@@ -5,6 +5,12 @@
                 <div class="col-sm-6  pb-3 pb-lg-0">
 
                     <div class="col-lg-12">
+                        <button (click)="openFile(jsonData)" class="btn btn-success btn-sm mb-3 mx-1">Open File</button>
+                        <button (click)="readAsUrl(jsonData)" class="btn btn-success btn-sm mb-3 mx-1">Read as
+                            Url</button>
+                        <button (click)="copy(jsonData)" class="btn btn-info btn-sm mb-3 mx-1">Copy</button>
+                        <button (click)="paste(jsonData)" class="btn btn-info btn-sm mb-3 mx-1">Paste</button>
+                        <button (click)="download(jsonData)" class="btn btn-warning btn-sm mb-3 mx-1">Download</button>
                     </div>
                     <div class="col-lg-12">
                         <textarea
@@ -15,6 +21,12 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="col-lg-12">
+                        <button (click)="openFile(xmlData)" class="btn btn-success btn-sm mb-3 mx-1">Open File</button>
+                        <button (click)="readAsUrl(xmlData)" class="btn btn-success btn-sm mb-3 mx-1">Read as
+                            Url</button>
+                        <button (click)="copy(xmlData)" class="btn btn-info btn-sm mb-3 mx-1">Copy</button>
+                        <button (click)="paste(xmlData)" class="btn btn-info btn-sm mb-3 mx-1">Paste</button>
+                        <button (click)="download(xmlData)" class="btn btn-warning btn-sm mb-3 mx-1">Download</button>
                     </div>
                     <div class="col-lg-12">
 

@@ -15,11 +15,13 @@ import { XMLParser, XMLBuilder } from 'fast-xml-parser';
 export class JsonXmlConverterComponent {
   jsonData = {
     content: '',
-    success: true
+    success: true,
+    type: 'json'
   }
   xmlData = {
     content: '',
-    success: false
+    success: true,
+    type: 'xml'
   }
   private xmlParser: XMLParser;
   private xmlBuilder: XMLBuilder;
@@ -36,7 +38,7 @@ export class JsonXmlConverterComponent {
     this.xmlBuilder = new XMLBuilder({ ignoreAttributes: false, format: true, indentBy: "  " });
 
   }
-  
+
   jsonUpdated() {
     try {
       const json = JSON.parse(this.jsonData.content);
@@ -60,5 +62,74 @@ export class JsonXmlConverterComponent {
     }
   }
 
+  download(obj: any) {
+    if (!obj.content) return
+    const filename = `JsonXmlConverter-${new Date().getTime()}.${obj.type}`;
 
+    if (this.fileHelper.download(obj.content, filename)) {
+      swal.fire({
+        title: 'Download Ready',
+        text: `Your ${this.getTypeUpperCase(obj)} downloaded as ${filename}.`,
+        icon: 'success'
+      });
+    }
+
+  }
+  async paste(obj: any) {
+    obj.content = await this.actionHelper.paste();
+    this.update(obj)
+  }
+
+  copy(obj: any) {
+    this.actionHelper.copy(obj.content);
+  }
+
+  readAsUrl(obj: any) {
+    swal.fire({
+      title: 'Enter URL',
+      input: 'url',
+      inputLabel: `Your ${this.getTypeUpperCase(obj)} file URL`,
+      inputPlaceholder: 'https://example.com/example.' + obj.type,
+      showCancelButton: true,
+      inputValidator: (value) => {
+        if (!value) {
+          return 'You need to enter a URL!';
+        } else if (!this.validationHelper.isValidUrl(value)) {
+          return 'Please enter a valid URL!';
+        }
+        return null;
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.http.get(result.value).subscribe(
+          (response) => {
+            obj.content = response;
+            this.update(obj)
+            swal.fire('Success', `${this.getTypeUpperCase(obj)} loaded from URL successfully!`, 'success');
+          },
+          (error) => {
+            swal.fire('Error', `Failed to load ${this.getTypeUpperCase(obj)} from URL!`, 'error');
+          }
+        );
+      }
+    });
+
+  }
+  openFile(obj: any) {
+    this.fileHelper.openFile('.' + obj.type).then(content => {
+      obj.content = content
+      this.update(obj)
+    }).catch(error => {
+      console.error('Error:', error);
+    });
+  }
+  update(obj: any) {
+    if (obj.type == 'xml')
+      this.xmlUpdated();
+    else
+      this.jsonUpdated();
+  }
+  getTypeUpperCase(obj: any) {
+    return (obj.type + '').toUpperCase()
+  }
 }
