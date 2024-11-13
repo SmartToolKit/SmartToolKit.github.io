@@ -13,6 +13,7 @@ export class DashboardComponent {
     { title: "JSON Viewer", description: "Easily view and format JSON data, making it more readable and easier to work with.", url: "json-viewer" },
     { title: "JWT Viewer", description: "Decode and verify JWT tokens with this easy-to-use tool.", url: "jwt-viewer" },
     { title: "GUID Generator", description: "Generate unique GUIDs for use in your applications and databases.", url: "guid-generator" },
+    { title: "JSON/XML Converter", description: "", url: "json-xml-converter" },
     { title: "Rsa Key Generator", description: "Generate RSA keys for cryptographic purposes.", url: "rsa-key-generator" },
     { title: "Regex Tester", description: "Test and validate regular expressions.", url: "regex-tester" },
     { title: "Convert To Base64", description: "Convert your files or text into Base64 format.", url: "convert-to-base64" },

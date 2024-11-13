@@ -16,6 +16,7 @@ import { SvgEditorComponent } from './modules/svg-editor/svg-editor.component';
 import { QrcodeGeneratorComponent } from './modules/qrcode-generator/qrcode-generator.component';
 import { BarcodeGeneratorComponent } from './modules/barcode-generator/barcode-generator.component';
 import { ColorPickerComponent } from './modules/color-picker/color-picker.component';
+import { JsonXmlConverterComponent } from './modules/json-xml-converter/json-xml-converter.component';
 
 const routes: Routes = [{
   path: '',
@@ -80,6 +81,9 @@ const routes: Routes = [{
     {
       path: 'barcode-generator',
       component: BarcodeGeneratorComponent
+    },    {
+      path: 'json-xml-converter',
+      component: JsonXmlConverterComponent
     },
     {
       path: 'color-picker',
