@@ -1,4 +1,4 @@
-import { NgModule, isDevMode } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { ColorChromeModule } from 'ngx-color/chrome';
@@ -12,7 +12,6 @@ import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { JsonViewerComponent } from './modules/json-viewer/json-viewer.component';
 import { FormsModule } from '@angular/forms';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
-import { ServiceWorkerModule } from '@angular/service-worker';
 import { GuidGeneratorComponent } from './modules/guid-generator/guid-generator.component';
 import { JwtViewerComponent } from './modules/jwt-viewer/jwt-viewer.component';
 import { ConvertToBase64Component } from './modules/convert-to-base64/convert-to-base64.component';
@@ -59,12 +58,6 @@ import { JsonXmlConverterComponent } from './modules/json-xml-converter/json-xml
     FormsModule,
     BrowserModule,
     AppRoutingModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: !isDevMode(),
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
-    })
   ],
   providers: [
     provideClientHydration()
