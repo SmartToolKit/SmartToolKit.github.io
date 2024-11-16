@@ -27,6 +27,7 @@ import { BarcodeGeneratorComponent } from './modules/barcode-generator/barcode-g
 import { NgxBarcode6Module } from 'ngx-barcode6';
 import { ColorPickerComponent } from './modules/color-picker/color-picker.component';
 import { JsonXmlConverterComponent } from './modules/json-xml-converter/json-xml-converter.component';
+import { JsonToEnvironmentComponent } from './modules/json-to-environment/json-to-environment.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { JsonXmlConverterComponent } from './modules/json-xml-converter/json-xml
     QrcodeGeneratorComponent,
     BarcodeGeneratorComponent,
     ColorPickerComponent,
-    JsonXmlConverterComponent
+    JsonXmlConverterComponent,
+    JsonToEnvironmentComponent
   ],
   imports: [
     HttpClientModule,

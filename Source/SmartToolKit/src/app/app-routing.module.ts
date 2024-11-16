@@ -17,6 +17,7 @@ import { QrcodeGeneratorComponent } from './modules/qrcode-generator/qrcode-gene
 import { BarcodeGeneratorComponent } from './modules/barcode-generator/barcode-generator.component';
 import { ColorPickerComponent } from './modules/color-picker/color-picker.component';
 import { JsonXmlConverterComponent } from './modules/json-xml-converter/json-xml-converter.component';
+import { JsonToEnvironmentComponent } from './modules/json-to-environment/json-to-environment.component';
 
 const routes: Routes = [{
   path: '',
@@ -88,6 +89,10 @@ const routes: Routes = [{
     {
       path: 'color-picker',
       component: ColorPickerComponent
+    },
+    {
+      path: 'json-to-environment',
+      component: JsonToEnvironmentComponent
     }
   ]
 }];

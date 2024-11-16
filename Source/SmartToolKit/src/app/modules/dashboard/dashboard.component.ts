@@ -24,7 +24,8 @@ export class DashboardComponent {
     { title: "QR Code Generator", description: "Generate QR codes quickly and easily for URLs, text, or other data.", url: "qrcode-generator" },
     { title: "BarCode Generator", description: "Create barcodes for various formats, ideal for product labeling and inventory management.", url: "barcode-generator" },
     { title: "Code Snapshot", description: "Capture and save code snippets with syntax highlighting for sharing or documentation.", url: "code-snapshot" },
-    { title: "Color Picker", description: "Select and customize colors easily with this intuitive color picker tool.", url: "color-picker" }
+    { title: "Color Picker", description: "Select and customize colors easily with this intuitive color picker tool.", url: "color-picker" },
+    { title: "Json To Environment", description: "Convert JSON objects into environment variable format. This tool simplifies the process of transforming your JSON data into a key-value format suitable for use in environment configuration files, such as those required in Docker, CI/CD pipelines, or other applications.", url: "json-to-environment" }
   ];
   search = '';
   filteredTools = this.tools;
