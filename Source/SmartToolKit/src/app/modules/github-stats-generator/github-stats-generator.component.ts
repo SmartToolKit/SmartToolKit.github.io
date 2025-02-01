@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActionHelperService } from '../../core/services/action-helper.service';
 import { FileHelperService } from '../../core/services/file-helper.service';
@@ -11,9 +11,10 @@ import { ValidationHelperService } from '../../core/services/validation-helper.s
   styleUrl: './github-stats-generator.component.scss'
 })
 export class GithubStatsGeneratorComponent {
+  @ViewChild('userNameInput') userNameInput!: ElementRef;
+
   copyToClipboard(link: string) {
     this.actionHelper.copy(link)
-
   }
   constructor(
     private http: HttpClient,
@@ -23,6 +24,11 @@ export class GithubStatsGeneratorComponent {
     public actionHelper: ActionHelperService
   ) {
     this.titleService.setTitle("Smart ToolKit - GitHub Stats Generator");
+    setTimeout(() => {
+      if (this.userNameInput) {
+        this.userNameInput.nativeElement.classList.add('heartBeat');
+      }
+    }, 2000);
   }
 
 
