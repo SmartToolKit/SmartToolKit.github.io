@@ -26,7 +26,7 @@ export class DashboardComponent {
     { title: "Code Snapshot", description: "Capture and save code snippets with syntax highlighting for sharing or documentation.", url: "code-snapshot" },
     { title: "Color Picker", description: "Select and customize colors easily with this intuitive color picker tool.", url: "color-picker" },
     { title: "Json To Environment", description: "Convert JSON objects into environment variable format. This tool simplifies the process of transforming your JSON data into a key-value format suitable for use in environment configuration files, such as those required in Docker, CI/CD pipelines, or other applications.", url: "json-to-environment" },
-    { title: "GitHub Stats Generator", description: "", url: "github-stats-generator" }
+    { title: "GitHub Stats Generator", description: "Generate insightful GitHub statistics, including contributions, repositories, and activity trends. This tool helps you visualize your GitHub performance with detailed analytics and customizable charts.", url: "github-stats-generator" }
   ];
   search = '';
   filteredTools = this.tools;
