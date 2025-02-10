@@ -43,10 +43,10 @@ export class GithubStatsGeneratorComponent {
   }
 
   onChange() {
-    this.model.statsImg = `https://github-readme-stats.vercel.app/api` +
-      `?username=${this.model.userName}&show_icons=true&theme=${this.model.theme}&count_private=${this.model.countPrivateCommits}&hide_border=${this.model.hideCardBorder}`
-    this.model.langsImg = `https://github-readme-stats.vercel.app/api/top-langs/?username=` +
-      `samanazadi1996&theme=${this.model.theme}&layout=${this.model.topLangLayout}&v=1&hide_border=${this.model.hideCardBorder}`
+    this.model.statsImg = `https://github-readme-stats.vercel.app/api?` +
+      `username=${this.model.userName}&show_icons=true&theme=${this.model.theme}&count_private=${this.model.countPrivateCommits}&hide_border=${this.model.hideCardBorder}`
+    this.model.langsImg = `https://github-readme-stats.vercel.app/api/top-langs/?` +
+      `username=${this.model.userName}&theme=${this.model.theme}&layout=${this.model.topLangLayout}&v=1&hide_border=${this.model.hideCardBorder}`
   }
   topLangsLayout =
     [
