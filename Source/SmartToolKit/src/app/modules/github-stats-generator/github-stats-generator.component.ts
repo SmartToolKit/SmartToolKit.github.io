@@ -29,6 +29,7 @@ export class GithubStatsGeneratorComponent {
         this.userNameInput.nativeElement.classList.add('heartBeat');
       }
     }, 2000);
+    this.onChange()
   }
 
 
@@ -38,16 +39,33 @@ export class GithubStatsGeneratorComponent {
     theme: "default",
     topLangLayout: "compact",
     countPrivateCommits: true,
-    statsImg: "https://github-readme-stats.vercel.app/api?username=samanazadi1996&show_icons=true&theme=default&count_private=true&hide_border=true",
-    langsImg: "https://github-readme-stats.vercel.app/api/top-langs/?username=samanazadi1996&theme=default&layout=compact&v=1&hide_border=true"
+    statsImg: "",
+    langsImg: ""
   }
 
   onChange() {
-    this.model.statsImg = `https://github-readme-stats.vercel.app/api?` +
-      `username=${this.model.userName}&show_icons=true&theme=${this.model.theme}&count_private=${this.model.countPrivateCommits}&hide_border=${this.model.hideCardBorder}`
-    this.model.langsImg = `https://github-readme-stats.vercel.app/api/top-langs/?` +
-      `username=${this.model.userName}&theme=${this.model.theme}&layout=${this.model.topLangLayout}&v=1&hide_border=${this.model.hideCardBorder}`
+    const { userName, theme, countPrivateCommits, hideCardBorder, topLangLayout } = this.model;
+
+    const statsParams = new URLSearchParams({
+      username: userName,
+      show_icons: 'true',
+      theme,
+      count_private: String(countPrivateCommits),
+      hide_border: String(hideCardBorder),
+    });
+
+    const langsParams = new URLSearchParams({
+      username: userName,
+      theme,
+      layout: topLangLayout,
+      hide_border: String(hideCardBorder),
+      v: '1',
+    });
+
+    this.model.statsImg = `https://github-readme-stats.vercel.app/api?${statsParams}`;
+    this.model.langsImg = `https://github-readme-stats.vercel.app/api/top-langs/?${langsParams}`;
   }
+
   topLangsLayout =
     [
       { value: "compact", text: "Compact" },
