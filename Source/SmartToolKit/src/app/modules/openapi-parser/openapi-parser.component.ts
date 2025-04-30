@@ -26,7 +26,7 @@ export class OpenapiParserComponent {
 
     this.titleService.setTitle("Smart ToolKit - Openapi Parser")
 
-    // this.generate("https://clean-architecture.koyeb.app/swagger/v1/swagger.json")
+    this.generate("https://clean-architecture.koyeb.app/swagger/v1/swagger.json")
   }
   readAsUrl() {
     swal.fire({
@@ -66,6 +66,7 @@ export class OpenapiParserComponent {
               method: method.toUpperCase(),
               parameters: this.extractParameters(details),
               responses: this.extractResponses(details.responses),
+              requestBody: this.extractRequestBody(details.requestBody),
               descriptions: []
             };
 
@@ -78,7 +79,26 @@ export class OpenapiParserComponent {
       }
     );
   }
-
+  private extractRequestBody(requestBody: any): any | null {
+    if (!requestBody?.content) return null;
+  
+    const contentTypes = Object.keys(requestBody.content);
+    let sample = null;
+  
+    for (const contentType of contentTypes) {
+      const schema = requestBody.content[contentType]?.schema;
+      if (schema) {
+        sample = this.generateSample(schema);
+        return {
+          contentType,
+          sample: JSON.stringify(sample, null, 2)
+        };
+      }
+    }
+  
+    return null;
+  }
+  
   private extractParameters(details: any): any[] {
     const parameters = details.parameters || [];
     return parameters.map((param: any) => ({
