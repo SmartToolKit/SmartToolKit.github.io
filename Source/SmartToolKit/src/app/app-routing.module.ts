@@ -19,6 +19,7 @@ import { ColorPickerComponent } from './modules/color-picker/color-picker.compon
 import { JsonXmlConverterComponent } from './modules/json-xml-converter/json-xml-converter.component';
 import { JsonToEnvironmentComponent } from './modules/json-to-environment/json-to-environment.component';
 import { GithubStatsGeneratorComponent } from './modules/github-stats-generator/github-stats-generator.component';
+import { OpenapiParserComponent } from './modules/openapi-parser/openapi-parser.component';
 
 const routes: Routes = [{
   path: '',
@@ -98,6 +99,10 @@ const routes: Routes = [{
     {
       path: 'github-stats-generator',
       component: GithubStatsGeneratorComponent
+    },
+    {
+      path: 'openapi-parser',
+      component: OpenapiParserComponent
     }
   ]
 }];

@@ -1,0 +1,76 @@
+.table-doc {
+    .methods {
+        width: 60px;
+
+    }
+
+    .post-method {
+        color: green;
+    }
+
+    .get-method {
+        color: blue;
+    }
+
+    .put-method {
+        color: goldenrod;
+    }
+
+    .delete-method {
+        color: red;
+    }
+
+    width: 100%;
+}
+
+.body-doc {
+    background-color: white;
+    padding: 10px;
+}
+
+.doc-text-dark * {
+
+    color: black;
+}
+
+.doc-w-50 {
+    width: 50% !important;
+}
+
+.content-tag {
+    background-color: rgb(167 255 225);
+    margin: 2px;
+    padding: 0px 6px;
+    border-radius: 8px;
+}
+
+.f-11 {
+    font-size: 11px !important;
+}
+
+.right-0 {
+    right: 0px;
+}
+
+@media print {
+    @page {
+        margin: 0px;
+    }
+
+    .body-doc {
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        top: 0px;
+        z-index: 999999999;
+        padding: 40px;
+    }
+
+    .table-doc {
+        page-break-before: always;
+    }
+
+    .hide-print {
+        display: none;
+    }
+}

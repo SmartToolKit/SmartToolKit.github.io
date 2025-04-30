@@ -29,6 +29,7 @@ import { ColorPickerComponent } from './modules/color-picker/color-picker.compon
 import { JsonXmlConverterComponent } from './modules/json-xml-converter/json-xml-converter.component';
 import { JsonToEnvironmentComponent } from './modules/json-to-environment/json-to-environment.component';
 import { GithubStatsGeneratorComponent } from './modules/github-stats-generator/github-stats-generator.component';
+import { OpenapiParserComponent } from './modules/openapi-parser/openapi-parser.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { GithubStatsGeneratorComponent } from './modules/github-stats-generator/
     ColorPickerComponent,
     JsonXmlConverterComponent,
     JsonToEnvironmentComponent,
-    GithubStatsGeneratorComponent
+    GithubStatsGeneratorComponent,
+    OpenapiParserComponent
   ],
   imports: [
     HttpClientModule,
