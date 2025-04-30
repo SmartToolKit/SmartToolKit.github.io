@@ -8,6 +8,14 @@
             </div>
 
             <div class="col-lg-12 body-doc">
+                <div contenteditable="true" *ngIf="openApiContent">
+                    <br>
+                    <h1 style="color: black;text-align: center;">{{openApiContent.info.title}}
+                        <span style="color: gray;text-align: center;">(v{{openApiContent.info.version}})</span>
+                    </h1>
+
+                    <br><br><br>
+                </div>
                 <table class="table-doc" *ngFor="let item of model">
                     <tbody>
                         <!-- Endpoint Header -->
