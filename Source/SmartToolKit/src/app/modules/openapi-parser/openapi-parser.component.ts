@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import swal from 'sweetalert2';
 import { ValidationHelperService } from '../../core/services/validation-helper.service';
@@ -11,6 +11,8 @@ import { FileHelperService } from '../../core/services/file-helper.service';
   styleUrl: './openapi-parser.component.scss'
 })
 export class OpenapiParserComponent {
+  @ViewChild('overviewContentDiv') editableDivRef!: ElementRef<HTMLDivElement>;
+
   apiUrl = '';
   overviewContent: string = ``
   openApiContent: any;
@@ -19,28 +21,29 @@ export class OpenapiParserComponent {
   constructor(private http: HttpClient, private titleService: Title, private validationHelper: ValidationHelperService, private fileHelper: FileHelperService) {
 
     this.titleService.setTitle("Smart ToolKit - Openapi Parser")
-    // this.apiUrl = "https://clean-architecture.koyeb.app/swagger/v1/swagger.json"
-    // this.http.get(this.apiUrl).subscribe(
-    //   (response: any) => {
-    //     this.generate(response);
-    //     this.initOverview()
+    this.apiUrl = "https://clean-architecture.koyeb.app/swagger/v1/swagger.json"
+    this.http.get(this.apiUrl).subscribe(
+      (response: any) => {
+        this.generate(response);
+        this.initOverview()
 
-    //   },
-    //   () => {
-    //     swal.fire('Error', 'Failed to load OpenApi from URL!', 'error');
-    //   }
-    // );
+      },
+      () => {
+        swal.fire('Error', 'Failed to load OpenApi from URL!', 'error');
+      }
+    );
 
   }
-
+  saveDesc(event: FocusEvent, desc: any) {
+    const content = (event.target as HTMLTableCellElement).innerHTML;
+    desc.content = content
+  }
   import() {
     this.fileHelper.openFile('.stkoap').then(content => {
       var data = JSON.parse(content)
       this.apiUrl = data.apiUrl;
       this.overviewContent = data.overviewContent
-
-      this.generate(data.openApiContent);
-
+      this.model = data.model
     }).catch(error => {
       console.error('Error:', error);
     });
@@ -49,10 +52,13 @@ export class OpenapiParserComponent {
 
   export() {
     const filename = `OpenapiParser-${new Date().getTime()}.stkoap`;
+    const overviewContent = this.editableDivRef.nativeElement.innerHTML;
+
     var context = {
       apiUrl: this.apiUrl,
-      overviewContent: this.overviewContent,
-      openApiContent: this.openApiContent
+      overviewContent: overviewContent,
+      openApiContent: this.openApiContent,
+      model: this.model
     };
     if (this.fileHelper.download(JSON.stringify(context), filename)) {
       swal.fire({
@@ -66,7 +72,7 @@ export class OpenapiParserComponent {
     item.descriptions.pop()
   }
   addDesc(item: any) {
-    item.descriptions.push("Write Description")
+    item.descriptions.push({ content: "Write Somthing" })
   }
   print() {
     window.print();

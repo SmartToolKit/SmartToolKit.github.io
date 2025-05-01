@@ -8,26 +8,23 @@
         <button (click)="print()" class="btn btn-success btn-sm mb-3 mx-1">
           Print
         </button>
-        <button class="btn btn-warning btn-sm mb-3 mx-1" (click)="import()">Import</button>
+        <button class="btn btn-warning btn-sm mb-3 mx-1" (click)="import()">
+          Import
+        </button>
         <button class="btn btn-warning btn-sm mb-3 mx-1" (click)="export()">
           Export
         </button>
       </div>
 
       <div class="col-lg-12 body-doc">
-        <div
-          contenteditable="true"
-          class="first-page"
-          *ngIf="model.length"
-          [innerHTML]="overviewContent"
-        ></div>
+        <div #overviewContentDiv contenteditable="true" class="first-page" *ngIf="model.length"
+          [innerHTML]="overviewContent"></div>
         <table class="table-doc" *ngFor="let item of model">
           <tbody>
             <!-- Endpoint Header -->
             <tr *ngFor="let desc of item.descriptions">
-              <td colspan="2" contenteditable="true" class="position-relative">
-                Write Description
-              </td>
+              <td colspan="2" contenteditable="true" class="position-relative" [innerHTML]="desc.content"
+                (blur)="saveDesc($event, desc)"></td>
             </tr>
 
             <tr>
@@ -36,16 +33,10 @@
               </td>
               <td>
                 <span class="m-1 text-black">{{ item.path }}</span>
-                <button
-                  class="hide-print float-end btn btn-outline-primary btn-sm"
-                  (click)="addDesc(item)"
-                >
+                <button class="hide-print float-end btn btn-outline-primary btn-sm" (click)="addDesc(item)">
                   Add Desc
                 </button>
-                <button
-                  class="hide-print float-end btn btn-outline-danger btn-sm mx-2"
-                  (click)="delDesc(item)"
-                >
+                <button class="hide-print float-end btn btn-outline-danger btn-sm mx-2" (click)="delDesc(item)">
                   Del Desc
                 </button>
               </td>
@@ -65,15 +56,10 @@
                         <li *ngFor="let param of item.parameters" class="mb-2">
                           <div>
                             <code>{{ param.name }}</code>
-                            <span class="text-muted"
-                              >(in: {{ param.in }}, type: {{ param.type }},
-                              required: {{ param.required }})</span
-                            >
+                            <span class="text-muted">(in: {{ param.in }}, type: {{ param.type }},
+                              required: {{ param.required }})</span>
                           </div>
-                          <div
-                            *ngIf="param.description"
-                            class="text-secondary small mt-1"
-                          >
+                          <div *ngIf="param.description" class="text-secondary small mt-1">
                             <b>Description:</b> {{ param.description }}
                           </div>
                         </li>
@@ -95,19 +81,12 @@
                   <!-- Response Section -->
                   <div class="doc-w-50">
                     <div><strong>Responses</strong></div>
-                    <div
-                      *ngFor="let res of item.responses"
-                      class="mb-3 border rounded p-2 bg-light"
-                    >
+                    <div *ngFor="let res of item.responses" class="mb-3 border rounded p-2 bg-light">
                       <div><b>Status:</b> {{ res.status }}</div>
                       <div *ngIf="res.contentTypes?.length">
                         <b>Content Types:</b>
                         <br />
-                        <span
-                          *ngFor="let type of res.contentTypes"
-                          class="badge bg-primary me-1"
-                          >{{ type }}</span
-                        >
+                        <span *ngFor="let type of res.contentTypes" class="badge bg-primary me-1">{{ type }}</span>
                       </div>
                       <div>
                         <b>Sample:</b>
