@@ -13,8 +13,6 @@ import { ActionHelperService } from '../../core/services/action-helper.service';
 })
 
 export class JsonToEnvironmentComponent {
-  converter = new JsonToEnvironmentConverter();
-
   jsonData = {
     content: '',
     success: true,
@@ -40,7 +38,7 @@ export class JsonToEnvironmentComponent {
     try {
       const json = JSON.parse(this.jsonData.content);
       this.jsonData.content = JSON.stringify(json, null, 4);
-      this.envData.content = this.converter.convertJsonToEnvironmentString(json);
+      this.envData.content = this.convertJsonToEnv(json);
 
       this.jsonData.success = true;
     } catch (error) {
@@ -110,34 +108,13 @@ export class JsonToEnvironmentComponent {
     });
   }
 
-}
-
-
-export class JsonToEnvironmentConverter {
-  /**
-   * تبدیل JSON به رشته متغیرهای محیطی با فرمت 'KEY__SUBKEY=VALUE'
-   * @param json JSON ورودی
-   * @param prefix پیش‌وند برای متغیرها (اختیاری)
-   * @param separator جداکننده بین کلیدها (پیش‌فرض '__')
-   * @returns رشته متغیرهای محیطی به فرمت 'KEY__SUBKEY=VALUE'
-   */
-  convertJsonToEnvironmentString(json: any, prefix: string = '', separator: string = '__'): string {
-    let environmentString = '';
-
-    for (const key in json) {
-      if (json.hasOwnProperty(key)) {
-        const value = json[key];
-
-        if (typeof value === 'object' && value !== null) {
-          // اگر مقدار یک شیء باشد، آن را بازگشتی پردازش کن
-          environmentString += this.convertJsonToEnvironmentString(value, `${prefix}${key}${separator}`, separator);
-        } else {
-          // مقدار کلید را اضافه کن
-          environmentString += `${prefix}${key}=${value}\n`;
-        }
+  convertJsonToEnv(json: any, prefix: string = '', sep: string = '__'): string {
+    return Object.entries(json).map(([key, value]) => {
+      if (value && typeof value === 'object') {
+        return this.convertJsonToEnv(value, `${prefix}${key}${sep}`, sep);
       }
-    }
-
-    return environmentString;
+      return `${prefix}${key}=${value}`;
+    }).join('\n');
   }
+
 }
