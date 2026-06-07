@@ -20,6 +20,7 @@ import { JsonXmlConverterComponent } from './modules/json-xml-converter/json-xml
 import { JsonToEnvironmentComponent } from './modules/json-to-environment/json-to-environment.component';
 import { GithubStatsGeneratorComponent } from './modules/github-stats-generator/github-stats-generator.component';
 import { OpenapiParserComponent } from './modules/openapi-parser/openapi-parser.component';
+import { PngToSvgComponent } from './modules/png-to-svg/png-to-svg.component';
 
 const routes: Routes = [{
   path: '',
@@ -103,6 +104,10 @@ const routes: Routes = [{
     {
       path: 'openapi-parser',
       component: OpenapiParserComponent
+    },
+    {
+      path: 'png-to-svg',
+      component: PngToSvgComponent
     }
   ]
 }];
