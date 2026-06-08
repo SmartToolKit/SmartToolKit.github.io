@@ -45,7 +45,7 @@ export class PngToSvgComponent {
             optimization: 'full',
             minify: true,
             svgContent: null,
-            svgPreview: null,
+            svgPreview: `<svg xmlns="http://www.w3.org/2000/svg" width="${img.naturalWidth}" height="${img.naturalHeight}" shape-rendering="crispEdges"></svg>`,
             svgStats: null,
             converting: false,
             totalPixels: 0,

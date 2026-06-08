@@ -13,83 +13,111 @@
             <hr>
             <div class="col-lg-12 text-light" *ngIf="result.length > 0">
                 <div *ngFor="let item of result" class="row mb-4 pb-2 border-bottom border-primary border-5">
-                    <h5 class="p-1">{{item.name}}</h5>
-                    
-                    <!-- Original image preview -->
-                    <div class="col-md-3 text-center p-2 border position-relative" style="min-height: 200px;">
-                        <img [src]="item.image" class="org-img" style="max-width: 100%; max-height: 180px;">
-                        <h5 class="bg-dark p-1 position-absolute rounded-3 top-0">{{item.orgWidth}} * {{item.orgHeight}}</h5>
-                        <h6 class="bg-dark p-1 position-absolute rounded-3 bottom-0">{{item.size}}</h6>
-                    </div>
-                    
-                    <!-- Conversion settings -->
-                    <div class="col-md-9 p-2 position-relative">
-                        <div class="col-md-12 row h4 mb-3">
-                            <div class="col-md-4 mb-3">New Name :</div>
-                            <div class="col-md-8 d-flex mb-3">
-                                <input class="form-control bg-dark text-light" [(ngModel)]="item.newName">
-                            </div>
-                        </div>
-                        <hr>
+                    <div class="row col-lg-9 col-md-12">
 
-                        <!-- Optimization options -->
-                        <div class="col-md-12 row mb-3">
-                            <div class="col-md-4 mb-3">Optimization :</div>
-                            <div class="col-md-8">
-                                <select class="form-control bg-dark text-light" [(ngModel)]="item.optimization">
-                                    <option value="simple">Simple (Single Pixel)</option>
-                                    <option value="horizontal">Optimized (Horizontal)</option>
-                                    <option value="full">Fully Optimized (Horizontal + Vertical)</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-12 row mb-3">
-                            <div class="col-md-4 mb-3">Remove spaces :</div>
-                            <div class="col-md-8">
-                                <input type="checkbox" [(ngModel)]="item.minify" class="form-check-input">
-                                <label class="form-check-label ms-2">Remove extra enters and spaces (reduce file size)</label>
-                            </div>
-                        </div>
-                        <hr>
+                        <h5 class="p-1">{{item.name}}</h5>
 
-                        <!-- Conversion statistics -->
-                        <div class="col-md-12 row mb-3" *ngIf="item.svgStats">
-                            <div class="col-md-12">
-                                <small class="text-success">
-                                    🎯 Pixels: {{item.totalPixels | number}} | 
-                                    📦 Elements: {{item.svgElements | number}} | 
-                                    💾 Size: {{item.svgSize}} KB | 
-                                    ✂️ Reduction: {{item.compression}}%
-                                </small>
-                            </div>
+                        <!-- Original image preview -->
+                        <div class="col-md-3 text-center p-2 border position-relative" style="min-height: 200px;">
+                            <img [src]="item.image" class="org-img" style="max-width: 100%; max-height: 180px;">
+                            <h5 class="bg-dark p-1 position-absolute rounded-3 top-0">{{item.orgWidth}} *
+                                {{item.orgHeight}}</h5>
+                            <h6 class="bg-dark p-1 position-absolute rounded-3 bottom-0">{{item.size}}</h6>
                         </div>
 
-                        <div class="col-md-12">
-                            <button class="btn btn-success float-end mx-2" (click)="convertToSVG(item)" 
-                                    [disabled]="item.converting">
-                                {{item.converting ? 'Converting...' : 'Convert to SVG'}}
-                            </button>
-                            <button class="btn btn-primary float-end mx-2" (click)="downloadSVG(item)" 
-                                    [disabled]="!item.svgContent" class="{{!item.svgContent ? 'disabled' : ''}}">
-                                Download SVG
-                            </button>
-                            <button class="btn btn-primary float-end mx-2" (click)="duplicate(item.id)">Duplicate</button>
-                            <button class="btn btn-danger float-end mx-2" (click)="delete(item.id)">Delete</button>
-                        </div>
-                        
-                        <!-- SVG preview -->
-                        <div class="col-md-12 mt-3" *ngIf="item.svgPreview">
+                        <!-- Conversion settings -->
+                        <div class="col-md-9 p-2 position-relative">
+                            <div class="col-md-12 row h4 mb-3">
+                                <div class="col-md-4 mb-3">New Name :</div>
+                                <div class="col-md-8 d-flex mb-3">
+                                    <input class="form-control bg-dark text-light" [(ngModel)]="item.newName">
+                                </div>
+                            </div>
                             <hr>
-                            <h6>Preview SVG:</h6>
-                            <div class="border p-2 bg-dark" style="max-height: 150px; overflow: auto;">
-                                <pre style="font-size: 10px; margin: 0;">{{item.svgPreview}}</pre>
+
+                            <!-- Optimization options -->
+                            <div class="col-md-12 row mb-3">
+                                <div class="col-md-4 mb-3">Optimization :</div>
+                                <div class="col-md-8">
+                                    <select class="form-control bg-dark text-light" [(ngModel)]="item.optimization">
+                                        <option value="simple">Simple (Single Pixel)</option>
+                                        <option value="horizontal">Optimized (Horizontal)</option>
+                                        <option value="full">Fully Optimized (Horizontal + Vertical)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 row mb-3">
+                                <div class="col-md-4 mb-3">Remove spaces :</div>
+                                <div class="col-md-8">
+                                    <input type="checkbox" [(ngModel)]="item.minify" class="form-check-input">
+                                    <label class="form-check-label ms-2">Remove extra enters and spaces (reduce file
+                                        size)</label>
+                                </div>
+                            </div>
+                            <hr>
+
+                            <div class="col-md-12 overflow-auto">
+                                <button class="btn btn-success mx-2 mb-3" (click)="convertToSVG(item)"
+                                    [disabled]="item.converting">
+                                    {{item.converting ? 'Converting...' : 'Convert to SVG'}}
+                                </button>
+                                <button class="btn btn-primary mx-2 mb-3" (click)="downloadSVG(item)"
+                                    [disabled]="!item.svgContent" class="{{!item.svgContent ? 'disabled' : ''}}">
+                                    Download SVG
+                                </button>
+                                <button class="btn btn-primary mx-2 mb-3" (click)="duplicate(item.id)">Duplicate</button>
+                                <button class="btn btn-danger mx-2 mb-3" (click)="delete(item.id)">Delete</button>
+                            </div>
+
+                            <!-- Conversion statistics -->
+                            <div class="col-md-12 row" *ngIf="item.svgStats">
+                                <div class="col-md-12">
+                                    <small class="text-success">
+                                        🎯 Pixels: {{item.totalPixels | number}} |
+                                        📦 Elements: {{item.svgElements | number}} |
+                                        💾 Size: {{item.svgSize}} KB |
+                                        ✂️ Reduction: {{item.compression}}%
+                                    </small>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- SVG preview -->
+                    <div class="col-lg-3 col-md-12 d-md-grid d-lg-block mt-3 d-grid">
+                        <hr class="d-lg-none d-md-block">
+
+                        <h6 class="text-light mb-2">Preview SVG:</h6>
+
+                        <div class="border p-2 bg-dark" style="height: 90%; 
+                min-height: 150px; 
+                max-height: 300px; 
+                overflow: auto;
+                background: #1e1e1e;
+                border-radius: 4px;">
+
+                            <pre style="font-size: 10px; 
+                   margin: 0; 
+                   color: #d4d4d4;
+                   font-family: 'Consolas', monospace;
+                   white-space: pre-wrap;
+                   word-wrap: break-word;
+                   overflow: visible;">{{item.svgPreview || 'No preview yet...'}}</pre>
+                        </div>
+
+                        <!-- دکمه تبدیل اگر پیش‌نمایش نبود -->
+                        <div *ngIf="!item.svgPreview && !item.converting" class="mt-2 text-center">
+                            <button class="btn btn-sm btn-outline-primary w-100" (click)="convertToSVG(item)">
+                                Convert to see preview
+                            </button>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
-            
+
             <!-- Empty list message -->
             <div class="col-lg-12 text-center text-muted" *ngIf="result.length === 0">
                 <br><br>
