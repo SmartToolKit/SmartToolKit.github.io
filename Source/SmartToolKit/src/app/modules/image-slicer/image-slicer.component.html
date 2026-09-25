@@ -1,0 +1,201 @@
+<div class="item-details-page image-slicer-page px-2">
+  <div class="container contact px-2">
+    <div class="slicer-shell mx-auto">
+      <header class="slicer-header">
+        <div>
+          <p class="slicer-eyebrow">Image tools</p>
+          <h2 class="mb-2"><i class="fas fa-scissors text-info me-2" aria-hidden="true"></i>Image Slicer</h2>
+          <p class="mb-0">Add movable cut lines, preview the pieces, and download them together as a ZIP archive.</p>
+        </div>
+      </header>
+
+      <div
+        class="upload-zone"
+        [class.upload-zone--active]="isDragOver"
+        [class.upload-zone--disabled]="isLoading"
+        [attr.aria-busy]="isLoading"
+        (click)="onUploadClick(imageFileInput)"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)">
+        <button type="button" class="upload-trigger d-flex flex-column align-items-center justify-content-center gap-2 w-100 p-0 border-0 bg-transparent text-center text-white" [disabled]="isLoading" (click)="$event.stopPropagation(); onUploadClick(imageFileInput)">
+          <i class="fas fa-cloud-arrow-up" aria-hidden="true"></i>
+          <strong>{{ isLoading ? 'Loading image…' : 'Choose an image' }}</strong>
+          <span>{{ isLoading ? 'Please wait while the file is processed.' : 'or drop one raster image here' }}</span>
+          <small>PNG, JPG, WEBP, AVIF, GIF or BMP · up to 50 MB</small>
+        </button>
+        <input
+          #imageFileInput
+          id="image-slicer-file"
+          class="visually-hidden"
+          type="file"
+          tabindex="-1"
+          aria-hidden="true"
+          accept="image/png,image/jpeg,image/webp,image/avif,image/gif,image/bmp,.png,.jpg,.jpeg,.webp,.avif,.gif,.bmp"
+          [disabled]="isLoading"
+          (click)="$event.stopPropagation()"
+          (change)="onFileSelected($event)" />
+      </div>
+
+      <section class="image-summary" *ngIf="imageLoaded" aria-label="Selected image">
+        <div class="summary-item">
+          <i class="fas fa-image text-info" aria-hidden="true"></i>
+          <span class="summary-label">File</span>
+          <strong>{{ imageFileName }}</strong>
+        </div>
+        <div class="summary-item">
+          <i class="fas fa-ruler-combined text-info" aria-hidden="true"></i>
+          <span class="summary-label">Size</span>
+          <strong>{{ imageDimensions }} px</strong>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-danger ms-auto" (click)="removeImage()" [disabled]="isLoading">
+          <i class="fas fa-trash me-1" aria-hidden="true"></i>Remove image
+        </button>
+      </section>
+
+      <section class="editor-section" *ngIf="imageLoaded">
+        <div class="editor-wrapper">
+          <canvas
+            #editorCanvas
+            tabindex="0"
+            role="application"
+            aria-label="Image cut editor. Select a cut line and use the arrow keys to move it."
+            (pointerdown)="onPointerDown($event)"
+            (pointermove)="onPointerMove($event)"
+            (pointerup)="onPointerUp($event)"
+            (pointercancel)="onPointerUp($event)"
+            (lostpointercapture)="onPointerUp($event)"
+            (keydown)="onCanvasKeydown($event)">
+            Your browser does not support canvas editing.
+          </canvas>
+        </div>
+
+        <div class="tools-bar" aria-label="Cut controls">
+          <button type="button" class="btn btn-info" (click)="addLine('vertical')" [disabled]="isLoading || lines.length >= maxLines">
+            <i class="fas fa-plus me-1" aria-hidden="true"></i>Add vertical
+          </button>
+          <button type="button" class="btn btn-info" (click)="addLine('horizontal')" [disabled]="isLoading || lines.length >= maxLines">
+            <i class="fas fa-plus me-1" aria-hidden="true"></i>Add horizontal
+          </button>
+          <button type="button" class="btn btn-outline-danger" (click)="clearLines()" [disabled]="isLoading || lines.length === 0">
+            <i class="fas fa-trash me-1" aria-hidden="true"></i>Clear lines
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary split-button"
+            (click)="splitImage()"
+            [disabled]="isLoading || lines.length === 0 || estimatedPieceCount > maxPieces">
+            <i class="fas fa-scissors me-1" aria-hidden="true"></i>Slice image
+          </button>
+          <span class="toolbar-stat">{{ lines.length.toLocaleString('en-US') }} / {{ maxLines.toLocaleString('en-US') }} lines</span>
+          <span class="toolbar-stat">{{ estimatedPieceCount.toLocaleString('en-US') }} pieces</span>
+        </div>
+
+        <div class="output-options">
+          <label for="slice-output-format">Output format</label>
+          <select id="slice-output-format" class="form-select form-select-sm bg-dark text-white" [ngModel]="outputFormat" (ngModelChange)="onOutputFormatChange($event)" [disabled]="isLoading">
+            <option value="png">PNG · lossless</option>
+            <option value="jpeg">JPG · smaller files</option>
+            <option value="webp">WEBP · modern browsers</option>
+          </select>
+          <small>JPEG uses a white background for transparent areas. Output is limited by browser memory and 100 MB.</small>
+        </div>
+
+        <div class="line-editor" *ngIf="lines.length > 0">
+          <div class="line-editor-header">
+            <div>
+              <h3 class="mb-1">Cut lines</h3>
+              <span>Drag a line on the image, or edit its exact position below.</span>
+            </div>
+            <span class="line-editor-count">{{ lines.length.toLocaleString('en-US') }}</span>
+          </div>
+          <div class="line-list">
+            <div
+              class="line-item"
+              *ngFor="let line of lines; let index = index"
+              [class.line-item--selected]="selectedLineIndex === index">
+              <button
+                type="button"
+                class="line-select"
+                [attr.aria-label]="'Select ' + lineTypeLabel(line.type) + ' line ' + (index + 1)"
+                [attr.aria-pressed]="selectedLineIndex === index"
+                (click)="selectLine(index)">
+                <span class="line-kind">
+                  <i class="fas" [class.fa-arrows-left-right]="line.type === 'vertical'" [class.fa-arrows-up-down]="line.type === 'horizontal'" aria-hidden="true"></i>
+                  {{ lineTypeLabel(line.type) }}
+                </span>
+              </button>
+              <label [attr.for]="'slice-line-' + index">Position</label>
+              <input
+                [id]="'slice-line-' + index"
+                class="form-control form-control-sm bg-dark text-white line-position"
+                type="number"
+                inputmode="numeric"
+                min="1"
+                [max]="lineMax(line.type)"
+                [value]="line.position"
+                [disabled]="isLoading"
+                (click)="$event.stopPropagation()"
+                (input)="updateLinePosition(index, $event)"
+                (change)="commitLinePosition(index, $event)" />
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-danger"
+                [attr.aria-label]="'Remove ' + lineTypeLabel(line.type) + ' line ' + (index + 1)"
+                [disabled]="isLoading"
+                (click)="removeLine(index, $event)">
+                <i class="fas fa-times" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <p class="editor-help mb-0">
+          <i class="fas fa-keyboard me-1" aria-hidden="true"></i>
+          Select a line, then use the arrow keys to move it. Hold Shift for larger steps.
+        </p>
+      </section>
+
+      <div
+        class="slicer-alert"
+        [class.slicer-alert--success]="statusType === 'success'"
+        [class.slicer-alert--error]="statusType === 'error'"
+        *ngIf="statusVisible"
+        [attr.role]="statusType === 'error' ? 'alert' : 'status'"
+        aria-live="polite">
+        {{ statusMessage }}
+      </div>
+
+      <div class="loading-panel" *ngIf="isLoading" role="status" aria-live="polite">
+        <span class="spinner-border text-info" aria-hidden="true"></span>
+        <span>{{ loadingMessage }}</span>
+        <button type="button" class="btn btn-sm btn-outline-light ms-auto" (click)="cancelProcessing()">Cancel</button>
+      </div>
+
+      <section class="preview-section" *ngIf="hasCrops">
+        <div class="preview-header">
+          <div>
+            <p class="slicer-eyebrow mb-1">Output</p>
+            <h3 class="mb-1">Piece previews</h3>
+            <span>{{ croppedImages.length.toLocaleString('en-US') }} pieces ready to download.</span>
+          </div>
+          <button type="button" class="btn btn-success" (click)="downloadZip()" [disabled]="isLoading">
+            <i class="fas fa-file-zipper me-1" aria-hidden="true"></i>Download ZIP
+          </button>
+        </div>
+        <div class="preview-grid">
+          <article class="preview-item" *ngFor="let piece of croppedImages">
+            <div class="preview-image">
+              <img [src]="piece.previewUrl" [alt]="piece.name" loading="lazy" />
+            </div>
+            <strong>{{ piece.name }}</strong>
+            <span>{{ piece.width.toLocaleString('en-US') }} × {{ piece.height.toLocaleString('en-US') }} px</span>
+            <button type="button" class="btn btn-sm btn-outline-info" (click)="downloadPiece(piece)" [disabled]="isLoading">
+              <i class="fas fa-download me-1" aria-hidden="true"></i>Download
+            </button>
+          </article>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import swal from 'sweetalert2';
@@ -28,17 +29,29 @@ export class DashboardComponent {
     { title: "Json To Environment", description: "Convert JSON objects into environment variable format. This tool simplifies the process of transforming your JSON data into a key-value format suitable for use in environment configuration files, such as those required in Docker, CI/CD pipelines, or other applications.", url: "json-to-environment" },
     { title: "GitHub Stats Generator", description: "Generate insightful GitHub statistics, including contributions, repositories, and activity trends. This tool helps you visualize your GitHub performance with detailed analytics and customizable charts.", url: "github-stats-generator" },
     { title: "Openapi Parser", description: "This tool allows you to load and parse an OpenAPI (Swagger) specification from a remote URL. It visualizes API endpoints, HTTP methods, request parameters, and response schemas in a clean and readable format, making API documentation easier to understand and work with.", url: "openapi-parser" },
-    { 
-      title: "PNG to SVG Converter", 
-      description: "Convert PNG images to SVG format pixel by pixel. This tool reads your PNG image and creates an SVG file with exact pixel mapping. Features include smart pixel grouping (horizontal and vertical), multiple optimization levels (simple, horizontal, full), and file size reduction by removing extra spaces. Perfect for converting pixel art, icons, or any PNG to scalable vector graphics while maintaining perfect pixel accuracy.", 
-      url: "png-to-svg" 
+    {
+      title: "PNG to SVG Converter",
+      description: "Convert PNG images to SVG format pixel by pixel. This tool reads your PNG image and creates an SVG file with exact pixel mapping. Features include smart pixel grouping (horizontal and vertical), multiple optimization levels (simple, horizontal, full), and file size reduction by removing extra spaces. Perfect for converting pixel art, icons, or any PNG to scalable vector graphics while maintaining perfect pixel accuracy.",
+      url: "png-to-svg"
+    },
+    {
+      title: "SQL Query Formatter",
+      description: "Format and beautify SQL queries with proper indentation, line breaks, and syntax structure for cleaner and more readable SQL code.",
+      url: "sql-query-formatter"
+    },
+    {
+      title: "Image Slicer",
+      description: "Split images with movable horizontal and vertical lines, preview the resulting pieces, and download them together as a ZIP archive.",
+      url: "image-slicer"
     }
   ];
   search = '';
   filteredTools = this.tools;
   bookmarks: string[] = [];
+  private readonly isBrowser: boolean;
 
-  constructor(public router: Router, private titleService: Title) {
+  constructor(public router: Router, private titleService: Title, @Inject(PLATFORM_ID) platformId: object) {
+    this.isBrowser = isPlatformBrowser(platformId);
     this.titleService.setTitle("Smart ToolKit");
     this.loadBookmarks();
     this.sortTools();
@@ -78,13 +91,33 @@ export class DashboardComponent {
   }
 
   updateLocalStorage(): void {
-    localStorage.setItem("dashboard-bookmark", JSON.stringify(this.bookmarks));
+    if (!this.isBrowser) {
+      return;
+    }
+
+    try {
+      localStorage.setItem("dashboard-bookmark", JSON.stringify(this.bookmarks));
+    } catch {
+      this.bookmarks = [...this.bookmarks];
+    }
   }
 
   loadBookmarks(): void {
-    const savedBookmarks = localStorage.getItem("dashboard-bookmark");
-    if (savedBookmarks) {
-      this.bookmarks = JSON.parse(savedBookmarks);
+    if (!this.isBrowser) {
+      return;
+    }
+
+    try {
+      const savedBookmarks = localStorage.getItem("dashboard-bookmark");
+      if (!savedBookmarks) {
+        return;
+      }
+      const parsedBookmarks: unknown = JSON.parse(savedBookmarks);
+      if (Array.isArray(parsedBookmarks) && parsedBookmarks.every(bookmark => typeof bookmark === 'string')) {
+        this.bookmarks = parsedBookmarks;
+      }
+    } catch {
+      this.bookmarks = [];
     }
   }
 

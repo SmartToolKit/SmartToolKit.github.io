@@ -1,0 +1,138 @@
+<div class="item-details-page sql-formatter-page px-2">
+  <div class="container contact px-2">
+    <div class="sql-tool-shell mx-auto">
+      <header class="sql-tool-header">
+        <div>
+          <p class="sql-eyebrow">Developer tools</p>
+          <h2 class="mb-2"><i class="fas fa-database text-info me-2" aria-hidden="true"></i>SQL Query Formatter</h2>
+          <p class="mb-0">Format SQL for readability or minify it for compact transport without changing string literals.</p>
+        </div>
+        <button type="button" class="btn btn-outline-light btn-sm" (click)="clearQuery()" [disabled]="isLoading || !rawQuery">
+          <i class="fas fa-eraser me-1" aria-hidden="true"></i>Clear
+        </button>
+      </header>
+
+      <div class="row g-3">
+        <div class="col-sm-6">
+          <section class="tool-pane" aria-labelledby="sql-input-title">
+            <div class="tool-pane-header">
+              <div>
+                <p class="sql-eyebrow mb-1">Input</p>
+                <h3 id="sql-input-title" class="mb-1">SQL query</h3>
+                <span>Enter or load a query to transform it.</span>
+              </div>
+              <span class="character-count">{{ inputCharacters.toLocaleString('en-US') }} chars</span>
+            </div>
+
+            <div class="tool-actions" aria-label="Input actions">
+              <button type="button" class="btn btn-success btn-sm mb-3 mx-1" (click)="openFile()" [disabled]="isLoading">
+                <i class="fas fa-file-arrow-up me-1" aria-hidden="true"></i>Open File
+              </button>
+              <button type="button" class="btn btn-success btn-sm mb-3 mx-1" (click)="readAsUrl()" [disabled]="isLoading">
+                <i class="fas fa-link me-1" aria-hidden="true"></i>Read as URL
+              </button>
+              <button type="button" class="btn btn-info btn-sm mb-3 mx-1" (click)="paste()" [disabled]="isLoading">
+                <i class="fas fa-clipboard me-1" aria-hidden="true"></i>Paste
+              </button>
+              <button type="button" class="btn btn-warning btn-sm mb-3 mx-1" (click)="save()" [disabled]="isLoading">
+                <i class="fas fa-save me-1" aria-hidden="true"></i>Save
+              </button>
+            </div>
+
+            <textarea
+              class="form-control bg-dark text-white editor-textarea"
+              rows="20"
+              wrap="off"
+              spellcheck="false"
+              [attr.aria-label]="'SQL input'"
+              [attr.aria-invalid]="queryError ? 'true' : null"
+              [attr.maxlength]="maxQueryLength"
+              [disabled]="isLoading"
+              [(ngModel)]="rawQuery"
+              (ngModelChange)="onQueryChange($event)"
+              placeholder="Paste or write your SQL query here..."></textarea>
+            <div class="editor-footnote">
+              <span>Comments and quoted values are token-aware.</span>
+              <span>Max {{ maxQueryLength.toLocaleString('en-US') }} characters</span>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-sm-6">
+          <section class="tool-pane" aria-labelledby="sql-output-title">
+            <div class="tool-pane-header">
+              <div>
+                <p class="sql-eyebrow mb-1">Output</p>
+                <h3 id="sql-output-title" class="mb-1">{{ outputLabel }}</h3>
+                <span>Choose a view, then copy or download the result.</span>
+              </div>
+              <span class="character-count">{{ outputCharacters.toLocaleString('en-US') }} chars</span>
+            </div>
+
+            <div class="tool-actions output-actions" aria-label="Output actions">
+              <div class="btn-group btn-group-sm me-2 mb-3" role="group" aria-label="Output mode">
+                <button
+                  type="button"
+                  class="btn"
+                  [class.btn-info]="outputMode === 'formatted'"
+                  [class.btn-outline-info]="outputMode !== 'formatted'"
+                  [attr.aria-pressed]="outputMode === 'formatted'"
+                  (click)="switchOutputMode('formatted')"
+                  [disabled]="isLoading">
+                  Formatted
+                </button>
+                <button
+                  type="button"
+                  class="btn"
+                  [class.btn-info]="outputMode === 'minified'"
+                  [class.btn-outline-info]="outputMode !== 'minified'"
+                  [attr.aria-pressed]="outputMode === 'minified'"
+                  (click)="switchOutputMode('minified')"
+                  [disabled]="isLoading">
+                  Minified
+                </button>
+              </div>
+              <button type="button" class="btn btn-info btn-sm mb-3 mx-1" (click)="copy()" [disabled]="isLoading || !outputQuery">
+                <i class="fas fa-copy me-1" aria-hidden="true"></i>Copy
+              </button>
+              <button type="button" class="btn btn-warning btn-sm mb-3 mx-1" (click)="download()" [disabled]="isLoading || !outputQuery">
+                <i class="fas fa-download me-1" aria-hidden="true"></i>Download
+              </button>
+            </div>
+
+            <textarea
+              class="form-control bg-dark text-white editor-textarea"
+              rows="20"
+              wrap="off"
+              spellcheck="false"
+              readonly
+              [attr.aria-label]="outputLabel"
+              [value]="outputQuery"
+              placeholder="Formatted or minified SQL will appear here..."></textarea>
+            <div class="editor-footnote">
+              <span>String contents and quoted identifiers are preserved.</span>
+              <button type="button" class="btn btn-link btn-sm p-0" (click)="formatQuery()" [disabled]="isLoading || !rawQuery">Format now</button>
+              <button type="button" class="btn btn-link btn-sm p-0" (click)="minifyQuery()" [disabled]="isLoading || !rawQuery">Minify now</button>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div
+        class="sql-alert"
+        [class.sql-alert--success]="statusType === 'success'"
+        [class.sql-alert--error]="statusType === 'error' || !!queryError"
+        *ngIf="statusVisible || queryError"
+        [attr.role]="statusType === 'error' || queryError ? 'alert' : 'status'"
+        aria-live="polite">
+        {{ queryError || statusMessage }}
+      </div>
+
+      <div class="loading-panel" *ngIf="isLoading" role="status" aria-live="polite">
+        <span class="spinner-border text-info" aria-hidden="true"></span>
+        <span>{{ loadingMessage }}</span>
+        <button type="button" class="btn btn-sm btn-outline-light ms-auto" (click)="cancelLoading()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,179 @@
+:host {
+  display: block;
+}
+
+.sql-formatter-page {
+  min-height: 100%;
+}
+
+.sql-tool-shell {
+  max-width: 1200px;
+  color: #f5f5f5;
+}
+
+.sql-tool-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem 0 1rem;
+  text-align: left;
+}
+
+.sql-tool-header h2,
+.tool-pane h3 {
+  color: #fff;
+}
+
+.sql-tool-header p,
+.tool-pane-header span,
+.editor-footnote,
+.sql-tool-header .btn {
+  color: #afafaf;
+}
+
+.sql-eyebrow {
+  margin-bottom: 0.35rem;
+  color: #8f8bff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tool-pane {
+  height: 100%;
+  padding: 1rem;
+  border: 1px solid #404245;
+  border-radius: 0.8rem;
+  background: #282b2f;
+}
+
+.tool-pane-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.character-count {
+  flex-shrink: 0;
+  color: #afafaf !important;
+  font-size: 0.8rem;
+}
+
+.tool-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 2.75rem;
+}
+
+.output-actions {
+  gap: 0.15rem;
+}
+
+.editor-textarea {
+  min-height: 420px;
+  resize: vertical;
+  border: 1px solid #404245;
+  border-radius: 0.55rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  tab-size: 2;
+}
+
+.editor-textarea:focus {
+  border-color: #7453fc;
+  box-shadow: 0 0 0 0.2rem rgba(116, 83, 252, 0.18);
+}
+
+.editor-textarea[readonly] {
+  cursor: text;
+}
+
+.editor-footnote {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  margin-top: 0.55rem;
+  font-size: 0.78rem;
+}
+
+.editor-footnote .btn-link {
+  color: #8f8bff;
+  text-decoration: none;
+}
+
+.editor-footnote .btn-link:hover,
+.editor-footnote .btn-link:focus {
+  color: #b1aeff;
+  text-decoration: underline;
+}
+
+.sql-alert,
+.loading-panel {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid #4c4f55;
+  border-radius: 0.7rem;
+  background: #303238;
+  color: #d8d8d8;
+}
+
+.sql-alert--success {
+  border-color: #198754;
+  background: rgba(25, 135, 84, 0.2);
+  color: #b6f3ca;
+}
+
+.sql-alert--error {
+  border-color: #dc3545;
+  background: rgba(220, 53, 69, 0.18);
+  color: #ffc7ce;
+}
+
+.loading-panel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+@media (max-width: 767px) {
+  .sql-tool-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sql-tool-header .btn {
+    align-self: stretch;
+  }
+
+  .editor-textarea {
+    min-height: 340px;
+  }
+}
+
+@media (max-width: 420px) {
+  .tool-pane {
+    padding: 0.75rem;
+  }
+
+  .tool-pane-header {
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .character-count {
+    align-self: flex-end;
+  }
+
+  .tool-actions .btn,
+  .tool-actions .btn-group {
+    margin-right: 0.2rem !important;
+    margin-left: 0.2rem !important;
+  }
+}

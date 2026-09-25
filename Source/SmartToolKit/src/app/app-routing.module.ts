@@ -21,6 +21,8 @@ import { JsonToEnvironmentComponent } from './modules/json-to-environment/json-t
 import { GithubStatsGeneratorComponent } from './modules/github-stats-generator/github-stats-generator.component';
 import { OpenapiParserComponent } from './modules/openapi-parser/openapi-parser.component';
 import { PngToSvgComponent } from './modules/png-to-svg/png-to-svg.component';
+import { SqlQueryFormatterComponent } from './modules/sql-query-formatter/sql-query-formatter.component';
+import { ImageSlicerComponent } from './modules/image-slicer/image-slicer.component';
 
 const routes: Routes = [{
   path: '',
@@ -108,6 +110,14 @@ const routes: Routes = [{
     {
       path: 'png-to-svg',
       component: PngToSvgComponent
+    },
+    {
+      path: 'sql-query-formatter',
+      component: SqlQueryFormatterComponent
+    },
+    {
+      path: 'image-slicer',
+      component: ImageSlicerComponent
     }
   ]
 }];

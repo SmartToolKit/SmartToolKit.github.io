@@ -1,22 +1,42 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileHelperService {
+  private readonly isBrowser: boolean;
 
-  constructor() { }
+  constructor(@Inject(PLATFORM_ID) platformId: object) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   download(data: string, filename: string): boolean {
+    if (!this.isBrowser) {
+      return false;
+    }
+
+    let url: string | null = null;
     try {
+      url = URL.createObjectURL(new Blob([data], { type: 'text/plain;charset=utf-8' }));
       const element = document.createElement('a');
-      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
-      element.setAttribute('download', filename);
+      element.href = url;
+      element.download = filename;
+      document.body.appendChild(element);
       element.click();
+      element.remove();
+      window.setTimeout(() => {
+        if (url) {
+          URL.revokeObjectURL(url);
+        }
+      }, 1000);
       return true;
-    } catch (error) {
-      swal.fire({
+    } catch {
+      if (url) {
+        URL.revokeObjectURL(url);
+      }
+      void swal.fire({
         title: 'Download Error',
         text: 'Failed to download. Please try again.',
         icon: 'error'
@@ -24,18 +44,22 @@ export class FileHelperService {
       return false;
     }
   }
+
   downloadUrl(url: string, filename: string): boolean {
+    if (!this.isBrowser) {
+      return false;
+    }
+
     try {
       const downloadLink = document.createElement('a');
       downloadLink.href = url;
       downloadLink.download = filename;
       document.body.appendChild(downloadLink);
       downloadLink.click();
-      document.body.removeChild(downloadLink);
-
+      downloadLink.remove();
       return true;
-    } catch (error) {
-      swal.fire({
+    } catch {
+      void swal.fire({
         title: 'Download Error',
         text: 'Failed to download. Please try again.',
         icon: 'error'
@@ -44,112 +68,126 @@ export class FileHelperService {
     }
   }
 
-  openFile(accept: string): Promise<string> {
+  openFile(accept: string, maxBytes?: number): Promise<string> {
+    if (!this.isBrowser) {
+      return Promise.reject(new Error('File access is not available on the server.'));
+    }
+
     return new Promise((resolve, reject) => {
       const input = document.createElement('input');
       input.type = 'file';
-      if (accept)
+      if (accept) {
         input.accept = accept;
-
+      }
       input.onchange = () => {
         const file = input.files?.[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = () => {
-            resolve(reader.result as string);  // Resolve the promise with the file content
-          };
-          reader.onerror = () => {
-            swal.fire({
-              title: 'File Read Error',
-              text: 'There was an error reading the file. Please try again.',
-              icon: 'error'
-            });
-            reject(reader.error);  // Reject the promise in case of error
-          };
-          reader.readAsText(file);  // Read file as text
-        } else {
-          swal.fire({
+        if (!file) {
+          void swal.fire({
             title: 'No File Selected',
             text: 'Please select a file to continue.',
             icon: 'warning'
           });
-          reject('No file selected');
+          reject(new Error('No file selected'));
+          return;
         }
-      };
+        if (maxBytes !== undefined && file.size > maxBytes) {
+          reject(new Error('The selected file is too large.'));
+          return;
+        }
 
-      input.click();  // Open file dialog
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result ?? ''));
+        reader.onerror = () => {
+          void swal.fire({
+            title: 'File Read Error',
+            text: 'There was an error reading the file. Please try again.',
+            icon: 'error'
+          });
+          reject(reader.error ?? new Error('File read failed'));
+        };
+        reader.readAsText(file);
+      };
+      input.oncancel = () => reject(new Error('File selection cancelled'));
+      input.click();
     });
   }
 
   openMultipleFile(accept: string): Promise<File[]> {
+    if (!this.isBrowser) {
+      return Promise.reject(new Error('File access is not available on the server.'));
+    }
+
     return new Promise((resolve, reject) => {
       const input = document.createElement('input');
       input.type = 'file';
-      if (accept)
+      if (accept) {
         input.accept = accept;
-      input.multiple = true; // Allow multiple file selection
-
+      }
+      input.multiple = true;
       input.onchange = () => {
         const files = input.files;
         if (files && files.length > 0) {
-          resolve(Array.from(files)); // Convert FileList to array of File objects
+          resolve(Array.from(files));
         } else {
-          swal.fire({
+          void swal.fire({
             title: 'No File Selected',
             text: 'Please select one or more files to continue.',
             icon: 'warning'
           });
-          reject('No files selected');
+          reject(new Error('No files selected'));
         }
       };
-
-      input.click(); // Open file dialog
+      input.oncancel = () => reject(new Error('File selection cancelled'));
+      input.click();
     });
   }
+
   openOneFile(accept: string): Promise<File> {
+    if (!this.isBrowser) {
+      return Promise.reject(new Error('File access is not available on the server.'));
+    }
+
     return new Promise((resolve, reject) => {
       const input = document.createElement('input');
       input.type = 'file';
-      if (accept)
+      if (accept) {
         input.accept = accept;
-
+      }
       input.onchange = () => {
-        const files = input.files;
-        if (files && files.length > 0) {
-          resolve(files[0]); // Convert FileList to array of File objects
+        const file = input.files?.[0];
+        if (file) {
+          resolve(file);
         } else {
-          swal.fire({
+          void swal.fire({
             title: 'No File Selected',
             text: 'Please select one file to continue.',
             icon: 'warning'
           });
-          reject('No files selected');
+          reject(new Error('No files selected'));
         }
       };
-
-      input.click(); // Open file dialog
+      input.oncancel = () => reject(new Error('File selection cancelled'));
+      input.click();
     });
   }
 
   convertFileToBase64(file: File): Promise<string> {
+    if (!this.isBrowser) {
+      return Promise.reject(new Error('File access is not available on the server.'));
+    }
+
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-
-      reader.onload = () => {
-        resolve(reader.result as string);  // Resolve with Base64 string
-      };
-
+      reader.onload = () => resolve(String(reader.result ?? ''));
       reader.onerror = () => {
-        swal.fire({
+        void swal.fire({
           title: 'Conversion Error',
-          text: 'There was an error converting the file to Base64. Please try again.',
+          text: 'An error occurred while converting the file to Base64.',
           icon: 'error'
         });
-        reject(reader.error);  // Reject in case of error
+        reject(reader.error ?? new Error('File read failed'));
       };
-
-      reader.readAsDataURL(file);  // Read the file as a data URL (Base64 format)
+      reader.readAsDataURL(file);
     });
   }
-
 }

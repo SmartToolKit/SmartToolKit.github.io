@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import swal from 'sweetalert2';
 import { HttpClient } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
@@ -12,21 +13,30 @@ import { ActionHelperService } from '../../core/services/action-helper.service';
   styleUrls: ['./css-minifier.component.scss']
 })
 export class CssMinifierComponent {
-  formattedCode: string = '';  // Formatted CSS code
-  minifiedCode: string = '';   // Minified CSS code
+  formattedCode = '';
+  minifiedCode = '';
+  private readonly isBrowser: boolean;
 
   constructor(
     private http: HttpClient,
     private titleService: Title,
     public validationHelper: ValidationHelperService,
     public fileHelper: FileHelperService,
-    public actionHelper: ActionHelperService
+    public actionHelper: ActionHelperService,
+    @Inject(PLATFORM_ID) platformId: object
   ) {
+    this.isBrowser = isPlatformBrowser(platformId);
     this.titleService.setTitle("Smart ToolKit - CSS Minifier");
   }
 
   ngAfterViewInit(): void {
-    this.formattedCode = localStorage.getItem("css-minifier-page") ?? '';
+    if (this.isBrowser) {
+      try {
+        this.formattedCode = localStorage.getItem('css-minifier-page') ?? '';
+      } catch {
+        this.formattedCode = '';
+      }
+    }
     this.minifyCode();
   }
   openFile(): void {
@@ -74,9 +84,12 @@ export class CssMinifierComponent {
     });
   }
 
-  async paste() {
-    this.formattedCode = await this.actionHelper.paste();
-    this.minifyCode();
+  async paste(): Promise<void> {
+    const content = await this.actionHelper.paste();
+    if (content) {
+      this.formattedCode = content;
+      this.minifyCode();
+    }
   }
 
   download() {
@@ -96,20 +109,30 @@ export class CssMinifierComponent {
     this.actionHelper.copy(this.minifiedCode);
   }
 
-  save() {
-    localStorage.setItem("css-minifier-page", this.formattedCode);
-    swal.fire('Success', 'CSS code saved successfully!', 'success');
+  save(): void {
+    if (!this.isBrowser) {
+      return;
+    }
+
+    try {
+      localStorage.setItem('css-minifier-page', this.formattedCode);
+      void swal.fire('Success', 'CSS code saved successfully!', 'success');
+    } catch {
+      void swal.fire('Error', 'CSS code could not be saved.', 'error');
+    }
   }
 
-  minifyCode() {
-    if (this.formattedCode.trim()) {
-
-      let minified = this.formattedCode.replace(/\/\*[\s\S]*?\*\//g, '');
-      minified = minified.replace(/\s+/g, ' ').trim();
-      minified = minified.replace(/\s*{\s*/g, '{').replace(/\s*}\s*/g, '}').replace(/\s*;\s*/g, ';').replace(/\s*:\s*/g, ':');
-      minified = minified.replace(/\s*,\s*/g, ',').replace(/\s*>\s*/g, '>').replace(/\s*~\s*/g, '~').replace(/\s*\+\s*/g, '+');
-
-      this.minifiedCode = minified;
+  minifyCode(): void {
+    this.minifiedCode = '';
+    if (!this.formattedCode.trim()) {
+      return;
     }
+
+    let minified = this.formattedCode.replace(/\/\*[\s\S]*?\*\//g, '');
+    minified = minified.replace(/\s+/g, ' ').trim();
+    minified = minified.replace(/\s*{\s*/g, '{').replace(/\s*}\s*/g, '}').replace(/\s*;\s*/g, ';').replace(/\s*:\s*/g, ':');
+    minified = minified.replace(/\s*,\s*/g, ',').replace(/\s*>\s*/g, '>').replace(/\s*~\s*/g, '~').replace(/\s*\+\s*/g, '+');
+
+    this.minifiedCode = minified;
   }
 }
