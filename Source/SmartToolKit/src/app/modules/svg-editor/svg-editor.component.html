@@ -1,37 +1,260 @@
-<div class="item-details-page px-2">
-    <div class="container contact px-2">
-        <div class="row px-4">
-            <div class="row" style="margin: 0px !important;">
-                <div class="col-sm-6  pb-3 pb-lg-0">
-
-                    <div class="col-lg-12">
-                        <button (click)="openFile()" class="btn btn-success btn-sm mb-3 mx-1">Open File</button>
-                        <button (click)="readAsUrl()" class="btn btn-success btn-sm mb-3 mx-1">Read as Url</button>
-                        <button (click)="copy()" class="btn btn-info btn-sm mb-3 mx-1">Copy</button>
-                        <button (click)="paste()" class="btn btn-info btn-sm mb-3 mx-1">Paste</button>
-                        <button (click)="save()" class="btn btn-warning btn-sm mb-3 mx-1">Save</button>
-                    </div>
-                    <div class="col-lg-12">
-                        <textarea class="col-sm-12 form-control bg-dark text-white" rows="20" (input)="process()"
-                            [(ngModel)]="svgCode"></textarea>
-                    </div>
-
-                </div>
-                <div class="col-sm-6">
-                    <div class="col-lg-12">
-                        <button (click)="download()" class="btn btn-warning btn-sm mb-3 mx-1">Download</button>
-
-                        <input type="color" [(ngModel)]="bgColor" class="float-end form-control-color">
-
-                    </div>
-                    <div class="col-lg-12 table-responsive border border-1 overflow-hidden position-relative"
-                        (wheel)="zoomSVG($event)" [ngStyle]="{ height: boxHeight }" [style.background-color]="bgColor">
-
-                        <div class="svg-container" #svgContainer></div>
-
-                    </div>
-                </div>
-            </div>
+<div class="item-details-page svg-editor-page px-2">
+  <div class="container contact px-2">
+    <div class="svg-tool-shell mx-auto">
+      <header class="svg-tool-header">
+        <div>
+          <p class="svg-eyebrow">Developer tools</p>
+          <h2 class="mb-2"><i class="fas fa-bezier-curve text-info me-2" aria-hidden="true"></i>SVG Editor</h2>
+          <p class="mb-0">Edit, validate, and export safe vector graphics without leaving the browser.</p>
         </div>
+        <div class="header-actions">
+          <button type="button" class="btn btn-sm btn-outline-danger" (click)="reset()">
+            <i class="fas fa-undo me-1" aria-hidden="true"></i>Reset
+          </button>
+        </div>
+      </header>
+
+      <div class="row g-3">
+        <div class="col-sm-6">
+          <section class="tool-pane" aria-labelledby="svg-source-title">
+            <div class="tool-pane-header">
+              <div>
+                <p class="svg-eyebrow mb-1">Input</p>
+                <h3 id="svg-source-title" class="mb-1">SVG source</h3>
+                <span>Enter, load, or paste SVG markup.</span>
+              </div>
+              <span class="character-count">{{ sourceLengthLabel }}</span>
+            </div>
+
+            <div class="tool-actions" aria-label="Source actions">
+              <button type="button" class="btn btn-success btn-sm mb-3 mx-1" (click)="openFile()">
+                <i class="fas fa-file-arrow-up me-1" aria-hidden="true"></i>Open File
+              </button>
+              <button type="button" class="btn btn-success btn-sm mb-3 mx-1" (click)="readAsUrl()">
+                <i class="fas fa-link me-1" aria-hidden="true"></i>Read as URL
+              </button>
+              <button type="button" class="btn btn-info btn-sm mb-3 mx-1" (click)="copy()" [disabled]="!safeSvgCode">
+                <i class="fas fa-copy me-1" aria-hidden="true"></i>Copy
+              </button>
+              <button type="button" class="btn btn-info btn-sm mb-3 mx-1" (click)="paste()">
+                <i class="fas fa-clipboard me-1" aria-hidden="true"></i>Paste
+              </button>
+              <button type="button" class="btn btn-warning btn-sm mb-3 mx-1" (click)="save()">
+                <i class="fas fa-save me-1" aria-hidden="true"></i>Save
+              </button>
+            </div>
+
+            <div class="tool-actions secondary-actions" aria-label="Source editing actions">
+              <div class="btn-group btn-group-sm me-2 mb-3" role="group" aria-label="History">
+                <button type="button" class="btn" [class.btn-info]="canUndo" [class.btn-outline-info]="!canUndo" [disabled]="!canUndo" (click)="undo()">
+                  <i class="fas fa-undo me-1" aria-hidden="true"></i>Undo
+                </button>
+                <button type="button" class="btn" [class.btn-info]="canRedo" [class.btn-outline-info]="!canRedo" [disabled]="!canRedo" (click)="redo()">
+                  <i class="fas fa-redo me-1" aria-hidden="true"></i>Redo
+                </button>
+              </div>
+              <button type="button" class="btn btn-outline-info btn-sm mb-3 mx-1" (click)="process()">
+                <i class="fas fa-check-circle me-1" aria-hidden="true"></i>Validate
+              </button>
+              <button type="button" class="btn btn-outline-info btn-sm mb-3 mx-1" (click)="formatCode()">
+                <i class="fas fa-align-left me-1" aria-hidden="true"></i>Format
+              </button>
+              <button type="button" class="btn btn-outline-info btn-sm mb-3 mx-1" (click)="minifyCode()">
+                <i class="fas fa-compress me-1" aria-hidden="true"></i>Minify
+              </button>
+            </div>
+
+            <textarea
+              class="form-control bg-dark text-white editor-textarea"
+              rows="20"
+              wrap="off"
+              spellcheck="false"
+              [attr.aria-label]="'SVG source'"
+              [attr.aria-invalid]="svgError ? 'true' : null"
+              [class.is-invalid]="svgError"
+              [ngModel]="svgCode"
+              (ngModelChange)="onSourceChange($event)"></textarea>
+            <div class="editor-footnote">
+              <span class="status-inline" [ngClass]="statusClass"><span class="status-dot"></span>{{ statusMessage }}</span>
+              <span>Max 5 MB</span>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-sm-6">
+          <section class="tool-pane" aria-labelledby="svg-preview-title">
+            <div class="tool-pane-header">
+              <div>
+                <p class="svg-eyebrow mb-1">Output</p>
+                <h3 id="svg-preview-title" class="mb-1">Preview</h3>
+                <span>Click an element to inspect and edit it.</span>
+              </div>
+              <div class="tool-actions mb-0">
+                <button type="button" class="btn btn-warning btn-sm mb-0 mx-1" (click)="downloadSvg()">
+                  <i class="fas fa-download me-1" aria-hidden="true"></i>SVG
+                </button>
+                <button type="button" class="btn btn-warning btn-sm mb-0 mx-1" (click)="downloadPng()">
+                  <i class="fas fa-file-image me-1" aria-hidden="true"></i>PNG
+                </button>
+              </div>
+            </div>
+
+            <div class="preview-controls">
+              <div class="btn-group btn-group-sm" role="group" aria-label="Zoom">
+                <button type="button" class="btn btn-outline-info" (click)="setZoom(-0.1)" aria-label="Zoom out"><i class="fas fa-minus" aria-hidden="true"></i></button>
+                <span class="zoom-value">{{ zoomLabel }}</span>
+                <button type="button" class="btn btn-outline-info" (click)="setZoom(0.1)" aria-label="Zoom in"><i class="fas fa-plus" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn-outline-light" (click)="resetZoom()">Fit</button>
+              </div>
+              <label class="preview-control">
+                <span>Canvas</span>
+                <input type="color" [(ngModel)]="bgColor" class="form-control form-control-color" aria-label="Canvas color">
+              </label>
+              <label class="preview-check">
+                <input type="checkbox" class="form-check-input" [(ngModel)]="transparentBackground">
+                <span>Transparent</span>
+              </label>
+              <label class="preview-check">
+                <input type="checkbox" class="form-check-input" [(ngModel)]="showGrid">
+                <span>Grid</span>
+              </label>
+            </div>
+
+            <div
+              class="svg-preview-stage"
+              [class.svg-transparent]="transparentBackground"
+              [class.svg-grid]="showGrid"
+              [style.background-color]="bgColor"
+              (wheel)="onPreviewWheel($event)">
+              <div
+                #svgContainer
+                class="svg-container"
+                tabindex="0"
+                role="application"
+                aria-label="SVG preview and selection area"
+                [style.transform]="'translate(-50%, -50%) scale(' + scale + ')'"
+                (click)="onPreviewClick($event)"
+                (keydown)="onPreviewKeydown($event)"></div>
+              <div *ngIf="!previewReady" class="preview-empty text-center">
+                <strong>Preview unavailable</strong>
+                <div class="small">Fix the SVG error shown in the source panel.</div>
+              </div>
+            </div>
+
+            <div class="editor-footnote">
+              <span>Ctrl/⌘ + scroll to zoom</span>
+              <span>Arrow keys move selection</span>
+            </div>
+            <div class="shape-actions">
+              <span class="shape-label">Add element</span>
+              <button type="button" class="btn btn-outline-info btn-sm mx-1" *ngFor="let shape of shapeTypes" (click)="addShape(shape)">
+                <i class="fas fa-plus me-1" aria-hidden="true"></i>{{ shape }}
+              </button>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <section class="tool-pane layers-panel" aria-labelledby="svg-layers-title">
+        <div class="tool-pane-header">
+          <div>
+            <p class="svg-eyebrow mb-1">Structure</p>
+            <h3 id="svg-layers-title" class="mb-1">Layers &amp; inspector</h3>
+            <span>Select a layer, then adjust its attributes.</span>
+          </div>
+          <span class="character-count">{{ layers.length }} elements</span>
+        </div>
+        <div class="row g-3">
+          <div class="col-lg-5">
+            <div class="subpanel">
+              <div class="subpanel-header">
+                <strong>Layers</strong>
+                <span class="small">Visibility</span>
+              </div>
+              <div class="list-group list-group-flush layer-list" role="listbox" aria-label="SVG layers">
+                <div class="list-group-item d-flex align-items-center gap-2 p-2" *ngFor="let layer of layers" [class.active]="selectedId === layer.id" [class.layer-hidden]="!layer.visible" role="option" [attr.aria-selected]="selectedId === layer.id">
+                  <button type="button" class="btn btn-link p-0 text-start flex-grow-1 text-decoration-none layer-select" (click)="selectLayer(layer)">
+                    <span class="layer-type">{{ layer.tag }}</span>
+                    <span class="small">{{ layer.name }}</span>
+                  </button>
+                  <button type="button" class="btn btn-link p-0 layer-visibility" (click)="toggleLayerVisibility(layer)" [attr.aria-label]="layer.visible ? 'Hide layer' : 'Show layer'">
+                    <i class="fas" [class.fa-eye]="layer.visible" [class.fa-eye-slash]="!layer.visible" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div *ngIf="layers.length === 0" class="empty-state">No renderable layers.</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-7">
+            <div class="subpanel">
+              <div class="subpanel-header">
+                <strong *ngIf="hasSelection">Selected: {{ selectedTag }}</strong>
+                <strong *ngIf="!hasSelection">Inspector</strong>
+                <span class="small" *ngIf="hasSelection">{{ selectedId }}</span>
+              </div>
+              <div *ngIf="hasSelection; else noSelection" class="inspector-form">
+                <div class="row g-2">
+                  <div class="col-12">
+                    <label class="form-label small mb-1" for="svg-element-id">ID</label>
+                    <input id="svg-element-id" type="text" class="form-control form-control-sm svg-form-control" [ngModel]="selectedId" (change)="updateSelectedId($event)">
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <label class="form-label small mb-1">X</label>
+                    <input type="number" step="any" class="form-control form-control-sm svg-form-control" [ngModel]="selectedX" (change)="updateSelectedAttribute('x', $event)">
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <label class="form-label small mb-1">Y</label>
+                    <input type="number" step="any" class="form-control form-control-sm svg-form-control" [ngModel]="selectedY" (change)="updateSelectedAttribute('y', $event)">
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <label class="form-label small mb-1">Width</label>
+                    <input type="number" step="any" class="form-control form-control-sm svg-form-control" [ngModel]="selectedWidth" (change)="updateSelectedAttribute('width', $event)">
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <label class="form-label small mb-1">Height</label>
+                    <input type="number" step="any" class="form-control form-control-sm svg-form-control" [ngModel]="selectedHeight" (change)="updateSelectedAttribute('height', $event)">
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <label class="form-label small mb-1">Fill</label>
+                    <div class="input-group input-group-sm">
+                      <input type="color" class="form-control form-control-color svg-form-control" [ngModel]="selectedFillForInput" (change)="updateSelectedColor('fill', $event)" aria-label="Fill color">
+                      <input type="text" class="form-control svg-form-control" [ngModel]="selectedFill" (change)="updateSelectedAttribute('fill', $event)">
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <label class="form-label small mb-1">Stroke</label>
+                    <input type="text" class="form-control form-control-sm svg-form-control" [ngModel]="selectedStroke" (change)="updateSelectedAttribute('stroke', $event)" placeholder="none or #hex">
+                  </div>
+                  <div class="col-6">
+                    <label class="form-label small mb-1">Stroke width</label>
+                    <input type="number" min="0" step="any" class="form-control form-control-sm svg-form-control" [ngModel]="selectedStrokeWidth" (change)="updateSelectedAttribute('stroke-width', $event)">
+                  </div>
+                  <div class="col-6">
+                    <label class="form-label small mb-1">Opacity</label>
+                    <input type="number" min="0" max="1" step="0.01" class="form-control form-control-sm svg-form-control" [ngModel]="selectedOpacity" (change)="updateSelectedAttribute('opacity', $event)">
+                  </div>
+                </div>
+                <div class="inspector-actions">
+                  <button type="button" class="btn btn-outline-info btn-sm mx-1" (click)="duplicateSelected()">
+                    <i class="fas fa-copy me-1" aria-hidden="true"></i>Duplicate
+                  </button>
+                  <button type="button" class="btn btn-outline-danger btn-sm mx-1" (click)="deleteSelected()">
+                    <i class="fas fa-trash me-1" aria-hidden="true"></i>Delete
+                  </button>
+                </div>
+              </div>
+              <ng-template #noSelection><div class="empty-state">Select a layer or an element in the preview.</div></ng-template>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="svg-alert" [class.svg-alert--success]="statusType === 'success'" [class.svg-alert--error]="statusType === 'error'" [class.svg-alert--warning]="statusType === 'warning'" *ngIf="statusType === 'error' || warnings.length > 0" role="status" aria-live="polite">
+        <i class="fas fa-circle-info me-1" aria-hidden="true"></i>{{ statusMessage }}
+        <ul *ngIf="warnings.length > 0" class="mb-0 mt-1 ps-3">
+          <li *ngFor="let warning of warnings">{{ warning }}</li>
+        </ul>
+      </div>
     </div>
+  </div>
 </div>

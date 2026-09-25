@@ -1,0 +1,71 @@
+<div class="item-details-page px-2">
+  <div class="container contact px-2">
+    <div class="row px-4">
+      <div class="row w-100" style="margin: 0px !important;">
+        <div class="col-lg-6 pb-3">
+          <div class="national-card">
+            <div class="national-card-header">
+              <div>
+                <h4 class="mb-1">National code validator</h4>
+                <small>Enter a 10-digit Iranian national code to validate its checksum.</small>
+              </div>
+              <i class="fas fa-shield-halved" aria-hidden="true"></i>
+            </div>
+            <label class="form-label text-light" for="national-code-input">National code</label>
+            <input id="national-code-input" type="text" inputmode="numeric" maxlength="10" class="form-control bg-dark text-white national-input" [class.is-valid]="isInputValid" [class.is-invalid]="inputCode && !isInputValid" [(ngModel)]="inputCode" (ngModelChange)="onInputChange($event)" placeholder="Example: 0013545678">
+            <div class="national-status" [ngClass]="'national-status-' + statusType" role="status" aria-live="polite">
+              <i class="fas" [class.fa-circle-check]="isInputValid" [class.fa-circle-info]="!isInputValid" aria-hidden="true"></i>
+              {{ statusMessage }}
+            </div>
+            <div class="d-flex flex-wrap gap-2 mt-3">
+              <button type="button" class="btn btn-info btn-sm" (click)="validateInput()"><i class="fas fa-check me-1" aria-hidden="true"></i>Validate</button>
+              <button type="button" class="btn btn-outline-info btn-sm" [disabled]="!isInputValid" (click)="next()"><i class="fas fa-forward me-1" aria-hidden="true"></i>Next valid code</button>
+              <button type="button" class="btn btn-outline-danger btn-sm" (click)="clear()"><i class="fas fa-trash me-1" aria-hidden="true"></i>Clear</button>
+            </div>
+            <div class="next-code" *ngIf="nextCode">
+              <span>Next code</span>
+              <strong>{{ nextCode }}</strong>
+              <button type="button" class="btn btn-sm btn-outline-info" (click)="copyOne(nextCode)"><i class="fas fa-copy me-1" aria-hidden="true"></i>Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 pb-3">
+          <div class="national-card">
+            <div class="national-card-header">
+              <div>
+                <h4 class="mb-1">Generate test codes</h4>
+                <small>Create valid checksum codes for software testing and sample data.</small>
+              </div>
+              <i class="fas fa-list-ol" aria-hidden="true"></i>
+            </div>
+            <label class="form-label text-light" for="national-code-count">Number of codes</label>
+            <div class="input-group mb-2">
+              <input id="national-code-count" type="number" min="1" [max]="maxCount" class="form-control bg-dark text-white" [(ngModel)]="count">
+              <span class="input-group-text">codes</span>
+            </div>
+            <div class="form-text text-light mb-3">Up to {{ maxCount.toLocaleString('en-US') }} codes per batch.</div>
+            <button type="button" class="btn btn-success" (click)="generate()"><i class="fas fa-wand-magic-sparkles me-1" aria-hidden="true"></i>Generate codes</button>
+            <div class="generated-actions" *ngIf="generatedCodes.length">
+              <button type="button" class="btn btn-info btn-sm" (click)="copyGenerated()"><i class="fas fa-copy me-1" aria-hidden="true"></i>Copy all</button>
+              <button type="button" class="btn btn-warning btn-sm" (click)="download()"><i class="fas fa-download me-1" aria-hidden="true"></i>Download TXT</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-12">
+          <div class="national-card">
+            <div class="national-card-header">
+              <div>
+                <h4 class="mb-1">Generated codes</h4>
+                <small>{{ generatedCodes.length.toLocaleString('en-US') }} valid test codes</small>
+              </div>
+              <i class="fas fa-code" aria-hidden="true"></i>
+            </div>
+            <textarea class="form-control bg-dark text-white national-results" rows="12" readonly [value]="generatedCodes.join('\n')" placeholder="Generated codes will appear here."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

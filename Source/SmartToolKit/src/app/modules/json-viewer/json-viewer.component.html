@@ -1,28 +1,123 @@
 <div class="item-details-page px-2">
-    <div class="container contact px-2">
-        <div class="row px-4">
-
-            <div class="col-lg-12">
-                <button (click)="jsonViewer()" class="btn btn-primary btn-sm mb-3 mx-1">Viewer</button>
-                <button (click)="jsonFormatter('Format')" class="btn btn-primary btn-sm mb-3 mx-1">Format</button>
-                <button (click)="jsonFormatter('Remove white space')" class="btn btn-primary btn-sm mb-3 mx-1">Remove
-                    white space</button>
-                <button (click)="openFile()" class="btn btn-success btn-sm mb-3 mx-1">Open File</button>
-
-                <button (click)="readAsUrl()" class="btn btn-success btn-sm mb-3 mx-1">Read as Url</button>
-                <button (click)="copy()" class="btn btn-info btn-sm mb-3 mx-1">Copy</button>
-                <button (click)="paste()" class="btn btn-info btn-sm mb-3 mx-1">Paste</button>
-                <button (click)="save()" class="btn btn-warning btn-sm mb-3 mx-1">Save</button>
-                <button (click)="download()" class="btn btn-warning btn-sm mb-3 mx-1">Download</button>
-
-            </div>
-            <div class="col-lg-12" *ngIf="page != 'Viewer'">
-                <textarea rows="{{getrow()}}" [(ngModel)]="jsonContent" [ngModelOptions]="{standalone: true}"
-                    class="bg-dark form-control text-white w-100" placeholder="Paste Json"></textarea>
-            </div>
-            <div class="col-lg-12" *ngIf="page == 'Viewer'">
-                <ngx-json-viewer class="bg-dark form-control" [json]="jsonObject"></ngx-json-viewer>
-            </div>
+  <div class="container contact px-2">
+    <div class="row px-4">
+      <div class="row w-100" style="margin: 0px !important;">
+        <div class="col-lg-12">
+          <div class="col-lg-12">
+            <button type="button" (click)="openFile()" class="btn btn-success btn-sm mb-3 mx-1">
+              <i class="fas fa-file-arrow-up me-1" aria-hidden="true"></i>Open File
+            </button>
+            <button type="button" (click)="readAsUrl()" class="btn btn-success btn-sm mb-3 mx-1">
+              <i class="fas fa-link me-1" aria-hidden="true"></i>Read as Url
+            </button>
+            <button type="button" (click)="save()" class="btn btn-warning btn-sm mb-3 mx-1">
+              <i class="fas fa-save me-1" aria-hidden="true"></i>Save
+            </button>
+            <button type="button" (click)="formatJson()" class="btn btn-primary btn-sm mb-3 mx-1">
+              <i class="fas fa-align-left me-1" aria-hidden="true"></i>Format
+            </button>
+            <button type="button" (click)="minifyJson()" class="btn btn-primary btn-sm mb-3 mx-1">
+              <i class="fas fa-compress me-1" aria-hidden="true"></i>Remove white space
+            </button>
+            <button type="button" (click)="copy()" [disabled]="!jsonContent" class="btn btn-info btn-sm mb-3 mx-1">
+              <i class="fas fa-copy me-1" aria-hidden="true"></i>Copy
+            </button>
+            <button type="button" (click)="paste()" class="btn btn-info btn-sm mb-3 mx-1">
+              <i class="fas fa-clipboard me-1" aria-hidden="true"></i>Paste
+            </button>
+            <button type="button" (click)="download()" [disabled]="!jsonContent" class="btn btn-warning btn-sm mb-3 mx-1">
+              <i class="fas fa-download me-1" aria-hidden="true"></i>Download
+            </button>
+            <button type="button" (click)="clear()" class="btn btn-outline-danger btn-sm mb-3 mx-1">
+              <i class="fas fa-trash me-1" aria-hidden="true"></i>Clear
+            </button>
+          </div>
         </div>
+
+        <div class="col-lg-12">
+          <div class="d-flex align-items-center flex-wrap gap-2 mb-2">
+            <div class="btn-group btn-group-sm" role="group" aria-label="JSON view mode">
+              <button type="button" class="btn" [class.btn-primary]="viewMode === 'source'" [class.btn-outline-primary]="viewMode !== 'source'" (click)="switchMode('source')">
+                <i class="fas fa-code me-1" aria-hidden="true"></i>Source
+              </button>
+              <button type="button" class="btn" [class.btn-primary]="viewMode === 'tree'" [class.btn-outline-primary]="viewMode !== 'tree'" (click)="switchMode('tree')">
+                <i class="fas fa-sitemap me-1" aria-hidden="true"></i>Viewer
+              </button>
+            </div>
+            <button type="button" class="btn btn-sm" [class.btn-info]="sortKeys" [class.btn-outline-info]="!sortKeys" (click)="toggleSort()">
+              <i class="fas fa-arrow-down-a-z me-1" aria-hidden="true"></i>Sort keys
+            </button>
+            <ng-container *ngIf="viewMode === 'source'">
+              <label class="small json-control-label mb-0" for="json-indent">Indent</label>
+              <select id="json-indent" class="form-select form-select-sm bg-dark text-white json-select" [ngModel]="indent" (ngModelChange)="setIndent($event)">
+                <option [value]="2">2 spaces</option>
+                <option [value]="4">4 spaces</option>
+                <option value="tab">Tab</option>
+              </select>
+            </ng-container>
+            <ng-container *ngIf="viewMode === 'tree'">
+              <input type="search" class="form-control form-control-sm json-search" placeholder="Search keys or values" [ngModel]="searchQuery" (ngModelChange)="onSearchChange($event)" aria-label="Search JSON">
+              <button type="button" class="btn btn-sm btn-outline-info" (click)="toggleExpanded()">
+                <i class="fas" [class.fa-chevron-down]="expanded" [class.fa-chevron-right]="!expanded" aria-hidden="true"></i>{{ expanded ? 'Collapse' : 'Expand' }}
+              </button>
+              <label class="small json-control-label mb-0" for="json-depth">Depth</label>
+              <input id="json-depth" type="number" min="1" max="10" class="form-control form-control-sm json-depth" [ngModel]="depth" (ngModelChange)="setDepth($event)">
+              <span class="small text-muted" *ngIf="searchQuery">{{ searchCount }} matches</span>
+            </ng-container>
+          </div>
+
+          <div class="json-display border border-1 p-2" [class.json-display-source]="viewMode === 'source'">
+            <textarea
+              *ngIf="viewMode === 'source'; else treeView"
+              class="form-control bg-dark text-white json-editor"
+              [rows]="rowCount"
+              wrap="off"
+              spellcheck="false"
+              [attr.aria-label]="'JSON source'"
+              [attr.aria-invalid]="!isValid"
+              [class.is-invalid]="!isValid"
+              [(ngModel)]="jsonContent"
+              (ngModelChange)="onSourceChange($event)"
+              placeholder="{ }"></textarea>
+            <ng-template #treeView>
+              <ngx-json-viewer
+                *ngIf="browserReady && isValid; else invalidTree"
+                class="json-tree"
+                [json]="jsonValue"
+                [expanded]="expanded"
+                [depth]="depth"></ngx-json-viewer>
+              <ng-template #invalidTree>
+                <div class="json-placeholder">{{ browserReady ? 'Fix the JSON error to display the tree.' : 'Viewer loads in the browser.' }}</div>
+              </ng-template>
+            </ng-template>
+          </div>
+
+          <div class="small mt-2" [ngClass]="'json-status-' + statusType" role="status" aria-live="polite">
+            <span class="json-status-dot"></span>{{ statusMessage }}
+          </div>
+
+          <div class="row g-2 mt-1" *ngIf="isValid">
+            <div class="col-6 col-md-2">
+              <div class="json-stat"><span>Root</span><strong>{{ stats.rootType | titlecase }}</strong></div>
+            </div>
+            <div class="col-6 col-md-2">
+              <div class="json-stat"><span>Depth</span><strong>{{ stats.maxDepth }}</strong></div>
+            </div>
+            <div class="col-6 col-md-2">
+              <div class="json-stat"><span>Objects</span><strong>{{ stats.objectCount }}</strong></div>
+            </div>
+            <div class="col-6 col-md-2">
+              <div class="json-stat"><span>Arrays</span><strong>{{ stats.arrayCount }}</strong></div>
+            </div>
+            <div class="col-6 col-md-2">
+              <div class="json-stat"><span>Keys</span><strong>{{ stats.keyCount }}</strong></div>
+            </div>
+            <div class="col-6 col-md-2">
+              <div class="json-stat"><span>Size</span><strong>{{ formatBytes(stats.bytes) }}</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

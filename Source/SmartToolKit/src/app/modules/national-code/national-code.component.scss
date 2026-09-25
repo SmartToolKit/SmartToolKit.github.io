@@ -1,0 +1,133 @@
+:host {
+  display: block;
+}
+
+.national-card {
+  height: 100%;
+  padding: 1rem;
+  border: 1px solid #404245;
+  border-radius: .6rem;
+  background: #282b2f;
+  color: #f5f5f5;
+}
+
+.national-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.national-card-header h4 {
+  color: #fff;
+}
+
+.national-card-header small {
+  color: #afafaf;
+}
+
+.national-card-header > i {
+  color: #8f8bff;
+  font-size: 1.3rem;
+}
+
+.national-input,
+.national-results,
+.national-card .form-control,
+.national-card .form-select {
+  border-color: #4c4f55;
+  color: #f5f5f5;
+  background-color: #1f2226;
+}
+
+.national-input:focus,
+.national-results:focus,
+.national-card .form-control:focus {
+  border-color: #7453fc;
+  box-shadow: 0 0 0 .2rem rgba(116, 83, 252, .18);
+  color: #fff;
+  background-color: #1f2226;
+}
+
+.national-input.is-valid {
+  border-color: #198754;
+}
+
+.national-input.is-invalid {
+  border-color: #dc3545;
+}
+
+.national-status {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  min-height: 24px;
+  margin-top: .55rem;
+  color: #afafaf;
+  font-size: .82rem;
+}
+
+.national-status-success {
+  color: #b6f3ca;
+}
+
+.national-status-error {
+  color: #ffc7ce;
+}
+
+.national-status-info {
+  color: #afafaf;
+}
+
+.next-code {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .6rem;
+  margin-top: 1rem;
+  padding: .7rem;
+  border: 1px solid rgba(54, 211, 153, .35);
+  border-radius: .45rem;
+  background: rgba(54, 211, 153, .1);
+}
+
+.next-code span {
+  color: #afafaf;
+  font-size: .8rem;
+}
+
+.next-code strong {
+  flex: 1 1 auto;
+  color: #b6f3ca;
+  font-family: monospace;
+  letter-spacing: .12em;
+}
+
+.generated-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-top: .9rem;
+}
+
+.national-results {
+  min-height: 220px;
+  resize: vertical;
+  font-family: monospace;
+  line-height: 1.7;
+}
+
+@media (max-width: 767px) {
+  .container.contact {
+    padding: 1rem .5rem;
+  }
+
+  .row.px-4,
+  .row.w-100 {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+}

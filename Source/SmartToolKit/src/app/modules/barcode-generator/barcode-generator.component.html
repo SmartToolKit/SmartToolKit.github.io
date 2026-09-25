@@ -1,77 +1,206 @@
-<div class="item-details-page px-2">
-    <div class="container contact px-2">
-        <div class="row px-4">
-            <div class="row" style="margin: 0px !important;">
-                <div class="col-md-12">
-                    <button (click)="importOptions()" class="btn btn-info btn-sm mb-3 mx-1">Import Options</button>
-                    <button (click)="exportOptions()" class="btn btn-info btn-sm mb-3 mx-1">Export Options</button>
-                    <button (click)="downloadQRCodeAsSvg()" class="btn btn-warning btn-sm mb-3 mx-1">Download as
-                        SVG</button>
-                    <button (click)="downloadQRCodeAsPng()" class="btn btn-warning btn-sm mb-3 mx-1">Download as
-                        PNG</button>
-                </div>
-                <div class="col-sm-6 pb-3 pb-lg-0">
-                    <div class="col-md-12">
-                        <h4 class="mb-0">Value</h4>
-                        <input class="form-control bg-dark text-white" [(ngModel)]="model.value">
-                    </div>
-
-                    <!-- Dropdown for Barcode Format -->
-                    <div class="col-md-12 mt-3">
-                        <h4 class="mb-0">Format</h4>
-                        <select class="form-select bg-dark text-white" [(ngModel)]="model.selectedFormat">
-                            <option *ngFor="let format of formats" [value]="format">{{ format }}</option>
-                        </select>
-                    </div>
-
-                    <!-- Input for Width -->
-                    <div class="col-md-12 mt-3">
-                        <h4 class="mb-0">Width</h4>
-                        <input type="number" class="form-control bg-dark text-white" [(ngModel)]="model.width" min="1">
-                    </div>
-
-                    <!-- Input for Height -->
-                    <div class="col-md-12 mt-3">
-                        <h4 class="mb-0">Height</h4>
-                        <input type="number" class="form-control bg-dark text-white" [(ngModel)]="model.height" min="50">
-                    </div>
-
-                    <!-- Checkbox for Displaying Value -->
-                    <div class="col-md-12 mt-3">
-                        <h4 class="mb-0">Display Value</h4>
-                        <div class="form-check bg-dark text-white">
-                            <input class="form-check-input" id="displayValue" type="checkbox"
-                                [(ngModel)]="model.displayValue">
-                            <label class="form-check-label" for="displayValue">Show Barcode Value</label>
-                        </div>
-                    </div>
-                    <div class="col-md-12 mt-3">
-                        <h4 class="mb-0">Colors</h4>
-                        <div class="row">
-                            <div class="col-md-6 mb-2">
-                                <div class="bg-dark d-flex form-control p-0 text-light">
-                                    <input type="color" [(ngModel)]="model.lineColor"><label class="m-auto">Line Color</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 mb-2">
-                                <div class="bg-dark d-flex form-control p-0 text-light">
-                                    <input type="color" [(ngModel)]="model.bgColor"><label class="m-auto">BG Color</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 overflow-auto position-relative min-height-300px">
-                    <h4>Barcode</h4>
-                    <div class="text-center div-barcode" #barcodeElement>
-                        <ngx-barcode6 [bc-format]="model.selectedFormat" [bc-value]="model.value" [bc-width]="model.width"
-                            [bc-height]="model.height" [bc-display-value]="model.displayValue" [bc-line-color]="model.lineColor"
-                            [bc-background]="model.bgColor">
-                        </ngx-barcode6>
-                    </div>
-                </div>
-            </div>
+<div class="item-details-page barcode-generator-page px-2">
+  <div class="container contact px-2">
+    <div class="barcode-tool-shell mx-auto">
+      <header class="barcode-tool-header">
+        <div>
+          <p class="barcode-eyebrow">Developer tools</p>
+          <h2 class="mb-2"><i class="fas fa-barcode text-info me-2" aria-hidden="true"></i>Barcode Generator</h2>
+          <p class="mb-0">Create, customize, and export 1-D barcodes for labels, inventory, and product packaging.</p>
         </div>
+        <div class="header-actions">
+          <button type="button" class="btn btn-sm btn-outline-info" (click)="importOptions()">
+            <i class="fas fa-file-import me-1" aria-hidden="true"></i>Import
+          </button>
+          <button type="button" class="btn btn-sm btn-outline-info" (click)="exportOptions()">
+            <i class="fas fa-file-export me-1" aria-hidden="true"></i>Export options
+          </button>
+        </div>
+      </header>
+
+      <div class="row g-3">
+        <div class="col-lg-5">
+          <section class="tool-pane" aria-labelledby="barcode-input-title">
+            <div class="tool-pane-header">
+              <div>
+                <p class="barcode-eyebrow mb-1">Input</p>
+                <h3 id="barcode-input-title" class="mb-1">Barcode data</h3>
+                <span>Choose a symbology and enter its value.</span>
+              </div>
+              <button type="button" class="btn btn-sm btn-outline-light" (click)="useExample()">
+                <i class="fas fa-wand-magic-sparkles me-1" aria-hidden="true"></i>Example
+              </button>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small" for="barcode-value">Value</label>
+              <textarea
+                id="barcode-value"
+                class="form-control bg-dark text-white barcode-input"
+                rows="3"
+                maxlength="256"
+                [placeholder]="selectedFormatOption.placeholder"
+                [attr.aria-invalid]="!isValid"
+                [(ngModel)]="model.value"
+                (ngModelChange)="onModelChange()"></textarea>
+              <div class="form-text barcode-hint">{{ model.value.length }}/{{ maxValueLength }} characters</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small" for="barcode-format">Format</label>
+              <select id="barcode-format" class="form-select bg-dark text-white barcode-input" [ngModel]="model.selectedFormat" (ngModelChange)="onFormatChange($event)">
+                <option *ngFor="let format of formats" [value]="format.value">{{ format.label }}</option>
+              </select>
+              <div class="form-text barcode-hint">{{ selectedFormatOption.description }}</div>
+            </div>
+
+            <div class="barcode-validation" [class.barcode-validation--error]="!isValid" [class.barcode-validation--success]="isValid" role="status" aria-live="polite">
+              <i class="fas" [class.fa-circle-check]="isValid" [class.fa-circle-exclamation]="!isValid" aria-hidden="true"></i>
+              {{ statusMessage }}
+            </div>
+          </section>
+
+          <section class="tool-pane barcode-settings mt-3" aria-labelledby="barcode-settings-title">
+            <div class="tool-pane-header">
+              <div>
+                <p class="barcode-eyebrow mb-1">Customize</p>
+                <h3 id="barcode-settings-title" class="mb-1">Appearance</h3>
+                <span>Tune the output for your label or package.</span>
+              </div>
+              <button type="button" class="btn btn-sm btn-outline-danger" (click)="reset()">
+                <i class="fas fa-undo me-1" aria-hidden="true"></i>Reset
+              </button>
+            </div>
+
+            <div class="row g-2">
+              <div class="col-4">
+                <label class="form-label small mb-1" for="barcode-width">Width</label>
+                <input id="barcode-width" type="number" min="1" max="10" step="1" class="form-control form-control-sm barcode-input" [(ngModel)]="model.width" (ngModelChange)="onModelChange()">
+              </div>
+              <div class="col-4">
+                <label class="form-label small mb-1" for="barcode-height">Height</label>
+                <input id="barcode-height" type="number" min="20" max="300" step="1" class="form-control form-control-sm barcode-input" [(ngModel)]="model.height" (ngModelChange)="onModelChange()">
+              </div>
+              <div class="col-4">
+                <label class="form-label small mb-1" for="barcode-margin">Margin</label>
+                <input id="barcode-margin" type="number" min="0" max="50" step="1" class="form-control form-control-sm barcode-input" [(ngModel)]="model.margin" (ngModelChange)="onModelChange()">
+              </div>
+              <div class="col-6">
+                <label class="form-label small mb-1" for="barcode-font">Font</label>
+                <select id="barcode-font" class="form-select form-select-sm barcode-input" [(ngModel)]="model.font" (ngModelChange)="onModelChange()">
+                  <option value="monospace">Monospace</option>
+                  <option value="serif">Serif</option>
+                  <option value="sans-serif">Sans serif</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label small mb-1" for="barcode-font-size">Font size</label>
+                <input id="barcode-font-size" type="number" min="8" max="48" step="1" class="form-control form-control-sm barcode-input" [(ngModel)]="model.fontSize" (ngModelChange)="onModelChange()">
+              </div>
+              <div class="col-6">
+                <label class="form-label small mb-1" for="barcode-font-style">Font style</label>
+                <select id="barcode-font-style" class="form-select form-select-sm barcode-input" [(ngModel)]="model.fontOptions" (ngModelChange)="onModelChange()">
+                  <option value="bold">Bold</option>
+                  <option value="normal">Normal</option>
+                  <option value="italic">Italic</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label small mb-1" for="barcode-text-align">Text align</label>
+                <select id="barcode-text-align" class="form-select form-select-sm barcode-input" [(ngModel)]="model.textAlign" (ngModelChange)="onModelChange()">
+                  <option *ngFor="let align of textAlignOptions" [value]="align">{{ align | titlecase }}</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label small mb-1" for="barcode-text-position">Text position</label>
+                <select id="barcode-text-position" class="form-select form-select-sm barcode-input" [(ngModel)]="model.textPosition" (ngModelChange)="onModelChange()">
+                  <option *ngFor="let position of textPositionOptions" [value]="position">{{ position | titlecase }}</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label small mb-1" for="barcode-text-margin">Text margin</label>
+                <input id="barcode-text-margin" type="number" min="0" max="30" step="1" class="form-control form-control-sm barcode-input" [(ngModel)]="model.textMargin" (ngModelChange)="onModelChange()">
+              </div>
+              <div class="col-6 d-flex align-items-end pb-1">
+                <div class="form-check">
+                  <input id="barcode-display-value" type="checkbox" class="form-check-input" [(ngModel)]="model.displayValue" (ngModelChange)="onModelChange()">
+                  <label class="form-check-label small" for="barcode-display-value">Show value</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-2 mt-1">
+              <div class="col-6">
+                <label class="form-label small mb-1" for="barcode-line-color">Line color</label>
+                <input id="barcode-line-color" type="color" class="form-control form-control-color barcode-color" [(ngModel)]="model.lineColor" (ngModelChange)="onModelChange()">
+              </div>
+              <div class="col-6">
+                <label class="form-label small mb-1" for="barcode-bg-color">Background</label>
+                <input id="barcode-bg-color" type="color" class="form-control form-control-color barcode-color" [(ngModel)]="model.bgColor" (ngModelChange)="onModelChange()">
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-lg-7">
+          <section class="tool-pane barcode-preview-panel" aria-labelledby="barcode-preview-title">
+            <div class="tool-pane-header">
+              <div>
+                <p class="barcode-eyebrow mb-1">Output</p>
+                <h3 id="barcode-preview-title" class="mb-1">Live preview</h3>
+                <span>{{ selectedFormatOption.label }} · {{ model.width }}px module · {{ model.height }}px height</span>
+              </div>
+              <div class="tool-actions mb-0">
+                <button type="button" class="btn btn-warning btn-sm mb-0 mx-1" (click)="downloadQRCodeAsSvg()" [disabled]="!isValid">
+                  <i class="fas fa-download me-1" aria-hidden="true"></i>SVG
+                </button>
+                <button type="button" class="btn btn-warning btn-sm mb-0 mx-1" (click)="downloadQRCodeAsPng()" [disabled]="!isValid">
+                  <i class="fas fa-file-image me-1" aria-hidden="true"></i>PNG
+                </button>
+              </div>
+            </div>
+
+            <div class="preview-controls">
+              <div class="btn-group btn-group-sm" role="group" aria-label="Preview zoom">
+                <button type="button" class="btn btn-outline-info" (click)="setPreviewZoom(-0.1)" aria-label="Zoom out"><i class="fas fa-minus" aria-hidden="true"></i></button>
+                <span class="zoom-value">{{ (previewScale * 100).toFixed(0) }}%</span>
+                <button type="button" class="btn btn-outline-info" (click)="setPreviewZoom(0.1)" aria-label="Zoom in"><i class="fas fa-plus" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn-outline-light" (click)="resetPreviewZoom()">Fit</button>
+              </div>
+              <button type="button" class="btn btn-sm btn-outline-info" (click)="copyValue()" [disabled]="!model.value.trim()">
+                <i class="fas fa-copy me-1" aria-hidden="true"></i>Copy value
+              </button>
+            </div>
+
+            <div class="barcode-preview" #barcodeElement>
+              <div class="barcode-preview-inner" [style.transform]="'scale(' + previewScale + ')'">
+                <ngx-barcode6
+                  *ngIf="browserReady && isValid"
+                  [bc-format]="model.selectedFormat"
+                  [bc-value]="model.value"
+                  [bc-width]="model.width"
+                  [bc-height]="model.height"
+                  [bc-display-value]="model.displayValue"
+                  [bc-line-color]="model.lineColor"
+                  [bc-background]="model.bgColor"
+                  [bc-margin]="model.margin"
+                  [bc-font]="model.font"
+                  [bc-font-size]="model.fontSize"
+                  [bc-font-options]="model.fontOptions"
+                  [bc-text-align]="model.textAlign"
+                  [bc-text-position]="model.textPosition"
+                  [bc-text-margin]="model.textMargin"></ngx-barcode6>
+                <div *ngIf="!browserReady" class="barcode-placeholder">Preview loads in the browser.</div>
+                <div *ngIf="browserReady && !isValid" class="barcode-placeholder barcode-placeholder--error">Enter a valid value to generate the barcode.</div>
+              </div>
+            </div>
+            <div class="editor-footnote">
+              <span>Use the options file to save a reusable label preset.</span>
+              <span>{{ model.displayValue ? 'Value visible' : 'Value hidden' }}</span>
+            </div>
+          </section>
+        </div>
+      </div>
+
     </div>
+  </div>
 </div>

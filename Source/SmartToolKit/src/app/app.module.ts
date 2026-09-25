@@ -33,6 +33,7 @@ import { OpenapiParserComponent } from './modules/openapi-parser/openapi-parser.
 import { PngToSvgComponent } from './modules/png-to-svg/png-to-svg.component';
 import { SqlQueryFormatterComponent } from './modules/sql-query-formatter/sql-query-formatter.component';
 import { ImageSlicerComponent } from './modules/image-slicer/image-slicer.component';
+import { NationalCodeComponent } from './modules/national-code/national-code.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { ImageSlicerComponent } from './modules/image-slicer/image-slicer.compon
     OpenapiParserComponent,
     PngToSvgComponent,
     SqlQueryFormatterComponent,
-    ImageSlicerComponent
+    ImageSlicerComponent,
+    NationalCodeComponent
   ],
   imports: [
     HttpClientModule,

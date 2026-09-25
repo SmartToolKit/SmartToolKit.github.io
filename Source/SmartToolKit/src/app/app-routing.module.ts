@@ -23,6 +23,7 @@ import { OpenapiParserComponent } from './modules/openapi-parser/openapi-parser.
 import { PngToSvgComponent } from './modules/png-to-svg/png-to-svg.component';
 import { SqlQueryFormatterComponent } from './modules/sql-query-formatter/sql-query-formatter.component';
 import { ImageSlicerComponent } from './modules/image-slicer/image-slicer.component';
+import { NationalCodeComponent } from './modules/national-code/national-code.component';
 
 const routes: Routes = [{
   path: '',
@@ -93,7 +94,8 @@ const routes: Routes = [{
     },
     {
       path: 'color-picker',
-      component: ColorPickerComponent
+      component: ColorPickerComponent,
+      title: 'Smart ToolKit - Color Picker'
     },
     {
       path: 'json-to-environment',
@@ -118,6 +120,11 @@ const routes: Routes = [{
     {
       path: 'image-slicer',
       component: ImageSlicerComponent
+    },
+    {
+      path: 'national-code',
+      component: NationalCodeComponent,
+      title: 'Smart ToolKit - Iranian National Code'
     }
   ]
 }];

@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router'; // افزودن NavigationEnd
+import { Component, OnDestroy } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -7,14 +9,28 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnDestroy {
   headerTitle = "Smart ToolKit"
+  private navigationSubscription: Subscription;
 
   constructor(private titleService: Title, private router: Router) {
-    this.router.events.subscribe(() => {
-      this.headerTitle = this.titleService.getTitle().replace("Smart ToolKit - ", "").trim()
+    this.updateHeaderTitle();
+    this.navigationSubscription = this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
+      this.updateHeaderTitle();
     });
+  }
 
+  private updateHeaderTitle(): void {
+    const title = this.titleService.getTitle();
+    if (title && title !== 'Smart ToolKit') {
+      this.headerTitle = title.replace(/^Smart ToolKit\s*-\s*/, '').trim();
+      return;
+    }
+
+    const segment = this.router.url.split('?')[0].split('/').filter(Boolean)[0];
+    this.headerTitle = segment
+      ? segment.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+      : 'Smart ToolKit';
   }
 
   menu = [
@@ -44,6 +60,10 @@ export class HeaderComponent {
     }
   ];
   menuclass = ''
+
+  ngOnDestroy(): void {
+    this.navigationSubscription.unsubscribe();
+  }
 
   toggleMenu() {
     this.menuclass == '' ? this.menuclass = 'd-block' : this.menuclass = ''

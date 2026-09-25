@@ -1,35 +1,179 @@
-<div class="item-details-page px-2">
-    <div class="container contact px-2">
-        <div class="row px-4">
-            <div class="row" style="margin: 0px !important;">
-                <div class="col-sm-8 pb-3 pb-lg-0">
-                    <color-chrome [(color)]="selectedColor" class="color-chrome"></color-chrome>
-                </div>
-                <div class="col-sm-4">
-                    <div class="col-md-12 mt-3">
-                        <h4 class="mb-0">HEX</h4>
-                        <input [(ngModel)]="selectedColor" class="form-control bg-dark text-white">
-                    </div>
-                    <div class="col-md-12 mt-3">
-                        <h4 class="mb-0">RGB</h4>
-                        <input [value]="rgbColor" class="form-control bg-dark text-white" readonly>
-                    </div>
-                    <div class="col-md-12 mt-3">
-                        <h4 class="mb-0">CMYK</h4>
-                        <input [value]="cmykColor" class="form-control bg-dark text-white" readonly>
-                    </div>
-
-                    <div class="col-md-12 mt-3">
-                        <h4 class="mb-0">HSV</h4>
-                        <input [value]="hsvColor" class="form-control bg-dark text-white" readonly>
-                    </div>
-                    <div class="col-md-12 mt-3">
-                        <h4 class="mb-0">HSL</h4>
-                        <input [value]="hslColor" class="form-control bg-dark text-white" readonly>
-                    </div>
-
-                </div>
-            </div>
+<div class="item-details-page color-picker-page px-2">
+  <div class="container contact px-2">
+    <div class="color-tool-shell mx-auto">
+      <header class="color-tool-header">
+        <div>
+          <p class="color-eyebrow">Design tools</p>
+          <h2 class="mb-2"><i class="fas fa-palette text-info me-2" aria-hidden="true"></i>Color Picker</h2>
+          <p class="mb-0">Choose a color visually, edit any supported format, and export production-ready values.</p>
         </div>
+        <div class="header-actions">
+          <button type="button" class="btn btn-sm btn-outline-info" (click)="openEyeDropper()" [disabled]="!canUseEyeDropper">
+            <i class="fas fa-eye-dropper me-1" aria-hidden="true"></i>Pick screen color
+          </button>
+          <button type="button" class="btn btn-sm btn-outline-light" (click)="randomColor()">
+            <i class="fas fa-shuffle me-1" aria-hidden="true"></i>Random
+          </button>
+          <button type="button" class="btn btn-sm btn-outline-danger" (click)="resetColor()">
+            <i class="fas fa-undo me-1" aria-hidden="true"></i>Reset
+          </button>
+        </div>
+      </header>
+
+      <div class="row g-3">
+        <div class="col-lg-7">
+          <section class="color-panel" aria-labelledby="visual-picker-title">
+            <div class="panel-header">
+              <div>
+                <p class="color-eyebrow mb-1">Visual selection</p>
+                <h3 id="visual-picker-title" class="mb-1">Choose a color</h3>
+                <span>Saturation, brightness, hue, and opacity</span>
+              </div>
+              <span class="color-badge badge rounded-pill text-info">{{ colorName }}</span>
+            </div>
+
+            <div class="picker-stage">
+              <div class="color-preview" role="img" [attr.aria-label]="'Selected color ' + selectedColor">
+                <div class="preview-color" [style.background-color]="rgbaValue"></div>
+                <div class="preview-details">
+                  <strong>{{ selectedColor }}</strong>
+                  <span>{{ colorName }}</span>
+                </div>
+              </div>
+              <div class="color-chrome-shell">
+                <color-chrome
+                  [color]="pickerColor"
+                  [disableAlpha]="false"
+                  (onChange)="onPickerChange($event)"
+                  (onChangeComplete)="onPickerChangeComplete()"
+                  aria-label="Interactive color picker">
+                </color-chrome>
+              </div>
+            </div>
+
+            <div class="native-actions">
+              <label class="native-color-control" for="native-color-input">
+                <input id="native-color-input" type="color" [value]="nativeHex" (input)="onNativeColorInput($event)" aria-label="Open native color input" />
+                <span>Native color input</span>
+              </label>
+              <span class="picker-note">Tip: use the screen picker when your browser supports it.</span>
+            </div>
+
+            <div class="alpha-control">
+              <div class="control-heading">
+                <label for="alpha-range">Opacity</label>
+                <strong>{{ alphaPercent }}%</strong>
+              </div>
+              <input id="alpha-range" class="form-range" type="range" min="0" max="100" step="1" [value]="alphaPercent" (input)="onAlphaInput($event)" (change)="commitAlpha()" />
+            </div>
+
+            <div class="swatch-section">
+              <div class="control-heading">
+                <label>Quick swatches</label>
+                <span>Click to apply</span>
+              </div>
+              <div class="swatch-grid">
+                <button
+                  type="button"
+                  class="color-swatch"
+                  *ngFor="let swatch of swatches"
+                  [style.background-color]="swatch.color"
+                  [attr.aria-label]="'Select ' + swatch.name + ' ' + swatch.color"
+                  [title]="swatch.name + ' ' + swatch.color"
+                  (click)="setSwatch(swatch.color)">
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-lg-5">
+          <section class="color-panel format-panel" aria-labelledby="formats-title">
+            <div class="panel-header">
+              <div>
+                <p class="color-eyebrow mb-1">Values</p>
+                <h3 id="formats-title" class="mb-1">Color formats</h3>
+                <span>Edit a value or copy it directly.</span>
+              </div>
+              <button type="button" class="btn btn-sm btn-info" (click)="copyShareLink()">
+                <i class="fas fa-share-nodes me-1" aria-hidden="true"></i>Share
+              </button>
+            </div>
+
+            <div class="format-list">
+              <div class="format-row" *ngFor="let format of formats">
+                <div class="format-meta">
+                  <label [attr.for]="'color-' + format">{{ formatLabel(format) }}</label>
+                  <small>{{ formatHint(format) }}</small>
+                </div>
+                <div class="format-control">
+                  <input
+                    [id]="'color-' + format"
+                    class="form-control format-input"
+                    [value]="formatValue(format)"
+                    [attr.aria-label]="formatLabel(format) + ' value'"
+                    [attr.aria-invalid]="invalidFormat === format ? 'true' : null"
+                    [attr.aria-describedby]="invalidFormat === format ? 'color-format-error' : null"
+                    (input)="onFormatInput(format, $event)"
+                    (keydown)="onFormatKeydown(format, $event)"
+                    (blur)="commitFormat(format)" />
+                  <button type="button" class="btn btn-sm btn-outline-info copy-format" [attr.aria-label]="'Copy ' + formatLabel(format)" [disabled]="!isFormatValid(format)" (click)="copyFormat(format)">
+                    <i class="fas fa-copy" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div id="color-format-error" class="input-error" *ngIf="inputError" role="alert">
+              <i class="fas fa-circle-exclamation me-1" aria-hidden="true"></i>{{ inputError }}
+            </div>
+
+            <div class="contrast-card" [style.background-color]="rgbaValue" [style.color]="contrastText">
+              <div>
+                <span class="contrast-label">Contrast preview</span>
+                <strong>{{ contrastRatio.toFixed(2) }}:1</strong>
+              </div>
+              <span class="contrast-level">{{ contrastLevel }}</span>
+            </div>
+
+            <button type="button" class="btn btn-success download-button" (click)="downloadCssVariables()">
+              <i class="fas fa-file-code me-1" aria-hidden="true"></i>Download CSS variables
+            </button>
+          </section>
+        </div>
+      </div>
+
+      <section class="recent-panel" *ngIf="recentColors.length > 0" aria-labelledby="recent-colors-title">
+        <div class="panel-header mb-3">
+          <div>
+            <p class="color-eyebrow mb-1">History</p>
+            <h3 id="recent-colors-title" class="mb-1">Recent colors</h3>
+            <span>Stored only in this browser.</span>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-danger" (click)="clearRecentColors()">Clear history</button>
+        </div>
+        <div class="recent-grid">
+          <button
+            type="button"
+            class="recent-color"
+            *ngFor="let color of recentColors"
+            [style.background-color]="color"
+            [attr.aria-label]="'Select recent color ' + color"
+            [title]="color"
+            (click)="setSwatch(color)">
+          </button>
+        </div>
+      </section>
+
+      <div
+        class="color-alert"
+        [class.color-alert--success]="statusType === 'success'"
+        [class.color-alert--error]="statusType === 'error'"
+        *ngIf="statusVisible"
+        [attr.role]="statusType === 'error' ? 'alert' : 'status'"
+        aria-live="polite">
+        {{ statusMessage }}
+      </div>
     </div>
+  </div>
 </div>
