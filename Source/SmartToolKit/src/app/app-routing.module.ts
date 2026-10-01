@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './core/layout/layout.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
@@ -24,6 +24,7 @@ import { PngToSvgComponent } from './modules/png-to-svg/png-to-svg.component';
 import { SqlQueryFormatterComponent } from './modules/sql-query-formatter/sql-query-formatter.component';
 import { ImageSlicerComponent } from './modules/image-slicer/image-slicer.component';
 import { NationalCodeComponent } from './modules/national-code/national-code.component';
+import { CalendarComponent } from './modules/calendar/calendar.component';
 
 const routes: Routes = [{
   path: '',
@@ -125,6 +126,11 @@ const routes: Routes = [{
       path: 'national-code',
       component: NationalCodeComponent,
       title: 'Smart ToolKit - Iranian National Code'
+    },
+    {
+      path: 'calendar',
+      component: CalendarComponent,
+      title: 'Smart ToolKit - Calendar'
     }
   ]
 }];

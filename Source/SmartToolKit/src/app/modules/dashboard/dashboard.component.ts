@@ -44,6 +44,11 @@ export class DashboardComponent {
       title: "Image Slicer",
       description: "Split images with movable horizontal and vertical lines, preview the resulting pieces, and download them together as a ZIP archive.",
       url: "image-slicer"
+    },
+    {
+      title: "Calendar",
+      description: "Browse the Jalali (Shamsi) and Gregorian calendars in a single page with switchable tabs, jump to any date, and see both calendar systems for the same day side by side.",
+      url: "calendar"
     }
   ];
   search = '';

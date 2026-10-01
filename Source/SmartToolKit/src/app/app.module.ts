@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { ColorChromeModule } from 'ngx-color/chrome';
@@ -34,6 +34,7 @@ import { PngToSvgComponent } from './modules/png-to-svg/png-to-svg.component';
 import { SqlQueryFormatterComponent } from './modules/sql-query-formatter/sql-query-formatter.component';
 import { ImageSlicerComponent } from './modules/image-slicer/image-slicer.component';
 import { NationalCodeComponent } from './modules/national-code/national-code.component';
+import { CalendarComponent } from './modules/calendar/calendar.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { NationalCodeComponent } from './modules/national-code/national-code.com
     PngToSvgComponent,
     SqlQueryFormatterComponent,
     ImageSlicerComponent,
-    NationalCodeComponent
+    NationalCodeComponent,
+    CalendarComponent
   ],
   imports: [
     HttpClientModule,

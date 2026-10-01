@@ -7,6 +7,40 @@
 @import url(./assets/css/animate.css);
 @import url(https://unpkg.com/swiper@7/swiper-bundle.min.css);
 
+/*
+ * IranSans (FontIran) for Persian words only. Declared first so that the
+ * per-character unicode-range below can win for Arabic-script characters while
+ * Latin text keeps falling back to Roboto from the theme.
+ * IRANSans is a licensed font: see https://fontiran.com for the licence.
+ */
+@font-face {
+    font-family: 'IranSans';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(./assets/webfonts/iransans-400.woff2) format('woff2');
+    unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200D, U+2010-2011, U+204F, U+2E41, U+FDFC;
+}
+
+@font-face {
+    font-family: 'IranSans';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url(./assets/webfonts/iransans-700.woff2) format('woff2');
+    unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200D, U+2010-2011, U+204F, U+2E41, U+FDFC;
+}
+
+/*
+ * Persian text anywhere on the site gets IranSans, Latin text keeps Roboto.
+ * The theme sets `html, body { font-family: 'Roboto' }`, so this rule needs a
+ * specificity higher than that to win. The unicode-range on the @font-face
+ * blocks above is what keeps Latin glyphs on Roboto.
+ */
+html body {
+    font-family: 'IranSans', 'Roboto', sans-serif;
+}
+
 .segment-key {
     color: rgb(255, 242, 218) !important;
 }
