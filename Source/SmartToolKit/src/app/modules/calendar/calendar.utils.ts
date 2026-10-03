@@ -10,10 +10,17 @@ export interface GregorianDate {
   gd: number;
 }
 
+export interface HijriDate {
+  hy: number;
+  hm: number;
+  hd: number;
+}
+
 export interface CalendarDay {
   date: Date;
   jalali: JalaliDate;
   gregorian: GregorianDate;
+  hijri: HijriDate;
   dayNumber: number;
   isCurrentMonth: boolean;
   isToday: boolean;
@@ -55,6 +62,21 @@ const JALALI_HOLIDAYS: Record<string, string> = {
   '3-15': 'قیام ۱۵ خرداد',
   '11-22': 'پیروزی انقلاب اسلامی',
   '12-29': 'تعطیل پایان سال'
+};
+const HIJRI_HOLIDAYS: Record<string, string> = {
+  '1-1': 'نوروز هجری',
+  '1-10': 'روز عاشورا',
+  '7-13': 'تاسوعای حسینی',
+  '8-14': 'عاشورا',
+  '9-1': 'روز روزه‌داری',
+  '10-1': 'عید فطر',
+  '10-2': 'عید فطر',
+  '10-3': 'عید فطر',
+  '12-9': 'روز عرفه',
+  '12-10': 'عید قربان',
+  '12-11': 'عید قربان',
+  '12-12': 'عید قربان',
+  '12-13': 'عید قربان'
 };
 
 export const JALALI_MIN_YEAR = BREAKS[0];
@@ -305,7 +327,215 @@ export function buildYearOptions(min: number, max: number): number[] {
   return Array.from({ length: max - min + 1 }, (_, index) => min + index);
 }
 
-export function buildWeeks(startDate: Date, weekStartsOnSaturday: boolean, isHoliday: (gregorian: GregorianDate) => string, isCurrentMonth: (jalali: JalaliDate, gregorian: GregorianDate) => boolean, today: Date): CalendarDay[][] {
+export const HIJRI_MONTH_NAMES_FA = [
+  'محرم', 'صفر', 'ربیع‌الاول', 'ربیع‌الثانی', 'جمادی‌الاول', 'جمادی‌الثانی',
+  'رجب', 'شعبان', 'رمضان', 'شوال', 'ذی‌قعده', 'ذی‌حجه'
+];
+
+export const HIJRI_MONTH_NAMES_AR = [
+  'محرم', 'صفر', 'ربيع الأول', 'ربيع الثاني', 'جمادى الأولى', 'جمادى الآخرة',
+  'رجب', 'شعبان', 'رمضان', 'شوال', 'ذو القعدة', 'ذو الحجة'
+];
+
+export const HIJRI_HOLIDAY_NAMES_FA = HIJRI_HOLIDAYS;
+export const HIJRI_HOLIDAY_NAMES_AR: Record<string, string> = {
+  '1-1': 'رأس السنة الهجرية',
+  '1-10': 'يوم عاشورا',
+  '7-13': 'تاسوعاء',
+  '8-14': 'عاشورا',
+  '9-1': 'بداية صيام رمضان',
+  '10-1': 'عيد الفطر',
+  '10-2': 'عيد الفطر',
+  '10-3': 'عيد الفطر',
+  '12-9': 'يوم عرفة',
+  '12-10': 'عيد الأضحى',
+  '12-11': 'عيد الأضحى',
+  '12-12': 'عيد الأضحى',
+  '12-13': 'عيد الأضحى'
+};
+
+const HIJRI_LOCALE = 'en-u-ca-islamic-umalqura-nu-latn';
+
+const MS_PER_DAY = 86_400_000;
+/** 16 July 622 CE, the proleptic Gregorian date of 1 Muharram 1 AH. */
+const HIJRI_EPOCH_MS = Date.UTC(622, 6, 16);
+
+let hijriFormatter: Intl.DateTimeFormat | null = null;
+let hijriFormatterFailed = false;
+
+/**
+ * The Umm al-Qura calendar is published by Saudi Arabia and is what browsers
+ * ship in ICU. Using it avoids a hand-rolled month-length table, which is the
+ * usual source of off-by-one errors in lunar calendars.
+ */
+function getHijriFormatter(): Intl.DateTimeFormat | null {
+  if (hijriFormatterFailed) {
+    return null;
+  }
+  if (!hijriFormatter) {
+    try {
+      // No `timeZone` option: the formatter must read the same local calendar
+      // fields the rest of this module works with, otherwise a date near midnight
+      // lands on the neighbouring Hijri day.
+      hijriFormatter = new Intl.DateTimeFormat(HIJRI_LOCALE, { year: 'numeric', month: 'numeric', day: 'numeric' });
+      // Some engines parse the locale but ignore the calendar, returning NaN.
+      const probe = hijriFormatter.formatToParts(new Date(2025, 5, 26));
+      if (!probe.some(part => part.type === 'year')) {
+        throw new Error('calendar unsupported');
+      }
+    } catch {
+      hijriFormatterFailed = true;
+      return null;
+    }
+  }
+  return hijriFormatter;
+}
+
+export function isHijriSupported(): boolean {
+  return getHijriFormatter() !== null;
+}
+
+/** True when the environment can convert to and from the Hijri calendar. */
+export function dateToHijri(date: Date): HijriDate | null {
+  const formatter = getHijriFormatter();
+  if (!formatter) {
+    return null;
+  }
+  const parts: Record<string, string> = {};
+  for (const part of formatter.formatToParts(date)) {
+    if (part.type !== 'literal') {
+      parts[part.type] = part.value;
+    }
+  }
+  const hy = Number(parts['year']);
+  const hm = Number(parts['month']);
+  const hd = Number(parts['day']);
+  if (!Number.isInteger(hy) || !Number.isInteger(hm) || !Number.isInteger(hd)) {
+    return null;
+  }
+  return { hy, hm, hd };
+}
+
+/**
+ * Finds the local Date of a Hijri day. Month lengths stay authoritative in ICU
+ * rather than being duplicated as a table here, so the conversion cannot drift
+ * out of step with what `dateToHijri` reports.
+ */
+export function hijriToDate(hy: number, hm: number, hd: number): Date | null {
+  if (hy < 1 || hm < 1 || hm > 12 || hd < 1) {
+    return null;
+  }
+  const start = hijriMonthStart(hy, hm);
+  if (!start) {
+    return null;
+  }
+  const candidate = new Date(start.getFullYear(), start.getMonth(), start.getDate() + hd - 1);
+  const check = dateToHijri(candidate);
+  if (!check || check.hy !== hy || check.hm !== hm || check.hd !== hd) {
+    return null;
+  }
+  return candidate;
+}
+
+/**
+ * Finds the 1st of a Hijri month by binary searching the Gregorian timeline.
+ * The Umm al-Qura calendar runs on a fixed cycle, so an estimate from the
+ * Islamic epoch lands within a few weeks and the search converges quickly.
+ * Once the month containing a probe is found, it counts back to day 1.
+ */
+function hijriMonthStart(hy: number, hm: number): Date | null {
+  const monthsSinceEpoch = (hy - 1) * 12 + (hm - 1);
+  const estimate = HIJRI_EPOCH_MS + monthsSinceEpoch * 29.530588853 * MS_PER_DAY;
+  let low = estimate - 60 * MS_PER_DAY;
+  let high = estimate + 60 * MS_PER_DAY;
+  let found: { month: number; day: number; at: Date } | null = null;
+
+  for (let i = 0; i < 40; i++) {
+    const mid = (low + high) / 2;
+    const probe = new Date(mid);
+    const current = dateToHijri(probe);
+    if (!current) {
+      return null;
+    }
+    const target = (current.hy - 1) * 12 + (current.hm - 1);
+    if (target < monthsSinceEpoch) {
+      low = mid;
+    } else if (target > monthsSinceEpoch) {
+      high = mid;
+    } else {
+      found = { month: target, day: current.hd, at: probe };
+      break;
+    }
+  }
+
+  if (!found) {
+    return null;
+  }
+  const start = new Date(found.at.getFullYear(), found.at.getMonth(), found.at.getDate() - (found.day - 1));
+  const verify = dateToHijri(start);
+  return verify && verify.hy === hy && verify.hm === hm && verify.hd === 1 ? start : null;
+}
+
+export function hijriMonthLength(hy: number, hm: number): number {
+  // Derive the length from the month itself: if day 30 resolves inside this same
+  // month the month has 30 days, otherwise 29. No separate search needed.
+  const day30 = hijriToDate(hy, hm, 30);
+  if (day30) {
+    return 30;
+  }
+  const day29 = hijriToDate(hy, hm, 29);
+  return day29 ? 29 : 30;
+}
+
+export function getHijriHoliday(hijri: HijriDate, arabic = false): string {
+  const key = `${hijri.hm}-${hijri.hd}`;
+  if (arabic) {
+    return HIJRI_HOLIDAY_NAMES_AR[key] ?? '';
+  }
+  return HIJRI_HOLIDAYS[key] ?? '';
+}
+
+export function getHijriMonthOptions(arabic = false): CalendarSelectOption[] {
+  const names = arabic ? HIJRI_MONTH_NAMES_AR : HIJRI_MONTH_NAMES_FA;
+  return names.map((label, index) => ({ value: index + 1, label }));
+}
+
+export function formatHijri(hijri: HijriDate, usePersianDigits = true): string {
+  const value = `${hijri.hy}/${String(hijri.hm).padStart(2, '0')}/${String(hijri.hd).padStart(2, '0')}`;
+  return usePersianDigits ? toPersianDigits(value) : value;
+}
+
+/**
+ * Long form Hijri date. `digitize` and `monthNames` are supplied by the caller
+ * so the same date can be rendered with Persian or Arabic digits and names.
+ */
+export function formatHijriLong(hijri: HijriDate, monthNames: string[], digitize: (value: number) => string): string {
+  return `${digitize(hijri.hd)} ${monthNames[hijri.hm - 1]} ${digitize(hijri.hy)}`;
+}
+
+export function buildHijriMonth(hy: number, hm: number, today: Date, monthNames: string[] = HIJRI_MONTH_NAMES_FA, yearDigits: (value: number) => string = toPersianDigits, holiday: (hijri: HijriDate) => string = getHijriHoliday): CalendarMonth {
+  const startDate = hijriToDate(hy, hm, 1);
+  if (!startDate) {
+    return { title: '', weeks: [], weeksInMonth: 0, daysInMonth: 0 };
+  }
+  const weeks = buildWeeks(
+    startDate,
+    true,
+    (_gregorian, hijri) => (hijri ? holiday(hijri) : ''),
+    (_jalali, _gregorian, hijri) => !!hijri && hijri.hy === hy && hijri.hm === hm,
+    today,
+    'hijri'
+  );
+
+  return {
+    title: `${monthNames[hm - 1]} ${yearDigits(hy)}`,
+    weeks,
+    weeksInMonth: weeks.filter(week => week.some(day => day.isCurrentMonth)).length,
+    daysInMonth: hijriMonthLength(hy, hm)
+  };
+}
+
+export function buildWeeks(startDate: Date, weekStartsOnSaturday: boolean, isHoliday: (gregorian: GregorianDate, hijri: HijriDate | null) => string, isCurrentMonth: (jalali: JalaliDate, gregorian: GregorianDate, hijri: HijriDate | null) => boolean, today: Date, daySource: 'jalali' | 'gregorian' | 'hijri' = 'jalali'): CalendarDay[][] {
   const offset = weekStartsOnSaturday ? (startDate.getDay() + 1) % 7 : startDate.getDay();
   const gridStart = addDays(startDate, -offset);
   const weeks: CalendarDay[][] = [];
@@ -316,13 +546,15 @@ export function buildWeeks(startDate: Date, weekStartsOnSaturday: boolean, isHol
       const date = addDays(gridStart, week * 7 + day);
       const gregorian: GregorianDate = { gy: date.getFullYear(), gm: date.getMonth() + 1, gd: date.getDate() };
       const jalali = gregorianToJalali(gregorian);
-      const holidayTitle = isHoliday(gregorian);
+      const hijri = dateToHijri(date);
+      const holidayTitle = isHoliday(gregorian, hijri);
       days.push({
         date,
         jalali,
         gregorian,
-        dayNumber: weekStartsOnSaturday ? jalali.jd : gregorian.gd,
-        isCurrentMonth: isCurrentMonth(jalali, gregorian),
+        hijri: hijri ?? { hy: 0, hm: 0, hd: 0 },
+        dayNumber: daySource === 'hijri' ? (hijri?.hd ?? gregorian.gd) : daySource === 'gregorian' ? gregorian.gd : jalali.jd,
+        isCurrentMonth: isCurrentMonth(jalali, gregorian, hijri),
         isToday: isSameDay(date, today),
         isHoliday: !!holidayTitle,
         holidayTitle
@@ -334,36 +566,38 @@ export function buildWeeks(startDate: Date, weekStartsOnSaturday: boolean, isHol
   return weeks;
 }
 
-export function buildJalaliMonth(jy: number, jm: number, today: Date): CalendarMonth {
+export function buildJalaliMonth(jy: number, jm: number, today: Date, monthNames: string[] = JALALI_MONTH_NAMES, yearDigits: (value: number) => string = toPersianDigits, holiday: (jalali: JalaliDate) => string = getJalaliHoliday): CalendarMonth {
   const startDate = jalaliToDate({ jy, jm, jd: 1 });
   const weeks = buildWeeks(
     startDate,
     true,
-    date => getJalaliHoliday(gregorianToJalali(date)),
+    gregorian => holiday(gregorianToJalali(gregorian)),
     jalali => jalali.jy === jy && jalali.jm === jm,
-    today
+    today,
+    'jalali'
   );
 
   return {
-    title: `${JALALI_MONTH_NAMES[jm - 1]} ${toPersianDigits(jy)}`,
+    title: `${monthNames[jm - 1]} ${yearDigits(jy)}`,
     weeks,
     weeksInMonth: weeks.filter(week => week.some(day => day.isCurrentMonth)).length,
     daysInMonth: jalaliMonthLength(jy, jm)
   };
 }
 
-export function buildGregorianMonth(gy: number, gm: number, today: Date): CalendarMonth {
+export function buildGregorianMonth(gy: number, gm: number, today: Date, monthNames: string[] = GREGORIAN_MONTH_NAMES, yearDigits: (value: number) => string = value => String(value), holiday: (gregorian: GregorianDate) => string = getGregorianHoliday): CalendarMonth {
   const startDate = new Date(gy, gm - 1, 1);
   const weeks = buildWeeks(
     startDate,
     false,
-    date => getGregorianHoliday(date),
+    date => holiday(date),
     (_jalali, gregorian) => gregorian.gy === gy && gregorian.gm === gm,
-    today
+    today,
+    'gregorian'
   );
 
   return {
-    title: `${GREGORIAN_MONTH_NAMES[gm - 1]} ${gy}`,
+    title: `${monthNames[gm - 1]} ${yearDigits(gy)}`,
     weeks,
     weeksInMonth: weeks.filter(week => week.some(day => day.isCurrentMonth)).length,
     daysInMonth: new Date(gy, gm, 0).getDate()
@@ -409,10 +643,10 @@ export function formatGregorian(gregorian: GregorianDate): string {
   return `${gregorian.gy}-${String(gregorian.gm).padStart(2, '0')}-${String(gregorian.gd).padStart(2, '0')}`;
 }
 
-export function formatJalaliLong(jalali: JalaliDate, usePersianDigits = true): string {
+export function formatJalaliLong(jalali: JalaliDate, usePersianDigits = true, monthNames: string[] = JALALI_MONTH_NAMES): string {
   const day = usePersianDigits ? toPersianDigits(jalali.jd) : String(jalali.jd);
   const year = usePersianDigits ? toPersianDigits(jalali.jy) : String(jalali.jy);
-  return `${day} ${JALALI_MONTH_NAMES[jalali.jm - 1]} ${year}`;
+  return `${day} ${monthNames[jalali.jm - 1]} ${year}`;
 }
 
 /**

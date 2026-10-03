@@ -89,7 +89,70 @@ describe('CalendarComponent', () => {
     expect(component.monthTitle).toContain('۱۳۹۸');
   });
 
-  it('starts on the Jalali tab when nothing is stored', () => {
+  it('shows the occasion name when a marked holiday is selected', () => {
+    // Nowruz, 1 Farvardin 1405 -> 21 March 2026.
+    component.setLanguage('fa');
+    component.onYearChange('1405');
+    component.onMonthChange('1');
+    fixture.detectChanges();
+
+    const index = component.month.weeks
+      .flat()
+      .findIndex(day => day.isCurrentMonth && day.dayNumber === 1);
+    expect(index).toBeGreaterThanOrEqual(0);
+
+    // Clicking the cell is what marks the OnPush view dirty in the real app.
+    const cell = fixture.nativeElement.querySelectorAll('.calendar-day')[index] as HTMLButtonElement;
+    expect(cell).toBeDefined();
+    cell.click();
+    fixture.detectChanges();
+
+    expect(component.selectedHolidayTitle).toBe('نوروز');
+    const panel = fixture.nativeElement.querySelector('.calendar-holiday') as HTMLElement;
+    expect(panel).not.toBeNull();
+    expect(panel.textContent).toContain('نوروز');
+    expect(panel.textContent).toContain('مناسبت');
+  });
+
+it('hides the occasion panel on an ordinary day', () => {
+    component.setLanguage('fa');
+    component.onYearChange('1405');
+    component.onMonthChange('1');
+    fixture.detectChanges();
+
+    const index = component.month.weeks
+      .flat()
+      .findIndex(day => day.isCurrentMonth && !day.isHoliday);
+    expect(index).toBeGreaterThanOrEqual(0);
+
+    (fixture.nativeElement.querySelectorAll('.calendar-day')[index] as HTMLButtonElement).click();
+    fixture.detectChanges();
+
+    expect(component.selectedHolidayTitle).toBe('');
+    expect(fixture.nativeElement.querySelector('.calendar-holiday')).toBeNull();
+  });
+
+it('shows the occasion name in English when the language is English', () => {
+    component.setLanguage('en');
+    component.setTab('gregorian');
+    fixture.detectChanges();
+    component.onYearChange('2026');
+    component.onMonthChange('1');
+    fixture.detectChanges();
+
+    const index = component.month.weeks
+      .flat()
+      .findIndex(day => day.isCurrentMonth && day.dayNumber === 1);
+    expect(index).toBeGreaterThanOrEqual(0);
+
+    (fixture.nativeElement.querySelectorAll('.calendar-day')[index] as HTMLButtonElement).click();
+    fixture.detectChanges();
+
+    expect(component.selectedHolidayTitle).toBe("New Year's Day");
+    expect((fixture.nativeElement.querySelector('.calendar-holiday') as HTMLElement).textContent).toContain('Occasion');
+  });
+
+it('starts on the Jalali tab when nothing is stored', () => {
     expect(component.activeTab).toBe('jalali');
     expect(component.isJalaliTab).toBeTrue();
   });
@@ -101,6 +164,20 @@ describe('CalendarComponent', () => {
     expect(localStorage.getItem(component.storageKey)).toBe('gregorian');
   });
 
+  it('persists the Hijri tab as well', () => {
+    component.setTab('hijri');
+
+    expect(component.activeTab).toBe('hijri');
+    expect(localStorage.getItem(component.storageKey)).toBe('hijri');
+  });
+
+  it('persists the chosen language', () => {
+    component.setLanguage('ar');
+
+    expect(component.language).toBe('ar');
+    expect(localStorage.getItem(component.languageStorageKey)).toBe('ar');
+  });
+
   it('reads a previously stored tab back', () => {
     localStorage.setItem('calendar-active-tab', 'gregorian');
     const stored = TestBed.createComponent(CalendarComponent);
@@ -110,14 +187,14 @@ describe('CalendarComponent', () => {
     expect(restored.readSavedTab()).toBe('gregorian');
   });
 
-  it('ignores an unrecognised stored tab', () => {
+  it('ignores an unrecognised stored tab and falls back to detection', () => {
     localStorage.setItem('calendar-active-tab', 'persian');
 
     const stored = TestBed.createComponent(CalendarComponent);
     stored.detectChanges();
 
     const restored = stored.componentInstance as unknown as { readSavedTab(): string };
-    expect(restored.readSavedTab()).toBe('jalali');
+    expect(['jalali', 'gregorian', 'hijri']).toContain(restored.readSavedTab());
   });
 
   it('keeps the same selected day while switching tabs', () => {
@@ -129,13 +206,14 @@ describe('CalendarComponent', () => {
     expect(component.selectedDate.getTime()).toBe(before);
     expect(component.selectedJalali).toBeTruthy();
     expect(component.selectedGregorian).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(component.selectedHijri).toMatch(/[۰-۹0-9]{4}\/[۰-۹0-9]{2}\/[۰-۹0-9]{2}$/);
   });
 
-  it('renders one active tab, seven weekday headers and a six week grid', () => {
+  it('renders three tabs with one active, seven weekday headers and a six week grid', () => {
     const tabs = fixture.nativeElement.querySelectorAll('.calendar-tab');
     const active = fixture.nativeElement.querySelectorAll('.calendar-tab--active');
 
-    expect(tabs.length).toBe(2);
+    expect(tabs.length).toBe(3);
     expect(active.length).toBe(1);
     expect(fixture.nativeElement.querySelectorAll('.calendar-weekday').length).toBe(7);
     expect(fixture.nativeElement.querySelectorAll('.calendar-week').length).toBe(6);
@@ -148,16 +226,19 @@ describe('CalendarComponent', () => {
   });
 
   it('shows the Jalali weekday order on the Jalali tab and Gregorian on the other', () => {
+    component.setLanguage('fa');
     expect(component.weekdayLabels).toEqual(['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']);
     expect(component.weekdayTitles[6]).toBe('جمعه');
 
     component.setTab('gregorian');
 
-    expect(component.weekdayLabels[0]).toBe('Sun');
-    expect(component.weekdayTitles[0]).toBe('Sunday');
+    // The Gregorian week starts on Sunday, so the columns shift.
+    expect(component.weekdayLabels[0]).toBe('ی');
+    expect(component.weekdayTitles[0]).toBe('یک‌شنبه');
   });
 
   it('renders the calendar header in Persian on the Jalali tab', () => {
+    component.setLanguage('fa');
     component.onYearChange('1405');
     component.onMonthChange('7');
     fixture.detectChanges();
@@ -167,23 +248,47 @@ describe('CalendarComponent', () => {
     expect(component.copy.today).toBe('امروز');
     expect(component.copy.previousMonth).toBe('ماه قبل');
     expect(component.copy.holidayLegend).toBe('تعطیل رسمی');
-    expect(component.copy.persianDigits).toBe('نمایش اعداد فارسی');
     expect(fixture.nativeElement.textContent).toContain('مهر ۱۴۰۵');
     expect(fixture.nativeElement.textContent).toContain('امروز');
   });
 
-  it('renders the calendar header in English on the Gregorian tab', () => {
-    component.setTab('gregorian');
-    component.onYearChange('2026');
-    component.onMonthChange('10');
-    fixture.detectChanges();
+  it('renders the same Jalali month in English when the language changes', () => {
+    component.onYearChange('1405');
+    component.onMonthChange('7');
 
-    expect(component.monthTitle).toBe('October 2026');
-    expect(component.monthSummary).toBe('5 weeks · 31 days in this month');
+    component.setLanguage('en');
+
+    expect(component.monthTitle).toBe('Mehr 1405');
+    expect(component.monthSummary).toBe('5 weeks · 30 days in this month');
     expect(component.copy.today).toBe('Today');
+    expect(component.weekdayLabels[0]).toBe('Sat');
   });
 
-  it('reads the long weekday of the selected date in the active language', () => {
+  it('renders the same Jalali month in Arabic when the language changes', () => {
+    component.onYearChange('1405');
+    component.onMonthChange('7');
+
+    component.setLanguage('ar');
+
+    expect(component.monthTitle).toContain('مهر');
+    expect(component.weekdayTitles[0]).toBe('السبت');
+    expect(component.copy.today).toBe('اليوم');
+  });
+
+  it('translates month names on every calendar', () => {
+    component.setTab('hijri');
+    component.setLanguage('en');
+    const englishMonths = component.monthOptions.map(option => option.label);
+
+    component.setLanguage('ar');
+    const arabicMonths = component.monthOptions.map(option => option.label);
+
+    expect(englishMonths[0]).toBe('Muharram');
+    expect(arabicMonths[0]).toBe('محرم');
+    expect(new Set(arabicMonths).size).toBe(12);
+  });
+
+  it('reads the long weekday of the selected date in the chosen language', () => {
     component.onYearChange('1405');
     component.onMonthChange('7');
     const target = component.month.weeks.flat().find(day => day.isCurrentMonth && day.gregorian.gd === 1 && day.gregorian.gm === 10)!;
@@ -192,36 +297,77 @@ describe('CalendarComponent', () => {
     expect(component.selectedJalaliLong).toBe('۹ مهر ۱۴۰۵');
     expect(component.selectedGregorianLong).toBe('پنج‌شنبه, October 1, 2026');
 
-    component.setTab('gregorian');
+    component.setLanguage('en');
 
+    expect(component.selectedJalaliLong).toBe('9 Mehr 1405');
     expect(component.selectedGregorianLong).toBe('Thursday, October 1, 2026');
   });
 
-  it('mirrors the month navigation chevrons on the Persian view', () => {
+  it('mirrors the month navigation chevrons for right-to-left languages', () => {
+    component.setLanguage('fa');
     expect(component.previousIcon).toBe('fa-chevron-right');
     expect(component.nextIcon).toBe('fa-chevron-left');
 
-    component.setTab('gregorian');
+    component.setLanguage('en');
 
     expect(component.previousIcon).toBe('fa-chevron-left');
     expect(component.nextIcon).toBe('fa-chevron-right');
+
+    component.setLanguage('ar');
+    expect(component.previousIcon).toBe('fa-chevron-right');
   });
 
-  it('lays the Jalali panel out right to left', () => {
+  it('takes the reading direction from the language, not the calendar', () => {
     const panel = () => fixture.nativeElement.querySelector('.tool-pane') as HTMLElement;
-    const tabButton = (id: string) => fixture.nativeElement.querySelector(`#calendar-tab-${id}`) as HTMLButtonElement;
+    const languageSelect = () => fixture.nativeElement.querySelector('#calendar-language-select') as HTMLSelectElement;
 
-    expect(panel().getAttribute('dir')).toBe('rtl');
-
-    tabButton('gregorian').click();
+    component.setLanguage('fa');
+    component.setTab('gregorian');
     fixture.detectChanges();
 
+    // A Gregorian calendar in Persian is still right to left.
+    expect(panel().getAttribute('dir')).toBe('rtl');
+    expect(panel().getAttribute('lang')).toBe('fa');
+
+    const select = languageSelect();
+    select.value = 'en';
+    select.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+
+    // A Gregorian calendar in English stays left to right.
     expect(panel().getAttribute('dir')).toBe('ltr');
+    expect(panel().getAttribute('lang')).toBe('en');
 
-    tabButton('jalali').click();
+    const arabic = languageSelect();
+    arabic.value = 'ar';
+    arabic.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    expect(panel().getAttribute('dir')).toBe('rtl');
+    expect(panel().getAttribute('lang')).toBe('ar');
+  });
+
+  it('keeps a Persian right-to-left layout on the Jalali tab', () => {
+    component.setLanguage('fa');
+    component.setTab('jalali');
     fixture.detectChanges();
 
-    expect(panel().getAttribute('dir')).toBe('rtl');
+    const panel = fixture.nativeElement.querySelector('.tool-pane') as HTMLElement;
+    expect(panel.getAttribute('dir')).toBe('rtl');
+
+    component.setTab('hijri');
+    fixture.detectChanges();
+
+    expect((fixture.nativeElement.querySelector('.tool-pane') as HTMLElement).getAttribute('dir')).toBe('rtl');
+  });
+
+  it('changes language from the dropdown', () => {
+    const select = fixture.nativeElement.querySelector('#calendar-language-select') as HTMLSelectElement;
+    select.value = 'en';
+    select.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+
+    expect(component.language).toBe('en');
+    expect(component.copy.today).toBe('Today');
   });
 
   it('navigates months across a year boundary in the Jalali calendar', () => {

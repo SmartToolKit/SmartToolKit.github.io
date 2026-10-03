@@ -2,15 +2,22 @@ import {
   addGregorianMonths,
   addJalaliMonths,
   buildGregorianMonth,
+  buildHijriMonth,
   buildJalaliMonth,
+  dateToHijri,
   dateToJalali,
   formatGregorian,
   formatGregorianLong,
+  formatHijri,
+  formatHijriLong,
   formatJalali,
   formatJalaliLong,
   getJalaliHoliday,
   getJalaliMonthOptions,
   gregorianToJalali,
+  hijriMonthLength,
+  hijriToDate,
+  isHijriSupported,
   isJalaliLeapYear,
   isSameDay,
   jalaliMonthLength,
@@ -25,6 +32,29 @@ import {
   JALALI_WEEKDAY_LABELS,
   JALALI_WEEKDAY_SHORT_LABELS
 } from './calendar.utils';
+import {
+  TAB_REGIONS,
+  defaultLanguageForTab,
+  detectDefaultTab,
+  isRtlLanguage,
+  localizeDigits
+} from './calendar.i18n';
+
+/** `hijriToDate` now returns a local Date, so `dateToHijri` reads it directly. */
+function dateToHijriLocal(date: Date): { hy: number; hm: number; hd: number } | null {
+  return dateToHijri(date);
+}
+
+const ARABIC_DIGIT_CHARS = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+
+function toArabicDigits(value: string | number): string {
+  return String(value).replace(/\d/g, digit => ARABIC_DIGIT_CHARS[Number(digit)]);
+}
+
+const HINDI_MONTH_NAMES = [
+  'محرم', 'صفر', 'ربیع‌الاول', 'ربیع‌الثانی', 'جمادی‌الاول', 'جمادی‌الثانی',
+  'رجب', 'شعبان', 'رمضان', 'شوال', 'ذی‌قعده', 'ذی‌حجه'
+];
 
 describe('Calendar utilities', () => {
   it('converts known Gregorian dates to Jalali', () => {
@@ -149,5 +179,132 @@ describe('Calendar utilities', () => {
   it('maps a Date to its Jalali equivalent and back', () => {
     expect(dateToJalali(new Date(2026, 9, 1))).toEqual({ jy: 1405, jm: 7, jd: 9 });
     expect(jalaliToDate({ jy: 1405, jm: 7, jd: 9 })).toEqual(new Date(2026, 9, 1));
+  });
+});
+
+describe('Hijri calendar (Umm al-Qura)', () => {
+  it('reports support from the browser Intl data', () => {
+    expect(isHijriSupported()).toBeTrue();
+  });
+
+  it('converts known Gregorian dates to Hijri', () => {
+    expect(dateToHijri(new Date(2025, 5, 26))).toEqual({ hy: 1447, hm: 1, hd: 1 });
+    expect(dateToHijri(new Date(2024, 3, 10))).toEqual({ hy: 1445, hm: 10, hd: 1 });
+    expect(dateToHijri(new Date(2024, 2, 11))).toEqual({ hy: 1445, hm: 9, hd: 1 });
+    expect(dateToHijri(new Date(2023, 3, 21))).toEqual({ hy: 1444, hm: 10, hd: 1 });
+  });
+
+it('names the month from the Hijri month number', () => {
+    // Ramadan is Hijri month 9.
+    expect(formatHijriLong({ hy: 1448, hm: 9, hd: 20 }, ['محرم', 'صفر', 'ربيع الأول', 'ربيع الثاني', 'جمادى الأولى', 'جمادى الآخرة', 'رجب', 'شعبان', 'رمضان', 'شوال', 'ذو القعدة', 'ذو الحجة'], toArabicDigits))
+      .toBe('٢٠ رمضان ١٤٤٨');
+    expect(formatHijriLong({ hy: 1448, hm: 9, hd: 20 }, HINDI_MONTH_NAMES, toPersianDigits))
+      .toBe('۲۰ رمضان ۱۴۴۸');
+    expect(formatHijriLong({ hy: 1448, hm: 9, hd: 20 }, HINDI_MONTH_NAMES, value => String(value)))
+      .toBe('20 رمضان 1448');
+  });
+
+  it('converts Hijri dates back to Gregorian', () => {
+    const start = hijriToDate(1447, 1, 1);
+    expect(start).not.toBeNull();
+    expect(formatGregorian({
+      gy: start!.getFullYear(), gm: start!.getMonth() + 1, gd: start!.getDate()
+    })).toBe('2025-06-26');
+
+    expect(dateToHijriLocal(hijriToDate(1445, 10, 1)!)).toEqual({ hy: 1445, hm: 10, hd: 1 });
+  });
+
+  it('round-trips every day across a range of Hijri years', () => {
+    for (let hy = 1440; hy <= 1448; hy++) {
+      for (let hm = 1; hm <= 12; hm++) {
+        const length = hijriMonthLength(hy, hm);
+        expect(length === 29 || length === 30).withContext(`${hy}/${hm} length`).toBeTrue();
+
+        for (const hd of [1, 15, length]) {
+          const date = hijriToDate(hy, hm, hd);
+          expect(date).withContext(`${hy}/${hm}/${hd} should resolve`).not.toBeNull();
+          expect(dateToHijriLocal(date!)).withContext(`${hy}/${hm}/${hd} round trip`).toEqual({ hy, hm, hd });
+        }
+      }
+    }
+  });
+
+  it('reports month lengths consistent with the conversion', () => {
+    for (let hy = 1444; hy <= 1448; hy++) {
+      for (let hm = 1; hm <= 12; hm++) {
+        const length = hijriMonthLength(hy, hm);
+        const start = hijriToDate(hy, hm, 1)!;
+        const end = new Date(start.getTime() + length * 86_400_000);
+        const after = dateToHijriLocal(end)!;
+        expect(after.hy === hy && after.hm === hm)
+          .withContext(`${hy}/${hm} should be ${length} days`).toBeTrue();
+      }
+    }
+  });
+
+  it('rejects out of range values', () => {
+    expect(hijriToDate(1447, 13, 1)).toBeNull();
+    expect(hijriToDate(1447, 0, 1)).toBeNull();
+    expect(hijriToDate(1447, 1, 0)).toBeNull();
+  });
+
+  it('formats Hijri dates with Persian digits on request', () => {
+    expect(formatHijri({ hy: 1448, hm: 4, hd: 20 })).toBe('۱۴۴۸/۰۴/۲۰');
+    expect(formatHijri({ hy: 1448, hm: 4, hd: 20 }, false)).toBe('1448/04/20');
+  });
+
+  it('builds a six week grid for a Hijri month', () => {
+    const today = new Date(2026, 9, 1);
+    const hijri = dateToHijri(today)!;
+    const month = buildHijriMonth(hijri.hy, hijri.hm, today);
+
+    expect(month.weeks.length).toBe(6);
+    expect(month.weeks.every(week => week.length === 7)).toBeTrue();
+    expect(month.weeks.flat().filter(day => day.isCurrentMonth).length).toBe(month.daysInMonth);
+    expect(month.weeks.flat().filter(day => day.isToday).length).toBe(1);
+    expect(month.title).toBeTruthy();
+  });
+});
+
+describe('Calendar locale detection', () => {
+  it('picks the Jalali calendar for Iran', () => {
+    expect(detectDefaultTab('fa-IR', 'Asia/Tehran', TAB_REGIONS)).toBe('jalali');
+    expect(detectDefaultTab('en-GB', 'Asia/Tehran', TAB_REGIONS)).toBe('jalali');
+  });
+
+  it('picks the Hijri calendar for Arabic regions', () => {
+    expect(detectDefaultTab('ar-SA', 'Asia/Riyadh', TAB_REGIONS)).toBe('hijri');
+    expect(detectDefaultTab('en-US', 'Asia/Riyadh', TAB_REGIONS)).toBe('hijri');
+  });
+
+  it('falls back to Gregorian for English regions', () => {
+    expect(detectDefaultTab('en-US', 'America/New_York', TAB_REGIONS)).toBe('gregorian');
+  });
+
+  it('prefers the region over the language', () => {
+    expect(detectDefaultTab('fa-IR', 'Asia/Riyadh', TAB_REGIONS)).toBe('jalali');
+  });
+
+  it('falls back to the language when the region is unknown', () => {
+    expect(detectDefaultTab('fa', 'Europe/Berlin', TAB_REGIONS)).toBe('jalali');
+    expect(detectDefaultTab('ar', 'Europe/Berlin', TAB_REGIONS)).toBe('hijri');
+  });
+
+  it('suggests a language matching the detected calendar', () => {
+    expect(defaultLanguageForTab('jalali', 'en-GB')).toBe('fa');
+    expect(defaultLanguageForTab('hijri', 'en-GB')).toBe('en');
+    expect(defaultLanguageForTab('gregorian', 'fa-IR')).toBe('fa');
+  });
+
+  it('converts digits per language', () => {
+    expect(localizeDigits(1405, 'fa')).toBe('۱۴۰۵');
+    expect(localizeDigits(1405, 'ar')).toBe('١٤٠٥');
+    expect(localizeDigits(1405, 'en')).toBe('1405');
+  });
+
+  it('treats Persian and Arabic as right to left', () => {
+    expect(isRtlLanguage('fa')).toBeTrue();
+    expect(isRtlLanguage('ar')).toBeTrue();
+    expect(isRtlLanguage('en')).toBeFalse();
   });
 });

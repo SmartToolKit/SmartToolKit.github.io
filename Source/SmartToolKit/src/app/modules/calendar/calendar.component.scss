@@ -2,8 +2,14 @@
   display: block;
 }
 
+/*
+ * The theme already gives `.item-details-page` `min-height: 100vh`, which keeps
+ * the footer pushed down when the calendar is short. Do not set `min-height`
+ * here: a `100%` value would win over the theme's `100vh` (later in the cascade,
+ * same specificity) and collapse the page. Only the vertical rhythm is ours.
+ */
 .calendar-page {
-  min-height: 100%;
+  padding-bottom: 60px;
 }
 
 .calendar-shell {
@@ -254,8 +260,8 @@
 
 .calendar-converter {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
   gap: 1rem;
 }
 
@@ -289,10 +295,6 @@
   font-size: 0.75rem;
 }
 
-.calendar-converter-swap {
-  color: #8f8bff;
-}
-
 .calendar-status {
   display: flex;
   align-items: center;
@@ -300,6 +302,46 @@
   margin-top: 1rem;
   color: #b6f3ca;
   font-size: 0.85rem;
+}
+
+.calendar-holiday {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid rgba(255, 193, 7, 0.45);
+  border-radius: 0.6rem;
+  background: rgba(255, 193, 7, 0.12);
+  font-size: 0.9rem;
+}
+
+.calendar-holiday > i {
+  color: #ffc107;
+  font-size: 0.5rem;
+}
+
+.calendar-holiday-label {
+  color: #afafaf;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.calendar-holiday-name {
+  color: #fff3cd;
+  font-weight: 700;
+}
+
+.calendar-holiday-empty {
+  margin: 0.85rem 0 0;
+  color: #7c8085;
+  font-size: 0.82rem;
+}
+
+.calendar-language-select {
+  min-width: 6.5rem;
 }
 
 @media (max-width: 767px) {
@@ -349,8 +391,7 @@
     grid-template-columns: 1fr;
   }
 
-  .calendar-converter-swap {
-    transform: rotate(90deg);
-    justify-self: center;
+  .calendar-converter {
+    grid-template-columns: 1fr;
   }
 }

@@ -1,33 +1,39 @@
 <div class="item-details-page calendar-page px-2">
-  <div class="container contact">
+  <div class="container contact px-2">
     <div class="calendar-shell mx-auto">
 
+      <header class="calendar-tool-header">
+        <div>
+          <p class="calendar-eyebrow">Date tools</p>
+          <h2 class="mb-2"><i class="fas fa-calendar-days text-info me-2" aria-hidden="true"></i>Jalali, Gregorian &amp; Hijri Calendar</h2>
+          <p class="mb-0">Switch between the Solar Hijri, Gregorian and Lunar Hijri calendars, and pick the language each one is shown in.</p>
+        </div>
+        <button type="button" class="btn btn-outline-light btn-sm" (click)="goToday()">
+          <i class="fas fa-location-crosshairs me-1" aria-hidden="true"></i>{{ copy.today }}
+        </button>
+      </header>
+
       <div class="calendar-tabs" role="tablist" aria-label="Calendar system">
-        <button type="button" role="tab" class="calendar-tab" *ngFor="let tab of tabs"
-          [class.calendar-tab--active]="activeTab === tab.id" [attr.aria-selected]="activeTab === tab.id"
-          [attr.aria-controls]="'calendar-panel-' + tab.id" [id]="'calendar-tab-' + tab.id" (click)="setTab(tab.id)">
-          <i class="fas {{tab.icon}} me-2" aria-hidden="true"></i>{{tab.label}}
+        <button type="button" role="tab" class="calendar-tab" *ngFor="let tab of tabs" [class.calendar-tab--active]="activeTab === tab.id"
+          [attr.aria-selected]="activeTab === tab.id" [attr.aria-controls]="'calendar-panel-' + tab.id" [id]="'calendar-tab-' + tab.id"
+          [attr.lang]="language" (click)="setTab(tab.id)">
+          <i class="fas {{tab.icon}} me-2" aria-hidden="true"></i>{{ copy.tabs[tab.id] }}
         </button>
       </div>
 
-      <section class="tool-pane" [id]="'calendar-panel-' + activeTab" role="tabpanel"
-        [attr.aria-labelledby]="'calendar-tab-' + activeTab" [attr.dir]="isJalaliTab ? 'rtl' : 'ltr'">
+      <section class="tool-pane" [id]="'calendar-panel-' + activeTab" role="tabpanel" [attr.aria-labelledby]="'calendar-tab-' + activeTab"
+        [attr.dir]="isRtl ? 'rtl' : 'ltr'" [attr.lang]="language">
 
         <div class="calendar-toolbar">
           <div class="calendar-nav">
-            <button type="button" class="btn btn-outline-info btn-sm" (click)="shiftMonth(-1)"
-              [attr.aria-label]="copy.previousMonth" [title]="copy.previousMonth">
+            <button type="button" class="btn btn-outline-info btn-sm" (click)="shiftMonth(-1)" [attr.aria-label]="copy.previousMonth"
+              [title]="copy.previousMonth">
               <i class="fas {{ previousIcon }}" aria-hidden="true"></i>
             </button>
-            <button type="button" class="btn btn-outline-info btn-sm" (click)="shiftMonth(1)"
-              [attr.aria-label]="copy.nextMonth" [title]="copy.nextMonth">
+            <button type="button" class="btn btn-outline-info btn-sm" (click)="shiftMonth(1)" [attr.aria-label]="copy.nextMonth"
+              [title]="copy.nextMonth">
               <i class="fas {{ nextIcon }}" aria-hidden="true"></i>
             </button>
-
-            <button type="button" class="btn btn-outline-light btn-sm" (click)="goToday()">
-              {{ copy.today }}
-            </button>
-
           </div>
 
           <h3 class="calendar-month-title" aria-live="polite">
@@ -36,21 +42,24 @@
 
           <div class="calendar-selects">
             <label class="visually-hidden" for="calendar-month-select">{{ copy.month }}</label>
-            <select id="calendar-month-select" class="form-select form-select-sm bg-dark text-white"
-              (change)="onMonthChange($any($event.target).value)">
-              <option *ngFor="let option of monthOptions" [value]="option.value"
-                [selected]="option.value === selectedMonth">{{option.label}}</option>
+            <select id="calendar-month-select" class="form-select form-select-sm bg-dark text-white" (change)="onMonthChange($any($event.target).value)">
+              <option *ngFor="let option of monthOptions" [value]="option.value" [selected]="option.value === selectedMonth">{{option.label}}
+              </option>
             </select>
             <label class="visually-hidden" for="calendar-year-select">{{ copy.year }}</label>
-            <select id="calendar-year-select" class="form-select form-select-sm bg-dark text-white"
-              (change)="onYearChange($any($event.target).value)">
-              <option *ngFor="let year of yearOptions" [value]="year" [selected]="year === selectedYear">{{
-                isJalaliTab ? toPersianDigits(year) : year }}</option>
+            <select id="calendar-year-select" class="form-select form-select-sm bg-dark text-white" (change)="onYearChange($any($event.target).value)">
+              <option *ngFor="let year of yearOptions" [value]="year" [selected]="year === selectedYear">{{ digitize(year) }}</option>
+            </select>
+            <label class="visually-hidden" for="calendar-language-select">{{ copy.languageLabel }}</label>
+            <select id="calendar-language-select" class="form-select form-select-sm bg-dark text-white calendar-language-select"
+              (change)="onLanguageChange($any($event.target).value)">
+              <option *ngFor="let option of languages" [value]="option.value" [selected]="option.value === language">{{option.label}}
+              </option>
             </select>
           </div>
         </div>
 
-        <div class="calendar-grid" [class.calendar-grid--rtl]="isJalaliTab">
+        <div class="calendar-grid">
           <div class="calendar-weekdays" role="row">
             <div class="calendar-weekday" *ngFor="let label of weekdayLabels; let i = index" role="columnheader"
               [title]="weekdayTitles[i]">{{label}}</div>
@@ -61,14 +70,11 @@
               <button type="button" role="gridcell" class="calendar-day" *ngFor="let day of week; trackBy: trackByDay"
                 [class.calendar-day--muted]="!day.isCurrentMonth" [class.calendar-day--today]="day.isToday"
                 [class.calendar-day--selected]="isSelectedDay(day.date)" [class.calendar-day--holiday]="day.isHoliday"
-                [attr.aria-current]="day.isToday ? 'date' : null"
-                [attr.title]="day.holidayTitle || (day.isCurrentMonth ? '' : formatSecondary(day))"
-                (click)="selectDay(day)">
-                <span class="calendar-day-number">{{ isJalaliTab && showPersianDigits ? toPersianDigits(day.dayNumber) :
-                  day.dayNumber }}</span>
+                [attr.aria-current]="day.isToday ? 'date' : null" [attr.aria-label]="dayAriaLabel(day)"
+                [attr.title]="day.holidayTitle || (day.isCurrentMonth ? '' : formatSecondary(day))" (click)="selectDay(day)">
+                <span class="calendar-day-number">{{ useLocalizedDigits ? digitize(day.dayNumber) : day.dayNumber }}</span>
                 <i *ngIf="day.isHoliday" class="fas fa-circle calendar-day-holiday" aria-hidden="true"></i>
-                <small *ngIf="!isJalaliTab && day.isCurrentMonth" class="calendar-day-secondary">{{ day.jalali.jd }}/{{
-                  day.jalali.jm }}</small>
+                <small *ngIf="day.isCurrentMonth && secondaryLine(day)" class="calendar-day-secondary">{{ secondaryLine(day) }}</small>
               </button>
             </div>
           </div>
@@ -76,20 +82,19 @@
 
         <div class="editor-footnote">
           <span>{{ monthSummary }}</span>
-          <span *ngIf="isJalaliTab"><i class="fas fa-circle text-warning me-1" aria-hidden="true"></i>{{
-            copy.holidayLegend }}</span>
+          <span><i class="fas fa-circle text-warning me-1" aria-hidden="true"></i>{{ copy.holidayLegend }}</span>
         </div>
 
-        <div class="calendar-detail" *ngIf="isJalaliTab">
+        <div class="calendar-detail">
           <label class="form-check calendar-digits-toggle">
-            <input class="form-check-input" type="checkbox" [checked]="showPersianDigits"
-              (change)="showPersianDigits = !showPersianDigits">
-            <span class="form-check-label">{{ copy.persianDigits }}</span>
+            <input class="form-check-input" type="checkbox" [checked]="useLocalizedDigits"
+              (change)="useLocalizedDigits = !useLocalizedDigits">
+            <span class="form-check-label">{{ language === 'ar' ? copy.arabicDigits : copy.persianDigits }}</span>
           </label>
         </div>
       </section>
 
-      <section class="tool-pane mt-3" aria-labelledby="calendar-detail-title">
+      <section class="tool-pane mt-3" aria-labelledby="calendar-detail-title" [attr.dir]="isRtl ? 'rtl' : 'ltr'" [attr.lang]="language">
         <div class="tool-pane-header">
           <div>
             <p class="calendar-eyebrow mb-1">{{ copy.panelEyebrow }}</p>
@@ -103,15 +108,17 @@
 
         <div class="calendar-converter">
           <div class="calendar-converter-side">
-            <span class="calendar-converter-label"><i class="fas fa-sun me-1" aria-hidden="true"></i>{{ copy.jalaliLabel
-              }}</span>
-            <strong class="calendar-converter-value" dir="rtl">{{ selectedJalali }}</strong>
+            <span class="calendar-converter-label"><i class="fas fa-sun me-1" aria-hidden="true"></i>{{ copy.tabs.jalali }}</span>
+            <strong class="calendar-converter-value">{{ selectedJalali }}</strong>
             <small>{{ selectedJalaliLong }}</small>
           </div>
-          <i class="fas fa-arrow-right-arrow-left calendar-converter-swap" aria-hidden="true"></i>
           <div class="calendar-converter-side">
-            <span class="calendar-converter-label"><i class="fas fa-globe me-1" aria-hidden="true"></i>{{
-              copy.gregorianLabel }}</span>
+            <span class="calendar-converter-label"><i class="fas fa-moon me-1" aria-hidden="true"></i>{{ copy.tabs.hijri }}</span>
+            <strong class="calendar-converter-value" *ngIf="selectedHijri">{{ selectedHijri }}</strong>
+            <small>{{ selectedHijriLong }}</small>
+          </div>
+          <div class="calendar-converter-side">
+            <span class="calendar-converter-label"><i class="fas fa-globe me-1" aria-hidden="true"></i>{{ copy.tabs.gregorian }}</span>
             <strong class="calendar-converter-value" dir="ltr">{{ selectedGregorian }}</strong>
             <small>{{ selectedGregorianLong }}</small>
           </div>
@@ -119,8 +126,16 @@
 
         <div class="calendar-status" *ngIf="isSelectedToday" role="status">
           <i class="fas fa-circle-check" aria-hidden="true"></i>
-          {{ copy.isTodayNote }}
+          {{ selectedHolidayTitle ? copy.isTodayNoteHoliday : copy.isTodayNote }}
         </div>
+
+        <div class="calendar-holiday" *ngIf="selectedHolidayTitle" role="status" aria-live="polite">
+          <i class="fas fa-circle" aria-hidden="true"></i>
+          <span class="calendar-holiday-label">{{ copy.holidayName }}</span>
+          <strong class="calendar-holiday-name">{{ selectedHolidayTitle }}</strong>
+        </div>
+
+        <p class="calendar-holiday-empty" *ngIf="!selectedHolidayTitle">{{ copy.noOccasion }}</p>
       </section>
 
     </div>
