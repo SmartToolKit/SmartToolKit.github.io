@@ -7,7 +7,7 @@ cd ".\Source\SmartToolKit\"
 REM Execute ng build and check for errors
 call npm install
 @REM call npm install  --registry="https://package-mirror.liara.ir/repository/npm/"
-call ng build --configuration production --output-path ./../../docs
+call npx ng build --configuration production --output-path ./../../docs
 if %errorlevel% neq 0 (
     echo Build failed!
     exit /b %errorlevel%

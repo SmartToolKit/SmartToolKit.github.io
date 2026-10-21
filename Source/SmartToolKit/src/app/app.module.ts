@@ -1,4 +1,4 @@
-﻿import { NgModule } from '@angular/core';
+﻿import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { ColorChromeModule } from 'ngx-color/chrome';
@@ -35,6 +35,7 @@ import { SqlQueryFormatterComponent } from './modules/sql-query-formatter/sql-qu
 import { ImageSlicerComponent } from './modules/image-slicer/image-slicer.component';
 import { NationalCodeComponent } from './modules/national-code/national-code.component';
 import { CalendarComponent } from './modules/calendar/calendar.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,12 @@ import { CalendarComponent } from './modules/calendar/calendar.component';
     FormsModule,
     BrowserModule,
     AppRoutingModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
   ],
   providers: [
     provideClientHydration()
